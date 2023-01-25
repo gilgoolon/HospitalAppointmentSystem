@@ -227,4 +227,9 @@ public class DBHandler {
         String query = "SELECT a FROM AppointmentsEntity a WHERE a.patient_id = ?1";
         return executeSelectQuery(query, AppointmentsEntity.class, params);
     }
+
+    public List<DoctorsEntity> getDoctors() {
+        String query = "SELECT d FROM DoctorsEntity d";
+        return executeSelectQuery(query, DoctorsEntity.class);
+    }
 }

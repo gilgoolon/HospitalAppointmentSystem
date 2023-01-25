@@ -1,0 +1,10 @@
+Color-Scheme colors. Colors are sorted from darkest to brightest:
+
+Red Pigment: #EB2E25
+Vermilion: #E9190F
+Scarlet: #F43408
+International Orange Aerospace: #FE4E00
+Safety Orange: #F97304
+Tangerine: #F68506
+Orange Peel: #F39708
+Honey Yellow: #FFAE03

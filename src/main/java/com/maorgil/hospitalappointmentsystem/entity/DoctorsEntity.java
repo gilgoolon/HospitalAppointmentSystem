@@ -1,6 +1,8 @@
 package com.maorgil.hospitalappointmentsystem.entity;
 
 
+import com.maorgil.hospitalappointmentsystem.DBHandler;
+
 import javax.persistence.*;
 
 @Entity
@@ -49,6 +51,25 @@ public class DoctorsEntity {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getFirstName() {
+        DBHandler dbh = new DBHandler();
+        return dbh.getUserById(getId()).getFirstName();
+    }
+
+    public String getLastName() {
+        DBHandler dbh = new DBHandler();
+        return dbh.getUserById(getId()).getLastName();
+    }
+
+    public int getAge() {
+        DBHandler dbh = new DBHandler();
+        return dbh.getUserById(getId()).getAge();
+    }
+
+    public String getTitle() {
+        return getFirstName() + " " + getLastName() + ", " + getAge() + ", " + getType() + ", " + getCity();
     }
 
     @Override

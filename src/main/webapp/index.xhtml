@@ -9,11 +9,20 @@
     <link type="text/css" rel="stylesheet" href="css/home.css"/>
     <title>Home | Hospital Appointment System</title>
 </head>
-<body>
-<div class="out">
-    <f:view>
-        <h:outputLabel value="DB data: #{databaseBean.info}"/>
-    </f:view>
+<body style="margin: 0 0 0 0">
+<div class="navbar">
+    <a class="link active" href="#Home">Home</a>
+    <a class="link" href="#">Appointment</a> <!-- will ref to appointment page -->
+    <a class="profile" href="#"><img src="assets/Circle-icons-profile.png" alt="My Profile"/></a> <!-- will ref to profile page -->
+</div>
+
+<div class="main-body">
+    <h1 class="welcome-label" id="Home">Welcome to our hospital !</h1>
+    <div class="doctors">
+        <h2 style="font-size: 24px">Our doctors:</h2>
+        <h:outputText escape="false" value="#{doctorsListBean.result}"/>
+    </div>
+
 </div>
 </body>
 </html>

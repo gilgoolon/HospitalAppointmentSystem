@@ -98,7 +98,7 @@ public class UsersEntity {
         isAdmin = admin;
     }
 
-    public int calculateAge() {
+    public int getAge() {
         LocalDate today = LocalDate.now();
         Date birthDate = getBirthDate();// birthdate in sql.Date format
         LocalDate bDate = birthDate.toLocalDate();
