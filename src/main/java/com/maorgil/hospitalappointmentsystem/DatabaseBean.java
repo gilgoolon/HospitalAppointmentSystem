@@ -6,9 +6,7 @@ import javax.faces.bean.ManagedBean;
 
 @ManagedBean(name="databaseBean")
 public class DatabaseBean {
-    public String getInfo() throws ClassNotFoundException {
-        System.out.println("Hello world!");
-        Class.forName("com.mysql.cj.jdbc.Driver");
+    public String getInfo() {
         final StringBuilder info = new StringBuilder();
         DBHandler db = new DBHandler();
         db.getDoctorsBySearch("John").forEach((doctor) -> {
