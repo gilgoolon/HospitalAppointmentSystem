@@ -6,7 +6,8 @@ VALUES ('123456789', 'John', 'Doe', '1980-01-01', 'password123', '5555555555', '
        ('345678901', 'Bob', 'Johnson', '1990-07-25', 'password789', '5555555557', 'bobjohnson@example.com', 0),
        ('456789012', 'Alice', 'Williams', '1995-11-30', 'passwordabc', '5555555558', 'alicewilliams@example.com', 0),
        ('567890123', 'Charlie', 'Brown', '2000-02-14', 'passworddef', '5555555559', 'charliebrown@example.com', 0),
-       ('678901234', 'Chris', 'Charles', '1976-04-15', 'passwordghi', '5555555550', 'chrischarles@example.com', 0);
+       ('678901234', 'Chris', 'Charles', '1976-04-15', 'passwordghi', '5555555550', 'chrischarles@example.com', 0),
+       ('789012345', 'Alice', 'Smith', '1981-08-26', 'passwordjkl', '5555555551', 'alicesmith@example.com', 0);
 
 INSERT INTO Appointments (start_time, end_time, doctor_id, patient_id, description, is_cancelled)
 VALUES ('2022-01-01 10:00:00', '2022-01-01 11:00:00', '123456789', '456789012', 'Routine checkup', 0),
@@ -14,9 +15,10 @@ VALUES ('2022-01-01 10:00:00', '2022-01-01 11:00:00', '123456789', '456789012', 
        ('2022-01-03 14:00:00', '2022-01-03 15:00:00', '345678901', '678901234', 'Sore throat', 0);
 
 INSERT INTO Doctors (id, type, about, city)
-VALUES ('123456789', 'General practitioner', 'Dr. John Doe is a GP with over 20 years of experience', 'New York'),
-       ('234567890', 'Cardiologist', 'Dr. Jane Smith specializes in heart health', 'Chicago'),
-       ('345678901', 'Pediatrician', 'Dr. Bob Johnson is a pediatric doctor with a passion for children''s health', 'Los Angeles');
+VALUES ('123456789', 'General practitioner', 'Dr. John Doe is a GP with over 20 years of experience.', 'New York'),
+       ('234567890', 'Cardiologist', 'Dr. Jane Smith specializes in heart health.', 'Chicago'),
+       ('345678901', 'Pediatrician', 'Dr. Bob Johnson is a pediatric doctor with a passion for children''s health.', 'Los Angeles'),
+       ('789012345', 'Neurosurgeon', 'Dr. Alice Smith is a talented neurologist with years of experience and passion for the human body.', 'San Francisco');
 
 INSERT INTO Working_Hours (doctor_id, week_day, start_time, end_time, apt_length)
 VALUES ('123456789', 1, '09:00:00', '17:00:00', 10),
@@ -34,7 +36,12 @@ VALUES ('123456789', 1, '09:00:00', '17:00:00', 10),
        ('345678901', 3, '16:00:00', '20:00:00', 30),
        ('345678901', 4, '16:00:00', '20:00:00', 30),
        ('345678901', 5, '16:00:00', '20:00:00', 30),
-       ('345678901', 6, '16:00:00', '20:00:00', 30);
+       ('345678901', 6, '16:00:00', '20:00:00', 30),
+       ('789012345', 1, '12:00:00', '20:00:00', 10),
+       ('789012345', 2, '12:00:00', '20:00:00', 10),
+       ('789012345', 3, '04:00:00', '14:00:00', 30),
+       ('789012345', 4, '04:00:00', '14:00:00', 30),
+       ('789012345', 5, '09:00:00', '17:00:00', 20);
 
 -- More appointments data generated partially by ChatGPT
 INSERT INTO Appointments (start_time, end_time, doctor_id, patient_id, description, is_cancelled)

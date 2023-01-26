@@ -1,7 +1,12 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
-    margin: 0;
     font-family: 'Roboto', sans-serif;
     background-color: #FFB92FFF;
+    margin: 0;
 }
 
 .navbar {
@@ -55,8 +60,8 @@ body {
 /* body */
 .main-body {
     margin-top: 50px;
-    margin-bottom: 50px;
     margin-left: 50px;
+    padding-bottom: 50px;
 }
 
 h1 {
@@ -73,17 +78,60 @@ h1 {
 
 /* Doctors list items */
 .doctors .title {
-    font-size: 18px
+    font-size: 20px
 }
 
 .doctors .about {
-    font-size: 14px;
+    font-size: 16px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    width: auto;
+    height: auto;
+    min-width: 350px;
+    visibility: hidden;
+    display: block;
+    opacity: 0;
+    position: absolute;
+    background-color: #333;
+    color: #f2f2f2;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border: 5px solid black;
+    border-radius: 15px;
+    font-size: 16px;
+}
+
+.dropdown:hover .dropdown-content {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity .3s ease-out;
+}
+
+.dropdown-content .content {
+    position: relative;
+    color: #f2f2f2;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: .3s ease-out;
+}
+
+.content li {
+    list-style-type: none;
+    margin-left: -20px;
 }
 
 .footer {
+    position: relative;
+    height: 50px;
     left: 0;
     bottom: 0;
-    margin-bottom: 0;
     width: 100%;
     background-color: #333;
     color: #9f9f9f;

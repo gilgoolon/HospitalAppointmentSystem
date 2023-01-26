@@ -28,7 +28,7 @@ CREATE TABLE Appointments (
 CREATE TABLE Doctors (
                          id varchar(9) NOT NULL UNIQUE,
                          type varchar(20) NOT NULL,
-                         about varchar(100),
+                         about varchar(200),
                          city varchar(20) NOT NULL,
                          PRIMARY KEY (id)
 );

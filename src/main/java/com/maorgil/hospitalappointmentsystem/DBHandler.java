@@ -232,4 +232,17 @@ public class DBHandler {
         String query = "SELECT d FROM DoctorsEntity d";
         return executeSelectQuery(query, DoctorsEntity.class);
     }
+
+    /**
+     * Get all the working hours for the given doctor.
+     * @param id represents the id of the given doctor.
+     * @return a list of working hours entities of the given doctor.
+     */
+    public List<WorkingHoursEntity> getDoctorHours(String id) {
+        List<Object> params = new ArrayList<>();
+        params.add(id);
+
+        String query = "SELECT wh FROM WorkingHoursEntity wh WHERE wh.doctorId = ?1";
+        return executeSelectQuery(query, WorkingHoursEntity.class, params);
+    }
 }

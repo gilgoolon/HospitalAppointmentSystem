@@ -27,35 +27,18 @@ public class DoctorListBean {
 
     public String getOutput() {
         StringBuilder sb = new StringBuilder();
+        sb.append("<ul>");
         for (DoctorsEntity doctor : doctors) {
-            sb.append("<ul>" +
-                    "<li>\n" +
-                    "<label class=\"title\">" + doctor.getTitle() + "</label>\n" +
-                    "<br/>" +
-                    "<label class=\"about\">" + doctor.getAbout() + "</label>\n" +
-                    "</li>" +
-                    "</ul>");
+            sb.append("<li>\n" +
+            "<div class=\"dropdown title\">" +
+            doctor.getTitle() +
+            doctor.getHoursHTML() +
+            "</div>\n" +
+            "<br/>" +
+            "<a class=\"about\">" + doctor.getAbout() + "</a>\n" +
+            "</li>");
         }
-
-        return sb.toString();
-    }
-
-    /**
-     *  Query the database for all the doctors and format them to html source code.
-     * @return a string of html source code of a list of doctors.
-     */
-    public String getResult() {
-        StringBuilder sb = new StringBuilder();
-        for (DoctorsEntity doctor : doctors) {
-            sb.append("<ul>" +
-                    "<li>\n" +
-                          "<label class=\"title\">" + doctor.getTitle() + "</label>\n" +
-                          "<br/>" +
-                          "<label class=\"about\">" + doctor.getAbout() +"</label>\n" +
-                      "</li>" +
-                    "</ul>");
-        }
-
+        sb.append("</ul>");
         return sb.toString();
     }
 }

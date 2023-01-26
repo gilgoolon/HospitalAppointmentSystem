@@ -69,7 +69,28 @@ public class DoctorsEntity {
     }
 
     public String getTitle() {
-        return getFirstName() + " " + getLastName() + ", " + getAge() + ", " + getType() + ", " + getCity();
+        return getFirstName() + " " + getLastName() + ", " + getAge() + ", " + getType();
+    }
+
+    /**
+     * Get the working hours of the doctor in html ul format.
+     * @return a string of html source code of a list of working hours.
+     */
+    public String getHoursHTML() {
+        DBHandler dbHandler = new DBHandler();
+        StringBuilder sb = new StringBuilder();
+        sb.append("<div class=\"dropdown-content\">");
+        sb.append("<div class=\"content\">");
+        // title of dropdown
+        sb.append("<a class=\"title\">").append(getCity()).append("</a>");
+        // working hours
+        sb.append("<ul>");
+        for (WorkingHoursEntity wh : dbHandler.getDoctorHours(getId()))
+            sb.append("<li>").append(wh).append("</li>");
+        sb.append("</ul>");
+        sb.append("</div>");
+        sb.append("</div>");
+        return sb.toString();
     }
 
     @Override

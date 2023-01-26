@@ -65,6 +65,33 @@ public class WorkingHoursEntity {
     }
 
     @Override
+    public String toString() {
+        // remove seconds from time
+        return getWeekDayName(weekDay) + ": " + startTime.toString().substring(0, 5) + "-" + endTime.toString().substring(0, 5) + ", " + aptLength + " minutes";
+    }
+
+    private static String getWeekDayName(int weekDay) {
+        switch (weekDay) {
+            case 1:
+                return "Sunday";
+            case 2:
+                return "Monday";
+            case 3:
+                return "Tuesday";
+            case 4:
+                return "Wednesday";
+            case 5:
+                return "Thursday";
+            case 6:
+                return "Friday";
+            case 7:
+                return "Saturday";
+            default:
+                return "Unknown";
+        }
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
