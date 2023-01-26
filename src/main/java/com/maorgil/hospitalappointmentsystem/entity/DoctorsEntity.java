@@ -1,6 +1,8 @@
 package com.maorgil.hospitalappointmentsystem.entity;
 
 
+import com.maorgil.hospitalappointmentsystem.DBHandler;
+
 import javax.persistence.*;
 
 @Entity
@@ -49,6 +51,49 @@ public class DoctorsEntity {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getFirstName() {
+        DBHandler dbh = new DBHandler();
+        return dbh.getUserById(getId()).getFirstName();
+    }
+
+    public String getLastName() {
+        DBHandler dbh = new DBHandler();
+        return dbh.getUserById(getId()).getLastName();
+    }
+
+    public int getAge() {
+        DBHandler dbh = new DBHandler();
+        return dbh.getUserById(getId()).getAge();
+    }
+
+    public String getTitle() {
+        return getFirstName() + " " + getLastName() + ", " + getAge() + ", " + getType();
+    }
+
+    /**
+     * Get the working hours of the doctor in html ul format.
+     * @return a string of html source code of a list of working hours.
+     */
+    public String getHoursHTML() {
+        DBHandler dbHandler = new DBHandler();
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<div class=\"dropdown-content\">");
+        sb.append("<div class=\"content\">");
+
+        // title of dropdown
+        sb.append("<a class=\"title-small\">").append(getCity()).append("</a>");
+
+        // working hours
+        sb.append("<ul>");
+        for (WorkingHoursEntity wh : dbHandler.getDoctorHours(getId()))
+            sb.append("<li>").append(wh).append("</li>");
+        sb.append("</ul>");
+        sb.append("</div>");
+        sb.append("</div>");
+        return sb.toString();
     }
 
     @Override
