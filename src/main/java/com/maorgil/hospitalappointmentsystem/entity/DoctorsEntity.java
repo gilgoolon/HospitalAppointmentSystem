@@ -79,10 +79,13 @@ public class DoctorsEntity {
     public String getHoursHTML() {
         DBHandler dbHandler = new DBHandler();
         StringBuilder sb = new StringBuilder();
+
         sb.append("<div class=\"dropdown-content\">");
         sb.append("<div class=\"content\">");
+
         // title of dropdown
-        sb.append("<a class=\"title\">").append(getCity()).append("</a>");
+        sb.append("<a class=\"title-small\">").append(getCity()).append("</a>");
+
         // working hours
         sb.append("<ul>");
         for (WorkingHoursEntity wh : dbHandler.getDoctorHours(getId()))

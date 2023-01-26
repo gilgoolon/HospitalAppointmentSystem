@@ -65,9 +65,9 @@ public class DBHandler {
      *      <p>=====SQL======
      *      </b></p>
      * @param query represents the SQL query to execute.
-     * @param c represents the class of the returned entity's stream.
+     * @param c represents the class of the returned entity's list.
      *          See function declaration and EntityManager.createNamedQuery() for more detail.
-     * @return the result of the query, a stream of entities of the given type.
+     * @return the result of the query, a list of entities of the given type.
      */
     public <T> List<T> executeSelectQuery(String query, Class<T> c) {
         return executeSelectQuery(query, c, new ArrayList<>());
@@ -85,14 +85,14 @@ public class DBHandler {
      *      <p>=====SQL======
      *      </b></p>
      * @param query represents the SQL query to execute.
-     * @param c represents the class of the returned entity's stream.
+     * @param c represents the class of the returned entity's list.
      *          See function declaration and EntityManager.createNamedQuery() for more detail.
      * @param parameters represents a list of parameters for the prepared query.
-     * @return the result of the query, a stream of entities of the given type.
+     * @return the result of the query, a list of entities of the given type.
      */
     public <T> List<T> executeSelectQuery(String query, Class<T> c, List<Object> parameters) {
         if (!connect()) // first, connect to the database
-            return Collections.emptyList(); // if failed to connect return an empty stream
+            return Collections.emptyList(); // if failed to connect return an empty list
 
         try {
             TypedQuery<T> tq = _entityManager.createQuery(query, c);
@@ -182,16 +182,21 @@ public class DBHandler {
 
     /**
      * Browse the database for doctors that may fit the given search.
-     * The search will be done by looking at first name prefix and last name prefix.
+     * The search will be done by looking at first name prefix, last name prefix
+     * and full name prefix.
+     * The result list will be sorted by the full name.
      * @param text represents the text to search for.
-     * @return a stream of doctors entities who match the search text.
+     * @return a list of doctors entities who match the search text.
      */
     public List<DoctorsEntity> getDoctorsBySearch(String text) {
         List<Object> params = new ArrayList<>();
         params.add(text + "%"); // regex to match starts with text
         params.add(text + "%"); // Two params for the first and last name
+        params.add(text + "%"); // Match entire name
 
-        String query = "SELECT d FROM DoctorsEntity d JOIN UsersEntity u ON d.id = u.id WHERE u.firstName LIKE ?1 OR u.lastName LIKE ?2";
+        String query = "SELECT d FROM DoctorsEntity d JOIN UsersEntity u ON d.id = u.id " +
+                "WHERE u.firstName LIKE ?1 OR u.lastName LIKE ?2 OR u.firstName + u.lastName LIKE ?3 "
+                + "ORDER BY u.firstName, u.lastName";
 
         return executeSelectQuery(query, DoctorsEntity.class, params);
     }
@@ -218,7 +223,7 @@ public class DBHandler {
     /**
      * Get all the appointments for the given patient (past and future).
      * @param id represents the id of the given user.
-     * @return a stream of appointment entities of the given user.
+     * @return a list of appointment entities of the given user.
      */
     public List<AppointmentsEntity> getAppointmentsByPatientId(String id) {
         List<Object> params = new ArrayList<>();
@@ -229,8 +234,7 @@ public class DBHandler {
     }
 
     public List<DoctorsEntity> getDoctors() {
-        String query = "SELECT d FROM DoctorsEntity d";
-        return executeSelectQuery(query, DoctorsEntity.class);
+        return getDoctorsBySearch("");
     }
 
     /**

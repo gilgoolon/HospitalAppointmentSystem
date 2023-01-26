@@ -67,7 +67,7 @@ public class WorkingHoursEntity {
     @Override
     public String toString() {
         // remove seconds from time
-        return getWeekDayName(weekDay) + ": " + startTime.toString().substring(0, 5) + "-" + endTime.toString().substring(0, 5) + ", " + aptLength + " minutes";
+        return getWeekDayName(weekDay) + ": " + startTime.toString().substring(0, 5) + "-" + endTime.toString().substring(0, 5);
     }
 
     private static String getWeekDayName(int weekDay) {
