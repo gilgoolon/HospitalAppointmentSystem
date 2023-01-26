@@ -9,6 +9,12 @@ body {
     margin: 0;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 .navbar {
     padding-top: 0;
     position: sticky;
@@ -61,7 +67,7 @@ body {
 .main-body {
     margin-top: 50px;
     margin-left: 50px;
-    padding-bottom: 50px;
+    flex-grow: 1;
 }
 
 h1 {
