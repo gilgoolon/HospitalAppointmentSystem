@@ -5,7 +5,39 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-<f:view>
-    <h:outputLabel value="DB data: #{databaseBean.info}"/>
-</f:view>
+<head>
+    <link type="text/css" rel="stylesheet" href="css/home.css"/>
+    <title>Home | Hospital Appointment System</title>
+</head>
+<body>
+<div class="navbar">
+    <a class="link active" href="#">Home</a>
+    <a class="link" href="#">Appointment</a> <!-- will ref to appointment page -->
+    <a class="profile" href="#"><img src="assets/Circle-icons-profile.png"
+                                     alt="My Profile"/></a> <!-- will ref to profile page -->
+</div>
+<div class="container">
+    <div class="main-body">
+        <h1 class="welcome-label" id="Home">Welcome to our hospital !</h1>
+        <div class="description">
+            <p>Our hospital is a private hospital that provides a wide range of medical services to the community. We have a
+                team of experienced doctors and nurses who are ready to serve you. We are located in the heart of the city
+                and we are open 24/7. We are always ready to serve you.</p>
+        </div>
+        <div class="doctors">
+            <h1>Our doctors:</h1>
+            <h:form action="#{doctorsListBean.submit()}">
+                <h:inputText autocomplete="off" value="#{doctorsListBean.input}"/>
+                <h:commandButton value="Search" action="#{doctorsListBean.submit()}"/>
+            </h:form>
+            <h:outputText escape="false" value="#{doctorsListBean.output}"/>
+        </div>
+    </div>
+    <div class="footer">
+        <a>© 2023 Hospital Appointment System</a><br/>
+        <a>Contact Us @ 02-345-6789 or</a><br/>
+        <a>Email Us @ clinic@example.com</a><br/>
+    </div>
+</div>
+</body>
 </html>

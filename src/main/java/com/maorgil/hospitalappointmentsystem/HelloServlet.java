@@ -15,7 +15,7 @@ public class HelloServlet extends HttpServlet {
         message = "";
         db.getDoctorsBySearch("John").forEach((doctor) -> {
             UsersEntity u = db.getUserById(doctor.getId());
-            message += "Entity (Doctor):\n\tI.D: " + doctor.getId() + "\n\tName: " + u.getFirstName() + " " + u.getLastName() + "\n\tAge: " + u.calculateAge() + "\n\tAbout: " + doctor.getAbout() + "\n";
+            message += "Entity (Doctor):\n\tI.D: " + doctor.getId() + "\n\tName: " + u.getFirstName() + " " + u.getLastName() + "\n\tAge: " + u.getAge() + "\n\tAbout: " + doctor.getAbout() + "\n";
         });
     }
 
