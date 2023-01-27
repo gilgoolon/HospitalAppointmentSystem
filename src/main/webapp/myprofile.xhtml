@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 <head>
    <link type="text/css" rel="stylesheet" href="css/styles.css"/>
    <title>My Profile | Hospital Appointment System</title>
@@ -13,12 +14,57 @@
 <div class="navbar">
    <a class="link" href="index.xhtml">Home</a>
    <a class="link" href="#">Appointment</a> <!-- will ref to appointment page -->
-   <a class="profile active" href="#"><img src="assets/profile-icon.png"
+   <a class="profile" href="#"><img src="assets/profile-icon.png"
                                     alt="My Profile"/></a> <!-- will ref to profile page -->
 </div>
 <div class="container">
    <div class="main-body">
+      Hello, <h:outputText value="#{profileDataBean.firstName}"/>!
+      <h:panelGrid columns="3">
+         <h:outputText value="ID: "/>
+         <h:inputText value="#{profileDataBean.ID}" readonly="true"/>
+         <h:outputText styleClass="error" value=""/> <!-- place holder for the 3rd column -->
 
+         <h:outputText value="First Name: "/>
+         <h:inputText id="firstNameInput" value="#{profileDataBean.firstName}" readonly="#{profileDataBean.isAdmin()}"
+                      required="true" requiredMessage="You have to provide a first name">
+            <f:validateRegex pattern="^[a-zA-Z]+$"/>
+         </h:inputText>
+         <h:message for="firstNameInput" styleClass="error" value=""/>
+
+         <h:outputText value="Last Name: "/>
+         <h:inputText id="lastNameInput" value="#{profileDataBean.lastName}" readonly="#{profileDataBean.isAdmin()}"
+                      required="true" requiredMessage="You have to provude a last name">
+            <f:validateRegex pattern="^[a-zA-Z]+$"/>
+         </h:inputText>
+         <h:message for="lastNameInput" styleClass="error" value="A name can only include english letters"/>
+
+         <h:outputText value="Birth Date: "/>
+         <p:calendar id="birthDateInput" value="#{profileDataBean.birthDate}" readonly="#{profileDataBean.isAdmin()}"
+                     required="true" requiredMessage="You have to provide a birth date"
+                     beforeShowDay="#{profileDataBean.disableDates}" showOn="button"/>
+         <h:message for="birthDateInput" styleClass="error" value=""/> <!-- place holder for the 3rd column -->
+
+         <h:outputText value="Phone Number: "/>
+         <h:inputText id="phoneNumberInput" value="#{profileDataBean.phoneNumber}" readonly="#{profileDataBean.isPreviewMode()}"
+                      required="true" requiredMessage="You have to provide a phone number"
+                      validatorMessage="The provided phone number is of incorrect format">
+            <f:validateRegex pattern="^(\d{3}-\d{3}-\d{4})$"/>
+         </h:inputText>
+         <h:message for="phoneNumberInput" styleClass="error" value="#{profileDataBean.phoneNumberError}"/>
+
+         <h:outputText value="Email: "/>
+         <h:inputText id="emailInput" value="#{profileDataBean.email}" readonly="#{profileDataBean.isPreviewMode()}"
+                      required="true" requiredMessage="You have to provide an email address"
+                      validatorMessage="The provided email address is of incorrect format">
+            <f:validateRegex pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+         </h:inputText>
+         <h:message for="emailInput" styleClass="error" value="#{profileDataBean.emailError}"/>
+
+         <h:outputText value="User type: "/>
+         <h:inputText value="#{profileDataBean.isAdminStr()}" readonly="true"/>
+         <h:outputText styleClass="error" value=""/> <!-- place holder for the 3rd column -->
+      </h:panelGrid>
    </div>
    <div class="footer">
       <a>© 2023 Hospital Appointment System</a><br/>

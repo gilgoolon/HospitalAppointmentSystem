@@ -83,6 +83,11 @@ body {
     font-size: 16px;
 }
 
+/* error */
+.error {
+    color: #E9190F;
+    font-size: 16px;
+}
 
 .footer {
     z-index: -2;
