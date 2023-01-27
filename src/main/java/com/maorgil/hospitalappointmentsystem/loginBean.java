@@ -25,11 +25,10 @@ public class loginBean {
         return password;
     }
 
-    public void submit() {
+    public String submit() {
         DBHandler dbHandler = new DBHandler();
         if (dbHandler.validateLogin(id,password)) {
-            FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "index.xhtml");
-
+            return "index.xhtml?faces-redirect=true";
         }
         else {
             if (dbHandler.getUserById(id) != null) {
@@ -39,11 +38,10 @@ public class loginBean {
                 output = "ID does not exist, please sign up";
             }
         }
+        return "";
     }
 
     public String getOutput() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(output);
-        return sb.toString();
+        return output;
     }
 }

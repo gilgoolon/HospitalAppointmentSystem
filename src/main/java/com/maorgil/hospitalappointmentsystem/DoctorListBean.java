@@ -3,38 +3,48 @@ package com.maorgil.hospitalappointmentsystem;
 import com.maorgil.hospitalappointmentsystem.entity.DoctorsEntity;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import java.util.List;
 
 @ManagedBean(name = "doctorsListBean")
+// use an url request parameter to get the search term and maintain it in the bean
 public class DoctorListBean {
-    private List<DoctorsEntity> doctors = new DBHandler().getDoctors();
     public String searchTerm = "";
-    public String output;
 
     public void setInput(String s) {
         searchTerm = s;
     }
 
     public String getInput() {
-        return searchTerm;
+        // get input from request parameters
+        String in = FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getRequestParameterMap().get("search");
+        return in == null ? "" : in;
     }
 
-    public void submit() {
-        doctors = new DBHandler().getDoctorsBySearch(searchTerm);
+    public String submit() {
+        return "index.xhtml?faces-redirect=true&search=" + searchTerm;
     }
 
     public String getOutput() {
+        searchTerm = getInput(); // update search term from request parameters
+        List<DoctorsEntity> doctors = new DBHandler().getDoctorsBySearch(searchTerm); // query the db
+
         StringBuilder sb = new StringBuilder();
         sb.append("<ul>");
         for (DoctorsEntity doctor : doctors) {
-            sb.append("<li>" +
-            "<div class=\"dropdown title-small\">" +
-            doctor.getTitle() +
-            doctor.getHoursHTML() +
-            "</div>" +
-            "<br/>" +
-            "<a class=\"text-small\">" + doctor.getAbout() + "</a>" +
-            "</li>");
+            sb
+                    .append("<li>")
+                        .append("<div class=\"dropdown title-small\">")
+                            .append(doctor.getTitle())
+                            .append(doctor.getHoursHTML())
+                        .append("</div>")
+                        .append("<br/>")
+                        .append("<a class=\"text-small\">")
+                            .append(doctor.getAbout())
+                        .append("</a>")
+                    .append("</li>");
         }
         sb.append("</ul>");
         return sb.toString();
