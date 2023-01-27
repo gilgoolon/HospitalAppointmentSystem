@@ -1,4 +1,6 @@
-package com.maorgil.hospitalappointmentsystem;
+package com.maorgil.hospitalappointmentsystem.beans;
+
+import com.maorgil.hospitalappointmentsystem.DBHandler;
 
 import javax.faces.bean.ManagedBean;
 

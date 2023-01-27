@@ -44,15 +44,18 @@ body {
 }
 
 /* Highlight the current selection */
-.navbar .link.active {
+.active {
     background-color: #E9190F;
     color: white;
 }
 
 .navbar .profile {
     float: right;
-    margin: 4px 12px;
-    height: 0;
+    height: 56px;
+    width: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .profile img {
