@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<head>
+   <link type="text/css" rel="stylesheet" href="css/styles.css"/>
+   <title>Login | Hospital Appointment System</title>
+</head>
+<body>
+   <div class="navbar">
+      <a class="link active" href="#">Home</a>
+      <a class="link" href="#">Appointment</a> <!-- will ref to appointment page -->
+      <a class="profile" href="#"><img src="assets/Circle-icons-profile.png"
+                                       alt="My Profile"/></a> <!-- will ref to profile page -->
+   </div>
+   <div class="container">
+      <div class="main-body">
+         <div class="login">
+            <h:form action="#{loginBean.submit()}">
+               ID: <h:inputText autocomplete="off" value="#{loginBean.id}"/>
+               <br/>
+               Password: <h:inputSecret autocomplete="off" value="#{loginBean.password}"/>
+               <br/>
+               <h:commandButton value="Submit" action="#{loginBean.submit()}"/>
+            </h:form>
+            <h:outputText escape="false" value="#{loginBean.output}"/>
+         </div>
+      </div>
+      <div class="footer">
+         <a>© 2023 Hospital Appointment System</a><br/>
+         <a>Contact Us @ 02-345-6789 or</a><br/>
+         <a>Email Us @ clinic@example.com</a><br/>
+      </div>
+   </div>
+</body>
+</html>

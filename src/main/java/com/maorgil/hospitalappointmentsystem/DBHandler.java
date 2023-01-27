@@ -170,6 +170,17 @@ public class DBHandler {
         return list.size() > 0 ? list.get(0) : null;
     }
 
+    public boolean validateLogin(String id, String password) {
+        List<Object> params = new ArrayList<>();
+        params.add(id);
+        params.add(password);
+
+        String query = "SELECT u FROM UsersEntity u WHERE u.id = ?1 AND u.password = ?2";
+        List<UsersEntity> list = executeSelectQuery(query, UsersEntity.class, params);
+
+        return list.size() > 0;
+    }
+
     public DoctorsEntity getDoctorById(String id) {
         List<Object> params = new ArrayList<>();
         params.add(id);
