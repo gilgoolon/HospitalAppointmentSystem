@@ -40,8 +40,8 @@ public class ProfileDataBean {
         return user.getBirthDate().toString();
     }
 
-    public String isAdmin() {
-        return user.isAdmin() ? "true" : "false";
+    public String isUser() {
+        return !user.isAdmin() ? "true" : "false";
     }
 
     public String isAdminStr() {
@@ -71,5 +71,9 @@ public class ProfileDataBean {
         if (date.before(new Date()) && date.before(date120YearsAgo))
             dates[0] = false;
         return dates;
+    }
+
+    public String getStyleClass(boolean isEditable) {
+        return isEditable ? "" : "readonly";
     }
 }

@@ -8,11 +8,6 @@ h1 {
     font-size: 18px;
 }
 
-.welcome-label {
-    font-size: 36px;
-    text-align: center;
-}
-
 .dropdown {
     position: relative;
     display: inline-block;
