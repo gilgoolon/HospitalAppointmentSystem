@@ -24,6 +24,9 @@ public class DBHandler {
      * @return true if the connection attempt was successful, I.E if connected to the DB afterwards, false otherwise.
      */
     public boolean connect() {
+        if (isConnected)
+            return true;
+
         try {
             EntityManagerFactory _entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
             _entityManager = _entityManagerFactory.createEntityManager();

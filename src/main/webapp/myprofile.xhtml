@@ -20,56 +20,68 @@
 <div class="container">
    <div class="main-body">
       <h:outputText styleClass="welcome-label" value="Hello, #{profileDataBean.firstName}!"/>
-      <h:panelGrid columns="3">
-         <h:outputText value="ID: "/>
-         <h:inputText value="#{profileDataBean.ID}" readonly="true"
-                      styleClass="readonly"/>
-         <label/> <!-- place holder for the 3rd column -->
+      <h:form action="#{profileDataBean.action()}">
+         <h:panelGrid columns="3">
+            <h:outputText value="ID: "/>
+            <h:inputText value="#{profileDataBean.id}" readonly="true"
+                         styleClass="readonly"/>
+            <label/> <!-- place holder for the 3rd column -->
 
-         <h:outputText value="First Name: "/>
-         <h:inputText id="firstNameInput" value="#{profileDataBean.firstName}" readonly="#{profileDataBean.isUser()}"
-                      required="true" requiredMessage="You have to provide a first name"
-                      styleClass="#{profileDataBean.getStyleClass(!profileDataBean.isUser())}">
-         <f:validateRegex pattern="^[a-zA-Z]+$"/>
-         </h:inputText>
-         <h:message for="firstNameInput" styleClass="error" value=""/>
-
-         <h:outputText value="Last Name: "/>
-         <h:inputText id="lastNameInput" value="#{profileDataBean.lastName}" readonly="#{profileDataBean.isUser()}"
-                      required="true" requiredMessage="You have to provude a last name"
-                      styleClass="#{profileDataBean.getStyleClass(!profileDataBean.isUser())}">
+            <h:outputText value="First Name: "/>
+            <h:inputText id="firstNameInput" value="#{profileDataBean.firstName}" readonly="#{profileDataBean.isUser() || !profileDataBean.isPreviewMode()}"
+                         required="true" requiredMessage="You have to provide a first name"
+                         styleClass="#{profileDataBean.getStyleClass(!(profileDataBean.isUser() || !profileDataBean.isPreviewMode()))}">
             <f:validateRegex pattern="^[a-zA-Z]+$"/>
-         </h:inputText>
-         <h:message for="lastNameInput" styleClass="error" value="A name can only include english letters"/>
+            </h:inputText>
+            <h:message for="firstNameInput" styleClass="error" value=""/>
 
-         <h:outputText value="Birth Date: "/>
-         <p:calendar id="birthDateInput" value="#{profileDataBean.birthDate}" readonly="#{profileDataBean.isUser()}"
-                     required="true" requiredMessage="You have to provide a birth date"/>
-         <label/> <!-- place holder for the 3rd column -->
+            <h:outputText value="Last Name: "/>
+            <h:inputText id="lastNameInput" value="#{profileDataBean.lastName}" readonly="#{profileDataBean.isUser() || !profileDataBean.isPreviewMode()}"
+                         required="true" requiredMessage="You have to provude a last name"
+                         styleClass="#{profileDataBean.getStyleClass(!(profileDataBean.isUser() || !profileDataBean.isPreviewMode()))}">
+               <f:validateRegex pattern="^[a-zA-Z]+$"/>
+            </h:inputText>
+            <h:message for="lastNameInput" styleClass="error" value="A name can only include english letters"/>
 
-         <h:outputText value="Phone Number: "/>
-         <h:inputText id="phoneNumberInput" value="#{profileDataBean.phoneNumber}" readonly="#{profileDataBean.isPreviewMode()}"
-                      required="true" requiredMessage="You have to provide a phone number"
-                      validatorMessage="The provided phone number is of incorrect format"
-                      styleClass="#{profileDataBean.getStyleClass(!profileDataBean.isPreviewMode())}">
-            <f:validateRegex pattern="^(\d{3}-\d{3}-\d{4})$"/>
-         </h:inputText>
-         <h:message for="phoneNumberInput" styleClass="error" value="#{profileDataBean.phoneNumberError}"/>
+            <h:outputText value="Birth Date: "/>
+            <h:inputText id="birthDateInput" converter="dateConverter" value="#{profileDataBean.birthDate}" readonly="#{profileDataBean.isPreviewMode()}"
+                        required="true" requiredMessage="You have to provide a birth date"
+                        validatorMessage="The provided birth date is of incorrect format, in the future, or too old"
+                        styleClass="#{profileDataBean.getStyleClass(!profileDataBean.isPreviewMode())}">
+               <f:validator validatorId="birthDateValidator"/>
+            </h:inputText>
+            <h:message for="birthDateInput" styleClass="error"/>
 
-         <h:outputText value="Email: "/>
-         <h:inputText id="emailInput" value="#{profileDataBean.email}" readonly="#{profileDataBean.isPreviewMode()}"
-                      required="true" requiredMessage="You have to provide an email address"
-                      validatorMessage="The provided email address is of incorrect format"
-                      styleClass="#{profileDataBean.getStyleClass(!profileDataBean.isPreviewMode())}">
-            <f:validateRegex pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
-         </h:inputText>
-         <h:message for="emailInput" styleClass="error" value="#{profileDataBean.emailError}"/>
+            <h:outputText value="Phone Number: "/>
+            <h:inputText id="phoneNumberInput" value="#{profileDataBean.phoneNumber}" readonly="#{profileDataBean.isPreviewMode()}"
+                         required="true" requiredMessage="You have to provide a phone number"
+                         validatorMessage="The provided phone number is of incorrect format"
+                         styleClass="#{profileDataBean.getStyleClass(!profileDataBean.isPreviewMode())}">
+               <f:validateRegex pattern="^(\d{3}-\d{3}-\d{4})$"/>
+            </h:inputText>
+            <h:message for="phoneNumberInput" styleClass="error"/>
 
-         <h:outputText value="User type: "/>
-         <h:inputText value="#{profileDataBean.isAdminStr()}" readonly="true"
-                      styleClass="readonly"/>
-         <label/> <!-- place holder for the 3rd column -->
-      </h:panelGrid>
+            <h:outputText value="Email: "/>
+            <h:inputText id="emailInput" value="#{profileDataBean.email}" readonly="#{profileDataBean.isPreviewMode()}"
+                         required="true" requiredMessage="You have to provide an email address"
+                         validatorMessage="The provided email address is of incorrect format"
+                         styleClass="#{profileDataBean.getStyleClass(!profileDataBean.isPreviewMode())}">
+               <f:validateRegex pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+            </h:inputText>
+            <h:message for="emailInput" styleClass="error"/>
+
+            <h:outputText value="User type: "/>
+            <h:inputText value="#{profileDataBean.isAdminStr()}" readonly="true"
+                         styleClass="readonly"/>
+            <label/> <!-- place holder for the 3rd column -->
+
+            <h:commandButton id="editButton" value="Edit" action="#{profileDataBean.edit()}"
+                             rendered="#{profileDataBean.isPreviewMode()}"/>
+            <h:commandButton id="submitButton" value="Submit" action="#{profileDataBean.submit()}"
+                             rendered="#{!profileDataBean.isPreviewMode()}"/>
+
+         </h:panelGrid>
+      </h:form>
    </div>
    <div class="footer">
       <a>© 2023 Hospital Appointment System</a><br/>
