@@ -124,10 +124,6 @@ public class ProfileDataBean {
         return "myprofile.xhtml?faces-redirect=true";
     }
 
-    public String action() {
-        return previewMode ? edit() : submit();
-    }
-
     public void initUserData() {
         user = new DBHandler().getUserById(user.getId());
         id = user.getId();

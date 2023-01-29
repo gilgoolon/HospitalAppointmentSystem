@@ -53,10 +53,8 @@ public class DBHandler {
         UserTransaction ut = null;
         try {
             ut = getTransaction();
-            if (_entityManager.find(c, pk) != null) {
-                System.out.println("Entity already exists in the database...");
+            if (_entityManager.find(c, pk) != null)
                 _entityManager.merge(entity);
-            }
             else _entityManager.persist(entity);
             ut.commit();
             return true;
