@@ -1,12 +1,14 @@
 package com.maorgil.hospitalappointmentsystem;
 
 
-import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntity;
-import com.maorgil.hospitalappointmentsystem.entity.DoctorsEntity;
-import com.maorgil.hospitalappointmentsystem.entity.UsersEntity;
-import com.maorgil.hospitalappointmentsystem.entity.WorkingHoursEntity;
+import com.maorgil.hospitalappointmentsystem.entity.*;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.*;
+import javax.transaction.NotSupportedException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 import java.util.*;
 
 public class DBHandler {
@@ -40,18 +42,55 @@ public class DBHandler {
     }
 
     /**
-     * Persist (add) a new entry to the database
+     * Persist a new entry to the database - change or add new
      * @param entity represents the entity to persist to the DB.
      * @return true if the entry has been persisted successfully to the DB, false otherwise.
      */
-    public boolean persistEntity(Object entity) {
+    public <T> boolean persistEntity(T entity, Class<T> c, Object pk) {
         if (!connect())
             return false;
 
+        UserTransaction ut = null;
         try {
-            _entityManager.persist(entity);
+            ut = getTransaction();
+            if (_entityManager.find(c, pk) != null) {
+                System.out.println("Entity already exists in the database...");
+                _entityManager.merge(entity);
+            }
+            else _entityManager.persist(entity);
+            ut.commit();
             return true;
-        } catch (PersistenceException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                assert ut != null;
+                ut.rollback();
+            } catch (Exception ignore) {}
+            return false;
+        }
+    }
+
+    /**
+     * Remove an entry from the database
+     * @param entity represents the entity to remove from the DB.
+     * @return true if the entry has been removed successfully from the DB, false otherwise.
+     */
+    public boolean removeEntity(Object entity) {
+        if (!connect())
+            return false;
+
+        UserTransaction ut = null;
+        try {
+            ut = getTransaction();
+            _entityManager.remove(entity);
+            ut.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                assert ut != null;
+                ut.rollback();
+            } catch (Exception ignore) {}
             return false;
         }
     }
@@ -149,49 +188,51 @@ public class DBHandler {
         if (!connect()) // first, connect to the database
             return false; // if failed to connect return  false
 
+        UserTransaction ut = null;
         try {
-            Query q = _entityManager.createNamedQuery(query);
+            ut = getTransaction();
+            Query q = _entityManager.createQuery(query);
 
             // set the parameters of the prepared statement
             for (int i = 0; i < parameters.size(); i++)
                 q.setParameter(i + 1, parameters.get(i));
 
             q.executeUpdate(); // returns the number of rows affected, prob. not needed
+            ut.commit();
             return true;
-        } catch (PersistenceException e) {
+        } catch (Exception e) {
+            try {
+                assert ut != null;
+                ut.rollback();
+            } catch (Exception ignore) {}
             return false;
         }
     }
 
+    private UserTransaction getTransaction() throws NamingException, SystemException, NotSupportedException {
+        UserTransaction ut = (UserTransaction) new InitialContext().lookup("java:comp/UserTransaction");
+        ut.begin();
+        _entityManager.joinTransaction();
+        return ut;
+    }
+
     public UsersEntity getUserById(String id) {
-        List<Object> params = new ArrayList<>();
-        params.add(id);
-
-        String query = "SELECT u FROM UsersEntity u WHERE u.id = ?1";
-        List<UsersEntity> list = executeSelectQuery(query, UsersEntity.class, params);
-
-        return list.size() > 0 ? list.get(0) : null;
+        if (!connect())
+            return null;
+        return _entityManager.find(UsersEntity.class, id);
     }
 
     public boolean validateLogin(String id, String password) {
-        List<Object> params = new ArrayList<>();
-        params.add(id);
-        params.add(password);
-
-        String query = "SELECT u FROM UsersEntity u WHERE u.id = ?1 AND u.password = ?2";
-        List<UsersEntity> list = executeSelectQuery(query, UsersEntity.class, params);
-
-        return list.size() > 0;
+        if (!connect())
+            return false;
+        UsersEntity user = getUserById(id);
+        return user != null && user.getPassword().equals(password);
     }
 
     public DoctorsEntity getDoctorById(String id) {
-        List<Object> params = new ArrayList<>();
-        params.add(id);
-
-        String query = "SELECT d FROM DoctorsEntity d WHERE d.id = ?1";
-        List<DoctorsEntity> list = executeSelectQuery(query, DoctorsEntity.class, params);
-
-        return list.size() > 0 ? list.get(0) : null;
+        if (!connect())
+            return null;
+        return _entityManager.find(DoctorsEntity.class, id);
     }
 
     /**
@@ -216,14 +257,12 @@ public class DBHandler {
     }
 
     public WorkingHoursEntity getWorkingHoursByPK(String doctor_id, int week_day) {
-        List<Object> params = new ArrayList<>();
-        params.add(doctor_id);
-        params.add(week_day);
-
-        String query = "SELECT wh FROM WorkingHoursEntity wh WHERE wh.doctor_id = ?1 AND wh.week_day = ?2";
-        List<WorkingHoursEntity> list = executeSelectQuery(query, WorkingHoursEntity.class, params);
-
-        return list.size() > 0 ? list.get(0) : null;
+        if (!connect())
+            return null;
+        WorkingHoursEntityPK pk = new WorkingHoursEntityPK();
+        pk.setDoctorId(doctor_id);
+        pk.setWeekDay(week_day);
+        return _entityManager.find(WorkingHoursEntity.class, pk);
     }
 
     public List<WorkingHoursEntity> getWorkingHoursById(String doctor_id) {

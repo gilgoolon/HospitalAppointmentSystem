@@ -109,20 +109,18 @@ public class ProfileDataBean {
         previewMode = true;
 
         // persist changes to DB
-        DBHandler dbHandler = new DBHandler();
-        dbHandler.connect();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setPhoneNumber(phoneNumber);
         user.setEmail(email);
         user.setBirthDate(new java.sql.Date(birthDate.getTime()));
-        System.out.println(user.getBirthDate().toString());
 
-        dbHandler.persistEntity(user);
-        System.out.println(user.getBirthDate().toString());
+        DBHandler dbHandler = new DBHandler();
+        if (dbHandler.persistEntity(user, UsersEntity.class, user.getId())) {
+            // init before sending in case of a DB error
+            initUserData();
+        }
 
-        // init before sending in case of a DB error
-        initUserData();
         return "myprofile.xhtml?faces-redirect=true";
     }
 
@@ -131,6 +129,7 @@ public class ProfileDataBean {
     }
 
     public void initUserData() {
+        user = new DBHandler().getUserById(user.getId());
         id = user.getId();
         firstName = user.getFirstName();
         lastName = user.getLastName();
