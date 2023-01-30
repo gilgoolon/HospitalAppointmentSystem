@@ -5,14 +5,16 @@ import com.maorgil.hospitalappointmentsystem.entity.UsersEntity;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.util.Date;
 
-@SessionScoped
 @ManagedBean(name = "profileDataBean")
 public class ProfileDataBean {
-    //    @ManagedProperty(value = "#{loginBean.user}") // inject the user from the login bean that will track sessions
-    private UsersEntity user = new DBHandler().getUserById("123456789"); // temporary assignment
+    public String loggedInId;
+    private UsersEntity user;
     private boolean previewMode = true;
+
 
     // user properties
     private String id;
@@ -81,7 +83,7 @@ public class ProfileDataBean {
     }
 
     public String isUser() {
-        return !user.isAdmin() ? "true" : "false";
+        return isAdmin ? "false" : "true";
     }
 
     public String isPreviewMode() {
@@ -115,8 +117,7 @@ public class ProfileDataBean {
         user.setEmail(email);
         user.setBirthDate(new java.sql.Date(birthDate.getTime()));
 
-        DBHandler dbHandler = new DBHandler();
-        if (!dbHandler.persistEntity(user, UsersEntity.class, user.getId())) {
+        if (!new DBHandler().persistEntity(user, UsersEntity.class, user.getId())) {
             // init before sending in case of a DB error
             initUserData();
         }
@@ -125,7 +126,8 @@ public class ProfileDataBean {
     }
 
     public void initUserData() {
-        user = new DBHandler().getUserById(user.getId());
+        getLoggedInId();
+        user = new DBHandler().getUserById(loggedInId);
         id = user.getId();
         firstName = user.getFirstName();
         lastName = user.getLastName();
@@ -133,5 +135,11 @@ public class ProfileDataBean {
         email = user.getEmail();
         birthDate = user.getBirthDate();
         isAdmin = user.isAdmin();
+    }
+
+    private void getLoggedInId() {
+        LoginBean instance = LoginBean.getInstance();
+        if (instance != null && instance.isLoggedIn())
+            loggedInId = instance.getId();
     }
 }

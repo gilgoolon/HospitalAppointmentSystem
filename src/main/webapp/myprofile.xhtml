@@ -9,13 +9,16 @@
 <head>
    <link type="text/css" rel="stylesheet" href="css/styles.css"/>
    <title>My Profile | Hospital Appointment System</title>
+   <f:metadata>
+      <f:event listener="#{userRedirectionBean.checkLoggedIn}" type="preRenderView"/>
+   </f:metadata>
 </head>
 <body>
 <div class="navbar">
    <a class="link" href="index.xhtml">Home</a>
    <a class="link" href="#">Appointment</a> <!-- will ref to appointment page -->
-   <a class="profile active" href="#"><img src="assets/profile-icon.png"
-                                    alt="My Profile"/></a> <!-- will ref to profile page -->
+   <a class="profile active" href="myprofile.xhtml"><img src="assets/profile-icon.png"
+                                                                                       alt="My Profile"/></a> <!-- will ref to profile page -->
 </div>
 <div class="container">
    <div class="main-body">
@@ -32,7 +35,7 @@
                          autocomplete="off" required="true" requiredMessage="You have to provide a first name"
                          validatorMessage="A first name can only include english letters"
                          styleClass="#{profileDataBean.getStyleClass(!(profileDataBean.isUser() || profileDataBean.isPreviewMode()))}">
-            <f:validateRegex pattern="^[a-zA-Z]+$"/>
+               <f:validateRegex pattern="^[a-zA-Z]+$"/>
             </h:inputText>
             <h:message for="firstNameInput" styleClass="error" value=""/>
 
