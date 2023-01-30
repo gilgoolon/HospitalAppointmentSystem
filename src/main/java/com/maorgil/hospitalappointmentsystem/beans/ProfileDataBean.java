@@ -5,10 +5,9 @@ import com.maorgil.hospitalappointmentsystem.entity.UsersEntity;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
 import java.util.Date;
 
+@SessionScoped
 @ManagedBean(name = "profileDataBean")
 public class ProfileDataBean {
     public String loggedInId;
