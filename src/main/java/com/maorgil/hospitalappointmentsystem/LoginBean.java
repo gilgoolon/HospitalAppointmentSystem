@@ -1,10 +1,9 @@
 package com.maorgil.hospitalappointmentsystem;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "loginBean")
-public class loginBean {
+public class LoginBean {
     public String id = "";
     public String password = "";
     public String output = "";

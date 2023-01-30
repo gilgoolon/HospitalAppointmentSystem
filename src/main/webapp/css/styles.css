@@ -16,6 +16,7 @@ body {
 }
 
 .navbar {
+    z-index: 3;
     padding-top: 0;
     position: sticky;
     top: 0;
@@ -68,6 +69,7 @@ body {
     margin-top: 0;
     margin-left: 50px;
     flex-grow: 1;
+    margin-bottom: 100px; /* prevents dropdown cards colliding with footer */
 }
 
 .title-small {
@@ -80,6 +82,7 @@ body {
 
 
 .footer {
+    z-index: -2;
     position: relative;
     height: 50px;
     left: 0;
