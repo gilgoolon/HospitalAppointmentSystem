@@ -116,7 +116,7 @@ public class ProfileDataBean {
         user.setBirthDate(new java.sql.Date(birthDate.getTime()));
 
         DBHandler dbHandler = new DBHandler();
-        if (dbHandler.persistEntity(user, UsersEntity.class, user.getId())) {
+        if (!dbHandler.persistEntity(user, UsersEntity.class, user.getId())) {
             // init before sending in case of a DB error
             initUserData();
         }
