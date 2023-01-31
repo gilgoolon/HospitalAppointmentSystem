@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<head>
+   <link type="text/css" rel="stylesheet" href="css/styles.css"/>
+   <title>Login | Hospital Appointment System</title>
+</head>
+<body>
+<div class="navbar">
+   <a class="link" href="#">Home</a>
+   <a class="link" href="#">Appointment</a> <!-- will ref to appointment page -->
+   <a class="profile" href="#"><img src="assets/Circle-icons-profile.png"
+                                    alt="My Profile"/></a> <!-- will ref to profile page -->
+</div>
+<div class="container">
+   <div class="main-body">
+      <h:form>
+         <h:panelGrid columns="3">
+            <h:outputText value="ID: "/>
+            <h:inputText id="idInput" value="#{signupBean.id}" autocomplete="false"
+                         required="true" requiredMessage="You have to provide a ID"
+                         validatorMessage="ID can only include 9 digit number">
+               <f:validateRegex pattern="[^/d]{9}"/>
+            </h:inputText>
+            <h:message for="idInput" styleClass="error" value=""/>
+
+            <h:outputText value="First Name: "/>
+            <h:inputText id="firstNameInput" value="#{signupBean.firstName}"
+                         autocomplete="off" required="true" requiredMessage="You have to provide a first name"
+                         validatorMessage="A first name can only include english letters">
+               <f:validateRegex pattern="^[a-zA-Z]+$"/>
+            </h:inputText>
+            <h:message for="firstNameInput" styleClass="error" value=""/>
+
+            <h:outputText value="Last Name: "/>
+            <h:inputText id="lastNameInput" value="#{signupBean.lastName}"
+                         required="true" requiredMessage="You have to provude a last name"
+                         autocomplete="off" validatorMessage="A last name can only include english letters">
+               <f:validateRegex pattern="^[a-zA-Z]+$"/>
+            </h:inputText>
+            <h:message for="lastNameInput" styleClass="error" value="A name can only include english letters"/>
+
+            <h:outputText value="Password: "/>
+            <h:inputText id="passwordInput" value="#{signupBean.password}" required="true"
+                         requiredMessage="You have to provude a password"
+                         autocomplete="off" validatorMessage="A password must contain minimum eight characters, at least one letter and one number">
+                    <f:validateRegex pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"/>
+            </h:inputText>
+            <h:message for="passwordInput" styleClass="error" value=""/>
+
+            <h:outputText value="Birth Date: "/>
+            <h:inputText id="birthDateInput" converter="dateConverter" value="#{signupBean.birthDate}"
+                         autocomplete="off"
+                         required="true" requiredMessage="You have to provide a birth date"
+                         validatorMessage="The provided birth date is of incorrect format, in the future, or too old">
+               <f:validator validatorId="birthDateValidator"/>
+            </h:inputText>
+            <h:message for="birthDateInput" styleClass="error"/>
+
+            <h:outputText value="Phone Number: "/>
+            <h:inputText id="phoneNumberInput" value="#{signupBean.phoneNumber}"
+                         autocomplete="off" required="true" requiredMessage="You have to provide a phone number"
+                         validatorMessage="The provided phone number is of incorrect format">
+               <f:validateRegex pattern="^(\d{3}-\d{3}-\d{4})$"/>
+            </h:inputText>
+            <h:message for="phoneNumberInput" styleClass="error"/>
+
+            <h:outputText value="Email: "/>
+            <h:inputText id="emailInput" value="#{signupBean.email}"
+                         autocomplete="off" required="true" requiredMessage="You have to provide an email address"
+                         validatorMessage="The provided email address is of incorrect format">
+               <f:validateRegex pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+            </h:inputText>
+            <h:message for="emailInput" styleClass="error"/>
+
+
+            <h:commandButton id="submitButton" value="Submit" action="#{signupBean.submit()}"/>
+         </h:panelGrid>
+      </h:form>
+   </div>
+   <div class="footer">
+      <a>© 2023 Hospital Appointment System</a><br/>
+      <a>Contact Us @ 02-345-6789 or</a><br/>
+      <a>Email Us @ clinic@example.com</a><br/>
+   </div>
+</div>
+</body>
+</html>
