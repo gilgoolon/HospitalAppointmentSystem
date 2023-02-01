@@ -80,12 +80,12 @@
             <h:inputText value="#{profileDataBean.isAdminStr()}" readonly="true"
                          styleClass="readonly" autocomplete="false"/>
             <label/> <!-- place holder for the 3rd column -->
-
-            <h:commandButton id="editButton" value="Edit" action="#{profileDataBean.edit()}"
-                             rendered="#{profileDataBean.isPreviewMode()}"/>
-            <h:commandButton id="submitButton" value="Submit" action="#{profileDataBean.submit()}"
-                             rendered="#{!profileDataBean.isPreviewMode()}"/>
          </h:panelGrid>
+         <h:outputText styleClass="error" value="#{profileDataBean.fatalError}"/><br/>
+         <h:commandButton styleClass="button" id="editButton" value="Edit" action="#{profileDataBean.edit()}"
+                          rendered="#{profileDataBean.isPreviewMode()}"/>
+         <h:commandButton styleClass="button" id="submitButton" value="Submit" action="#{profileDataBean.submit()}"
+                          rendered="#{!profileDataBean.isPreviewMode()}"/>
       </h:form>
       <br/>
       <div class="appointments-container">

@@ -13,7 +13,7 @@ public class ProfileDataBean {
     public String loggedInId;
     private UsersEntity user;
     private boolean previewMode = true;
-
+    private String fatalError = "";
 
     // user properties
     private String id;
@@ -77,6 +77,14 @@ public class ProfileDataBean {
         this.birthDate = birthDate;
     }
 
+    public void setFatalError(String fatalError) {
+        this.fatalError = fatalError;
+    }
+
+    public String getFatalError() {
+        return fatalError;
+    }
+
     public String isAdminStr() {
         return isAdmin ? "Admin" : "User";
     }
@@ -119,6 +127,7 @@ public class ProfileDataBean {
         if (!new DBHandler().persistEntity(user, UsersEntity.class, user.getId())) {
             // init before sending in case of a DB error
             initUserData();
+            fatalError = "Error updating user data in the database. Please try again later.";
         }
 
         return "myprofile.xhtml?faces-redirect=true";
