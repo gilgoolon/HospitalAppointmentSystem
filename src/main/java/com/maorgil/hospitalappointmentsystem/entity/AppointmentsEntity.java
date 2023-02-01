@@ -1,6 +1,8 @@
 package com.maorgil.hospitalappointmentsystem.entity;
 
 
+import com.maorgil.hospitalappointmentsystem.DBHandler;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -73,6 +75,10 @@ public class AppointmentsEntity {
 
     public void setCancelled(boolean cancelled) {
         isCancelled = cancelled;
+    }
+
+    public String getTitle() {
+        return startTime.toLocalDateTime().toLocalDate().toString() + " w/ Dr. " + new DBHandler().getDoctorById(doctorId).getLastName();
     }
 
     @Override

@@ -15,7 +15,6 @@ public class BirthDateValidator implements Validator<Date> {
 
     public static final int MAX_AGE = 120;
 
-
     @Override
     public void validate(FacesContext facesContext, UIComponent uiComponent, Date date) throws ValidatorException {
         LocalDate now = LocalDate.now();

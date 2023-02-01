@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <head>
-   <link type="text/css" rel="stylesheet" href="css/styles.css"/>
+   <link type="text/css" rel="stylesheet" href="css/profilepage.css"/>
    <title>My Profile | Hospital Appointment System</title>
    <f:metadata>
       <f:event listener="#{userRedirectionBean.checkLoggedIn}" type="preRenderView"/>
@@ -87,7 +87,25 @@
                              rendered="#{!profileDataBean.isPreviewMode()}"/>
          </h:panelGrid>
       </h:form>
-
+      <br/>
+      <div class="appointments-container">
+         <h:form styleClass="properties-container">
+            <div class="dates-container">
+               <a>From: </a>
+               <h:inputText converter="dateConverter"
+                            value="#{profileAppointmentsBean.fromDate}"
+                            autocomplete="off"/>
+               <a>To: </a>
+               <h:inputText converter="dateConverter"
+                            value="#{profileAppointmentsBean.toDate}"
+                            autocomplete="off"/>
+            </div>
+            <button class="button" onclick="#{profileAppointmentsBean.search()}">Search</button>
+         </h:form>
+         <div class="card-list">
+            <h:outputText escape="false" value="#{profileAppointmentsBean.appointments}"/>
+         </div>
+      </div>
    </div>
    <div class="footer">
       <a>© 2023 Hospital Appointment System</a><br/>

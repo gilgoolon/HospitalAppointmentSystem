@@ -11,7 +11,7 @@ import javax.faces.convert.FacesConverter;
 public class DateConverter implements Converter<Date> {
     @Override
     public Date getAsObject(FacesContext context, UIComponent component, String value) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         try {
             return sdf.parse(value);
         } catch (Exception e) {
@@ -20,7 +20,7 @@ public class DateConverter implements Converter<Date> {
     }
     @Override
     public String getAsString(FacesContext context, UIComponent component, Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         return sdf.format(date);
     }
 }

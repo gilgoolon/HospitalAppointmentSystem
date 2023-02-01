@@ -300,4 +300,24 @@ public class DBHandler {
         String query = "SELECT wh FROM WorkingHoursEntity wh WHERE wh.doctorId = ?1";
         return executeSelectQuery(query, WorkingHoursEntity.class, params);
     }
+
+    public List<AppointmentsEntity> getAppointmentsInDates(Date from, Date to, String userId) {
+        // null dates will be converted to min/max dates
+        if (from == null)
+            from = new Date(Long.MIN_VALUE);
+        if (to == null)
+            to = new Date(Long.MAX_VALUE);
+
+        List<Object> params = new ArrayList<>();
+        params.add(userId);
+
+//        String query = "SELECT a FROM AppointmentsEntity a WHERE a.startTime BETWEEN ?1 AND ?2"; // doesn't work
+        String query = "SELECT a FROM AppointmentsEntity a WHERE a.patientId = ?1";
+
+        List<AppointmentsEntity> l = executeSelectQuery(query, AppointmentsEntity.class, params);
+        for (int i = 0; i < l.size(); i++)
+            if (l.get(i).getStartTime().before(from) || l.get(i).getStartTime().after(to))
+                l.remove(i--);
+        return l;
+    }
 }
