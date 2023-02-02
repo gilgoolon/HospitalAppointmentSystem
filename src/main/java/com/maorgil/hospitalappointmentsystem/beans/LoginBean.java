@@ -58,6 +58,10 @@ public class LoginBean {
         return loggedIn;
     }
 
+    public String getSignupDisplay() {
+        return loggedIn ? "none" : "block";
+    }
+
     public static LoginBean getInstance() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return (LoginBean) facesContext.getExternalContext().getSessionMap().get("loginBean");
