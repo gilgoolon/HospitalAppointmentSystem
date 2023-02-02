@@ -48,7 +48,7 @@
             <h:inputText id="passwordInput" value="#{signupBean.password}" required="true"
                          requiredMessage="You have to provude a password"
                          autocomplete="off" validatorMessage="A password must contain minimum eight characters, at least one letter and one number">
-                    <f:validateRegex pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"/>
+                    <f:validateRegex pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$"/>
             </h:inputText>
             <h:message for="passwordInput" styleClass="error" value=""/>
 
