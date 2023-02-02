@@ -8,7 +8,6 @@ import java.util.Date;
 
 @ManagedBean(name = "signupBean")
 public class SignupBean {
-//    private UsersEntity user;
 
     // user properties
     private String id = "";
