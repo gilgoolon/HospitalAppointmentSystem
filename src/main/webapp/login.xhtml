@@ -20,11 +20,16 @@
       <div class="main-body">
          <div class="login">
             <h:form action="#{loginBean.submit()}">
-               ID: <h:inputText autocomplete="off" value="#{loginBean.id}"/>
-               <br/>
-               Password: <h:inputSecret autocomplete="off" value="#{loginBean.password}"/>
-               <br/>
-               <h:commandButton value="Submit" action="#{loginBean.submit()}"/>
+               <h:panelGrid columns="2">
+                  <h:outputText value="ID: "/>
+                  <h:inputText autocomplete="off" value="#{loginBean.id}"/>
+
+                  <h:outputText value="Password :"/>
+                  <h:inputSecret autocomplete="off" value="#{loginBean.password}"/>
+
+                  <h:commandButton value="Submit" action="#{loginBean.submit()}"/>
+
+               </h:panelGrid>
             </h:form>
             <h:outputText escape="false" value="#{loginBean.output}"/>
          </div>
