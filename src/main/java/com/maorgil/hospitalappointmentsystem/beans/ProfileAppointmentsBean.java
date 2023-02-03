@@ -15,7 +15,7 @@ public class ProfileAppointmentsBean {
     private Date toDate;
     private List<AppointmentsEntity> appointments;
     private DoctorsEntity doctor = null;
-    private String sortBy = "date";
+    private String sortBy = "date"; // date, doctor, length (apt length)
     private boolean isAscending = true;
     private final String loggedInUserID;
     private final DBHandler dbHandler = new DBHandler();
@@ -73,6 +73,7 @@ public class ProfileAppointmentsBean {
 
     public String getAppointments() {
         StringBuilder sb = new StringBuilder();
+        sortAppointments();
         for (AppointmentsEntity appointment : appointments) {
             sb
                     .append("<div class=\"card\">")
@@ -89,9 +90,39 @@ public class ProfileAppointmentsBean {
         return sb.toString();
     }
 
+    public void sortAppointments() {
+        switch (sortBy) {
+            case "Date":
+                appointments.sort((a1, a2) -> {
+                    if (isAscending)
+                        return a1.getStartTime().compareTo(a2.getStartTime());
+                    return a2.getStartTime().compareTo(a1.getStartTime());
+                });
+                break;
+            case "Doctor":
+                appointments.sort((a1, a2) -> {
+                    DoctorsEntity d1 = dbHandler.getDoctorById(a1.getDoctorId());
+                    DoctorsEntity d2 = dbHandler.getDoctorById(a2.getDoctorId());
+                    String s1 = d1.getLastName() + d1.getFirstName();
+                    String s2 = d2.getLastName() + d2.getFirstName();
+                    if (isAscending)
+                        return s1.compareTo(s2);
+                    return s2.compareTo(s1);
+                });
+                break;
+            case "Length":
+                appointments.sort((a1, a2) -> {
+                    double l1 = a1.getEndTime().getTime() - a1.getStartTime().getTime();
+                    double l2 = a2.getEndTime().getTime() - a2.getStartTime().getTime();
+                    if (isAscending)
+                        return Double.compare(l1, l2);
+                    return Double.compare(l2, l1);
+                });
+                break;
+        }
+    }
+
     public List<DoctorsEntity> getTreatingDoctors() {
         return dbHandler.getTreatingDoctors(loggedInUserID);
     }
-
-
 }
