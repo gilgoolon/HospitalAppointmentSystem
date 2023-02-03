@@ -6,14 +6,14 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<head>
+<h:head>
    <link type="text/css" rel="stylesheet" href="css/profilepage.css"/>
    <title>My Profile | Hospital Appointment System</title>
    <f:metadata>
       <f:event listener="#{userRedirectionBean.checkLoggedIn}" type="preRenderView"/>
    </f:metadata>
-</head>
-<body>
+</h:head>
+<h:body styleClass="body">
 <div class="navbar">
    <a class="link" href="index.xhtml">Home</a>
    <a class="link" href="#">Appointment</a>
@@ -92,16 +92,42 @@
       <br/>
       <div class="appointments-container">
          <h:form styleClass="properties-container">
-            <div class="dates-container">
-               <a>From: </a>
+            <div class="property-container">
+               <a class="title-small" style="text-decoration: underline">Dates</a>
+               <a>From:</a>
                <h:inputText converter="dateConverter"
                             value="#{profileAppointmentsBean.fromDate}"
                             autocomplete="off"/>
-               <a>To: </a>
+               <a>To:</a>
                <h:inputText converter="dateConverter"
                             value="#{profileAppointmentsBean.toDate}"
                             autocomplete="off"/>
             </div>
+            <div class="property-container">
+               <a class="title-small" style="text-decoration: underline">Doctor</a>
+               <h:selectOneMenu value="#{profileAppointmentsBean.doctorId}">
+                  <f:selectItem itemLabel="All" itemValue="All"/>
+                  <f:selectItems value="#{profileAppointmentsBean.treatingDoctors}"
+                                 var="doctor" itemValue="#{doctor.getId()}" itemLabel="#{doctor.getFirstName()} #{doctor.getLastName()}"/>
+               </h:selectOneMenu>
+            </div>
+            <div class="property-container" style="margin-bottom: 0;">
+               <a class="title-small" style="text-decoration: underline">Sort By</a>
+                <h:selectOneMenu value="#{profileAppointmentsBean.sortBy}">
+                    <f:selectItem itemLabel="Date" itemValue="Date"/>
+                    <f:selectItem itemLabel="Doctor" itemValue="Doctor"/>
+                    <f:selectItem itemLabel="Length" itemValue="Length"/>
+                </h:selectOneMenu>
+               <div class="switch-button-container" style="margin-left: -5px;">
+                  <div>
+                     <h:selectBooleanCheckbox value="#{profileAppointmentsBean.ascending}" styleClass="switch-button">
+                        <f:ajax event="click" render="ascSwitch"/>
+                     </h:selectBooleanCheckbox>
+                  </div>
+                  <h:outputText styleClass="switch-button-output" style="margin-top: 2px" id="ascSwitch" value="#{profileAppointmentsBean.ascending ? 'Asc⬆' : 'Des⬇'}"/>
+               </div>
+            </div>
+            <a class="line-separator"/>
             <button class="button" onclick="#{profileAppointmentsBean.search()}">Search</button>
          </h:form>
          <div class="card-list">
@@ -115,5 +141,5 @@
       <a>Email Us @ clinic@example.com</a><br/>
    </div>
 </div>
-</body>
+</h:body>
 </html>

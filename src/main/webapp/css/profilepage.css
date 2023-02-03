@@ -38,12 +38,10 @@
 }
 
 .properties-container {
-    align-self: flex-start;
     float: left;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 300px;
+    height: auto;
     width: 100px;
     background-color: gray;
     /* children have nice padding from borders */
@@ -52,13 +50,13 @@
     border-radius: 10px;
 }
 
-.properties-container.button {
-    margin-bottom: auto; /* align submit button to bottom */
+.properties-container .button {
+    margin-top: auto; /* align submit button to bottom */
 }
 
-.dates-container {
-    float: left;
+.property-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-bottom: 10px;
 }

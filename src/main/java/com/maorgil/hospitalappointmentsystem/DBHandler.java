@@ -301,7 +301,7 @@ public class DBHandler {
         return executeSelectQuery(query, WorkingHoursEntity.class, params);
     }
 
-    public List<AppointmentsEntity> getAppointmentsInDates(Date from, Date to, String userId) {
+    public List<AppointmentsEntity> getAppointments(String userId, Date from, Date to, String doctorId) {
         // null dates will be converted to min/max dates
         if (from == null)
             from = new Date(Long.MIN_VALUE);
@@ -310,14 +310,27 @@ public class DBHandler {
 
         List<Object> params = new ArrayList<>();
         params.add(userId);
-
-//        String query = "SELECT a FROM AppointmentsEntity a WHERE a.startTime BETWEEN ?1 AND ?2"; // doesn't work
-        String query = "SELECT a FROM AppointmentsEntity a WHERE a.patientId = ?1";
+        String query;
+        if (doctorId.isEmpty())
+            query = "SELECT a FROM AppointmentsEntity a WHERE a.patientId = ?1";
+        else {
+            params.add(doctorId);
+            query = "SELECT a FROM AppointmentsEntity a WHERE a.patientId = ?1 AND a.doctorId = ?2";
+        }
 
         List<AppointmentsEntity> l = executeSelectQuery(query, AppointmentsEntity.class, params);
         for (int i = 0; i < l.size(); i++)
             if (l.get(i).getStartTime().before(from) || l.get(i).getStartTime().after(to))
                 l.remove(i--);
         return l;
+    }
+
+    public List<DoctorsEntity> getTreatingDoctors(String patientId) {
+        List<Object> params = new ArrayList<>();
+        params.add(patientId);
+
+        String query = "SELECT DISTINCT d FROM DoctorsEntity d JOIN AppointmentsEntity a ON d.id = a.doctorId " +
+                "WHERE a.patientId = ?1";
+        return executeSelectQuery(query, DoctorsEntity.class, params);
     }
 }
