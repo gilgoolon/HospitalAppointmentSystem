@@ -8,10 +8,12 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
     margin: 0 auto;
-    max-width: 1000px;
-    padding: 0 20px;
+    max-height: 500px;
+    max-width: 400px;
+    overflow: auto;
+    padding: 0 20px 10px 20px;
 }
 
 .card {
@@ -41,7 +43,7 @@
     float: left;
     display: flex;
     flex-direction: column;
-    height: auto;
+    height: 500px;
     width: 100px;
     background-color: gray;
     /* children have nice padding from borders */
@@ -50,7 +52,7 @@
     border-radius: 10px;
 }
 
-.properties-container .button {
+.properties-container .line-separator {
     margin-top: auto; /* align submit button to bottom */
 }
 
