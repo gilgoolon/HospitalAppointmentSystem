@@ -52,8 +52,6 @@ body {
 }
 
 .navbar .profile {
-    /*float: right;*/
-    margin-left: auto;
     margin-right: 16px;
     height: 56px;
     width: 70px;
@@ -74,9 +72,8 @@ body {
     color: white;
 }
 
-.navbar .signup {
-    margin-left: 40%;
-    margin-right: 0;
+.navbar .push {
+    margin-left: auto;
 }
 
 .button {
