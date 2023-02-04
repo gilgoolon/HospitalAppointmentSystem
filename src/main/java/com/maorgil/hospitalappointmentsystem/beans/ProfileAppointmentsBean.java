@@ -76,7 +76,7 @@ public class ProfileAppointmentsBean {
         sortAppointments();
         for (AppointmentsEntity appointment : appointments) {
             sb
-                    .append("<div class=\"card\">")
+                    .append("<div class=\"card" + (appointment.isPast() ? " past" : "") + "\">")
                         .append("<div class=\"card-content\">")
                             .append("<a class=\"title-small\">")
                                 .append(appointment.getTitle())

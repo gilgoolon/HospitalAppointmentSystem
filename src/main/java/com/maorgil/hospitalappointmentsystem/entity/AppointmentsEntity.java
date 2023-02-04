@@ -108,4 +108,8 @@ public class AppointmentsEntity {
         result = 31 * result + (isCancelled ? 1 : 0);
         return result;
     }
+
+    public boolean isPast() {
+        return startTime.toLocalDateTime().isBefore(Timestamp.valueOf(java.time.LocalDateTime.now()).toLocalDateTime());
+    }
 }
