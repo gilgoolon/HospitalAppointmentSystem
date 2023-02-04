@@ -15,8 +15,8 @@ public class ProfileAppointmentsBean {
     private Date toDate;
     private List<AppointmentsEntity> appointments;
     private DoctorsEntity doctor = null;
-    private String sortBy = "date"; // date, doctor, length (apt length)
-    private boolean isAscending = true;
+    private String sortBy = "Date"; // Date, Doctor, Length (apt length)
+    private boolean isAscending = false;
     private final String loggedInUserID;
     private final DBHandler dbHandler = new DBHandler();
 
@@ -75,8 +75,7 @@ public class ProfileAppointmentsBean {
         StringBuilder sb = new StringBuilder();
         sortAppointments();
         for (AppointmentsEntity appointment : appointments) {
-            sb
-                    .append("<div class=\"card" + (appointment.isPast() ? " past" : "") + "\">")
+            sb.append("<div class=\"card").append(appointment.isCancelled() ? " cancelled" : appointment.isPast() ? " past" : "").append("\">")
                         .append("<div class=\"card-content\">")
                             .append("<a class=\"title-small\">")
                                 .append(appointment.getTitle())
