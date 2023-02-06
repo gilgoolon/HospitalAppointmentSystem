@@ -17,6 +17,10 @@ public class DBHandler {
     private EntityManager _entityManager;
     private boolean isConnected;
 
+    private static final int MAX_RESULTS_NO_LIMIT = -1;
+    public static final int MAX_RESULTS_DOCTOR_UPCOMING_APPOINTMENTS = 5;
+    public static final int MAX_RESULTS_PATIENT_APPOINTMENTS = 10;
+
     public DBHandler() {
         isConnected = false;
     }
@@ -110,7 +114,7 @@ public class DBHandler {
      * @return the result of the query, a list of entities of the given type.
      */
     public <T> List<T> executeSelectQuery(String query, Class<T> c) {
-        return executeSelectQuery(query, c, new ArrayList<>());
+        return executeSelectQuery(query, c, new ArrayList<>(), MAX_RESULTS_NO_LIMIT);
     }
 
     /**
@@ -130,7 +134,7 @@ public class DBHandler {
      * @param parameters represents a list of parameters for the prepared query.
      * @return the result of the query, a list of entities of the given type.
      */
-    public <T> List<T> executeSelectQuery(String query, Class<T> c, List<Object> parameters) {
+    public <T> List<T> executeSelectQuery(String query, Class<T> c, List<Object> parameters, int maxResults) {
         if (!connect()) // first, connect to the database
             return Collections.emptyList(); // if failed to connect return an empty list
 
@@ -140,6 +144,9 @@ public class DBHandler {
             // set parameters in prepared query
             for (int i = 0; i < parameters.size(); i++)
                 tq.setParameter(i + 1, parameters.get(i)); // parameters start from 1
+
+            if (maxResults != MAX_RESULTS_NO_LIMIT)
+                tq.setMaxResults(maxResults);
 
             return tq.getResultList();
         } catch (PersistenceException e) {
@@ -251,7 +258,7 @@ public class DBHandler {
                 "WHERE u.firstName LIKE ?1 OR u.lastName LIKE ?2 OR u.firstName + u.lastName LIKE ?3 "
                 + "ORDER BY u.firstName, u.lastName";
 
-        return executeSelectQuery(query, DoctorsEntity.class, params);
+        return executeSelectQuery(query, DoctorsEntity.class, params, MAX_RESULTS_NO_LIMIT);
     }
 
     public WorkingHoursEntity getWorkingHoursByPK(String doctor_id, int week_day) {
@@ -268,7 +275,7 @@ public class DBHandler {
         params.add(doctor_id);
 
         String query = "SELECT wh FROM WorkingHoursEntity wh WHERE wh.doctor_id = ?1";
-        return executeSelectQuery(query, WorkingHoursEntity.class, params);
+        return executeSelectQuery(query, WorkingHoursEntity.class, params, MAX_RESULTS_NO_LIMIT);
     }
 
     /**
@@ -281,7 +288,7 @@ public class DBHandler {
         params.add(id);
 
         String query = "SELECT a FROM AppointmentsEntity a WHERE a.patient_id = ?1";
-        return executeSelectQuery(query, AppointmentsEntity.class, params);
+        return executeSelectQuery(query, AppointmentsEntity.class, params, MAX_RESULTS_NO_LIMIT);
     }
 
     public List<DoctorsEntity> getDoctors() {
@@ -298,7 +305,7 @@ public class DBHandler {
         params.add(id);
 
         String query = "SELECT wh FROM WorkingHoursEntity wh WHERE wh.doctorId = ?1";
-        return executeSelectQuery(query, WorkingHoursEntity.class, params);
+        return executeSelectQuery(query, WorkingHoursEntity.class, params, MAX_RESULTS_NO_LIMIT);
     }
 
     public List<AppointmentsEntity> getAppointments(String userId, Date from, Date to, String doctorId) {
@@ -318,7 +325,7 @@ public class DBHandler {
             query = "SELECT a FROM AppointmentsEntity a WHERE a.patientId = ?1 AND a.doctorId = ?2";
         }
 
-        List<AppointmentsEntity> l = executeSelectQuery(query, AppointmentsEntity.class, params);
+        List<AppointmentsEntity> l = executeSelectQuery(query, AppointmentsEntity.class, params, MAX_RESULTS_PATIENT_APPOINTMENTS);
         for (int i = 0; i < l.size(); i++)
             if (l.get(i).getStartTime().before(from) || l.get(i).getStartTime().after(to))
                 l.remove(i--);
@@ -331,6 +338,17 @@ public class DBHandler {
 
         String query = "SELECT DISTINCT d FROM DoctorsEntity d JOIN AppointmentsEntity a ON d.id = a.doctorId " +
                 "WHERE a.patientId = ?1";
-        return executeSelectQuery(query, DoctorsEntity.class, params);
+        return executeSelectQuery(query, DoctorsEntity.class, params, MAX_RESULTS_NO_LIMIT);
+    }
+
+    public List<AppointmentsEntity> getUpcomingAppointmentsByDoctorId(String id) {
+        // return all uncancelled appointments in the next week (7 days) for the given doctor
+        List<Object> params = new ArrayList<>();
+        params.add(id);
+        params.add(new Date());
+        params.add(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000));
+
+        String query = "SELECT a FROM AppointmentsEntity a WHERE a.doctorId = ?1 AND a.startTime > ?2 AND a.startTime < ?3 AND a.isCancelled = false";
+        return executeSelectQuery(query, AppointmentsEntity.class, params, MAX_RESULTS_DOCTOR_UPCOMING_APPOINTMENTS);
     }
 }

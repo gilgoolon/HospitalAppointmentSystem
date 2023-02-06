@@ -77,8 +77,13 @@ public class AppointmentsEntity {
         isCancelled = cancelled;
     }
 
-    public String getTitle() {
+    public String getTitleForPatient() {
         return startTime.toLocalDateTime().toLocalDate().toString() + " w/ Dr. " + new DBHandler().getDoctorById(doctorId).getLastName();
+    }
+
+    public String getTitleForDoctor() {
+        UsersEntity u = new DBHandler().getUserById(patientId);
+        return startTime.toLocalDateTime().toLocalDate().toString() + " w/ " + u.getFirstName() + " " + u.getLastName();
     }
 
     @Override

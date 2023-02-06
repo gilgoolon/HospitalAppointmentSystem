@@ -1,7 +1,10 @@
 @import "styles.css";
 
 .appointments-container {
-
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    max-height: 500px;
 }
 
 .card-list {
@@ -51,7 +54,7 @@
     /* dark gray disabled theme */
     background-color: #bdbdbd;
     box-shadow: none;
-    color: #424242;
+    color: #696969;
 }
 
 .properties-container {

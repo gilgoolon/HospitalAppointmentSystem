@@ -78,7 +78,7 @@
     color: white;
     text-decoration: none;
     display: inline-block;
-    padding: 10px 0;
+    padding: 10px;
     font-size: 16px;
     cursor: pointer;
     transition: .4s;
@@ -139,10 +139,9 @@
 
 /* body */
 .main-body {
-    margin-top: 0;
-    margin-left: 50px;
     flex-grow: 1;
-    margin-bottom: 100px; /* prevents dropdown cards colliding with footer */
+    /* prevents dropdown cards colliding with footer */
+    margin: 0 50px 100px;
 }
 
 .title-small {
@@ -151,6 +150,14 @@
 
 .text-small {
     font-size: 16px;
+}
+
+.title-medium {
+    font-size: 24px;
+}
+
+.text-medium {
+    font-size: 18px;
 }
 
 /* error */

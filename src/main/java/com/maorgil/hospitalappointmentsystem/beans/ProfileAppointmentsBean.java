@@ -78,7 +78,7 @@ public class ProfileAppointmentsBean {
             sb.append("<div class=\"card").append(appointment.isCancelled() ? " cancelled" : appointment.isPast() ? " past" : "").append("\">")
                         .append("<div class=\"card-content\">")
                             .append("<a class=\"title-small\">")
-                                .append(appointment.getTitle())
+                                .append(appointment.getTitleForPatient())
                             .append("</a>")
                             .append("<a class=\"text-small\">")
                                 .append(appointment.getDescription())
