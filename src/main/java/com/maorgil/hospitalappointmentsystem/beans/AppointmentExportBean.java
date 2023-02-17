@@ -21,6 +21,15 @@ public class AppointmentExportBean {
         // get id from request parameter
         String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
         AppointmentsEntity appointment = Utils.idToAppointment(id);
+
+        // prevent user from downloading the appointment if they are not eligible
+        String isEligible = isUserEligible(appointment);
+        if (isEligible != null) {
+            // faces redirect to isEligible page
+            FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, isEligible);
+            return null;
+        }
+
         String fileName = AppointmentExporter.getFileName(appointment);
         String fileLocation = AppointmentExporter.createAppointmentFile(appointment);
 
@@ -57,6 +66,16 @@ public class AppointmentExportBean {
         }
 
         FacesContext.getCurrentInstance().responseComplete();
+
+        System.out.println("downloaded file: " + fileName + " with id: " + id);
+
         return file;
+    }
+
+    private String isUserEligible(AppointmentsEntity appointment) {
+        // check if the user is eligible to download the appointment
+        if (appointment == null || !appointment.getPatientId().equals(LoginBean.getInstance().getId()))
+            return "index.xhtml?faces-redirect=true"; // redirect to index page if the appointment doesn't exist or the user is not the patient
+        return null;
     }
 }

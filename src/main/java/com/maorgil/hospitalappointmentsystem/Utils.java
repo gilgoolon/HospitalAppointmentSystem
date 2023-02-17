@@ -34,9 +34,13 @@ public class Utils {
     }
 
     public static AppointmentsEntity idToAppointment(String id) {
-        id = id.split("A")[1]; // using "A" as a delimiter for JSF id editing
-        String[] parts = id.split("_");
-        return new DBHandler().getAppointmentByPK(parts[0], Timestamp.valueOf(parts[1].replace("T", " ").replace("S", ":").replace("M", ".")));
+        try {
+            id = id.split("A")[1]; // using "A" as a delimiter for JSF id editing
+            String[] parts = id.split("_");
+            return new DBHandler().getAppointmentByPK(parts[0], Timestamp.valueOf(parts[1].replace("T", " ").replace("S", ":").replace("M", ".")));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static String appointmentToId(AppointmentsEntity appointment) {
