@@ -1,6 +1,7 @@
 package com.maorgil.hospitalappointmentsystem;
 
 import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntity;
+import com.maorgil.hospitalappointmentsystem.entity.UsersEntity;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -8,6 +9,11 @@ import java.util.Date;
 public class AppointmentExporter {
 
     public static final String USER_APPOINTMENTS_PATH = "C:\\Users\\alper\\IdeaProjects\\HospitalAppointmentSystem\\src\\main\\resources\\appointments\\";
+
+    private final static String FOOTER = "© 2023 Hospital Appointment System\n" +
+            "Contact Us @ 02-345-6789 | Email Us @ clinic@example.com";
+    private final static String PUBLISHER = "Hospital Appointment System";
+    private final static String TITLE = "Hospital Appointment";
 
     /**
      * Creates a formal PDF file with the appointment details.
@@ -17,29 +23,39 @@ public class AppointmentExporter {
     public static String createAppointmentFile(AppointmentsEntity appointment) {
         String filename = Utils.getAppointmentFileName(appointment.getDoctorId(), appointment.getStartTime());
 
+        DBHandler dbHandler = new DBHandler();
+        UsersEntity patient = dbHandler.getUserById(appointment.getPatientId());
+        UsersEntity doctor = dbHandler.getUserById(appointment.getDoctorId());
+
+        String infoPatientId = patient.getId();
+        String infoPatientFirstName = patient.getFirstName();
+        String infoPatientLastName = patient.getLastName();
+        String infoDoctor = "Dr." + doctor.getFirstName() + " " + doctor.getLastName();
+        String infoAppointmentDate = Utils.toString(appointment.getStartTime().toLocalDateTime().toLocalDate());
+        String infoStartTime = Utils.toString(appointment.getStartTime().toLocalDateTime().toLocalTime());
+        String infoEndTime = Utils.toString(appointment.getEndTime().toLocalDateTime().toLocalTime());
+        String infoAppointmentPurpose = appointment.getDescription();
+        String infoAppointmentDescription = "Skull fracture, left side, with subdural hematoma.";
+
         PDFHandler pdfHandler = new PDFHandler(filename, USER_APPOINTMENTS_PATH);
         pdfHandler.createDocument();
 
-        pdfHandler.setFooter(
-                "© 2023 Hospital Appointment System\n" +
-                "Contact Us @ 02-345-6789 | Email Us @ clinic@example.com");
+        pdfHandler.setFooter(FOOTER);
 
-        pdfHandler.addPublisher("Hospital Appointment System");
-
+        pdfHandler.addPublisher(PUBLISHER);
         pdfHandler.addDate(new Date()); // add current date
-        pdfHandler.addTitle("Appointment Details");
-
+        pdfHandler.addTitle(TITLE);
 
         // create table with bordered cells
         pdfHandler.addInfoTable(4,
                 "Patient ID", "Patient First Name", "Patient Last Name", "Doctor",
-                "123456789", "John", "Doe", "Dr. John Smith",
+                infoPatientId, infoPatientFirstName, infoPatientLastName, infoDoctor,
                 "Appointment Date", "Start Time", "End Time", "Appointment Purpose",
-                "2023/01/01", "10:00", "11:00", "Checkup");
+                infoAppointmentDate, infoStartTime, infoEndTime, infoAppointmentPurpose);
 
         // description text box
         pdfHandler.addSubTitle("Appointment Description by Doctor");
-        pdfHandler.addBigTextBox("Skull fracture, left side, with subdural hematoma.");
+        pdfHandler.addBigTextBox(infoAppointmentDescription);
 
         // specify when exactly the document was generated
         pdfHandler.addParagraph("Generated at: " + Utils.toString(LocalDateTime.now()), true);

@@ -4,7 +4,9 @@ import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntity;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 public class Utils {
@@ -20,6 +22,15 @@ public class Utils {
 
     public static String toString(LocalDateTime dateTime) {
         return dateTime.toString().replace("T", " ").split("\\.")[0]; // remove milliseconds
+    }
+
+    public static String toString(LocalTime time) {
+        // remove milliseconds and seconds
+        return time.toString().split("\\.")[0].split(":")[0] + ":" + time.toString().split("\\.")[0].split(":")[1];
+    }
+
+    public static String toString(LocalDate date) {
+        return new SimpleDateFormat("dd/MM/yyyy").format(new Date(date.toString().replace("-", "/")));
     }
 
     public static AppointmentsEntity idToAppointment(String id) {
