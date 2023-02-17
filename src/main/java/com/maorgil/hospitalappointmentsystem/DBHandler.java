@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import java.sql.Timestamp;
 import java.util.*;
 
 public class DBHandler {
@@ -350,5 +351,14 @@ public class DBHandler {
 
         String query = "SELECT a FROM AppointmentsEntity a WHERE a.doctorId = ?1 AND a.startTime > ?2 AND a.startTime < ?3 AND a.isCancelled = false";
         return executeSelectQuery(query, AppointmentsEntity.class, params, MAX_RESULTS_DOCTOR_UPCOMING_APPOINTMENTS);
+    }
+
+    public AppointmentsEntity getAppointmentByPK(String doctorId, Timestamp startTime) {
+        if (!connect())
+            return null;
+        AppointmentsEntityPK pk = new AppointmentsEntityPK();
+        pk.setDoctorId(doctorId);
+        pk.setStartTime(startTime);
+        return _entityManager.find(AppointmentsEntity.class, pk);
     }
 }

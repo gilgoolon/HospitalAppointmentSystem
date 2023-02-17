@@ -91,6 +91,29 @@
     transition: .4s;
 }
 
+.download-button {
+    display: inline-block; /* make the button take up only the space it needs */
+    border: none; /* remove the default button border */
+    cursor: pointer; /* add a pointer cursor on hover */
+    padding: 0; /* remove any default padding */
+    background: none; /* remove any default background color */
+    margin-left: auto;
+    opacity: 50%;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.download-button:hover {
+    /* 100% opacity */
+    opacity: 100%;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.download-button img {
+    display: block;
+    width: 24px;
+    height: 24px;
+}
+
 .switch-button {
     appearance: none;
     width: 40px;
@@ -145,7 +168,7 @@
 }
 
 .title-small {
-    font-size: 20px
+    font-size: 20px;
 }
 
 .text-small {

@@ -2,6 +2,7 @@ package com.maorgil.hospitalappointmentsystem.beans;
 
 
 import com.maorgil.hospitalappointmentsystem.DBHandler;
+import com.maorgil.hospitalappointmentsystem.Utils;
 import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntity;
 import com.maorgil.hospitalappointmentsystem.entity.DoctorsEntity;
 
@@ -76,14 +77,21 @@ public class ProfileAppointmentsBean {
         sortAppointments();
         for (AppointmentsEntity appointment : appointments) {
             sb.append("<div class=\"card").append(appointment.isCancelled() ? " cancelled" : appointment.isPast() ? " past" : "").append("\">")
-                        .append("<div class=\"card-content\">")
-                            .append("<a class=\"title-small\">")
-                                .append(appointment.getTitleForPatient())
-                            .append("</a>")
-                            .append("<a class=\"text-small\">")
-                                .append(appointment.getDescription())
-                            .append("</a>")
-                        .append("</div>")
+                    .append("<div class=\"card-content\">")
+                    .append("<a class=\"title-small\">")
+                    .append(appointment.getTitleForPatient())
+                    .append("</a>")
+                    .append("<div style=\"display: flex; flex-direction: row;\">")
+                    .append("<a class=\"text-small\">")
+                    .append(appointment.getDescription())
+                    .append("</a>")
+                    .append("<button class=\"download-button\" onClick=\"downloadAppointment('")
+                    .append(Utils.appointmentToId(appointment))
+                    .append("')\">")
+                    .append("<img src=\"assets/download-icon.png\" alt=\"\"/>")
+                    .append("</button>")
+                    .append("</div>")
+                    .append("</div>")
                     .append("</div>");
         }
         return sb.toString();
