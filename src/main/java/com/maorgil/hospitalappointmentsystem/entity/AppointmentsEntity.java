@@ -5,6 +5,7 @@ import com.maorgil.hospitalappointmentsystem.DBHandler;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointments", schema = "hospital")
@@ -86,6 +87,15 @@ public class AppointmentsEntity {
         return startTime.toLocalDateTime().toLocalDate().toString() + " w/ " + u.getFirstName() + " " + u.getLastName();
     }
 
+    public boolean isNow() {
+        return startTime.toLocalDateTime().isBefore(LocalDateTime.now()) &&
+                endTime.toLocalDateTime().isAfter(LocalDateTime.now());
+    }
+
+    public boolean isPast() {
+        return startTime.toLocalDateTime().isBefore(Timestamp.valueOf(java.time.LocalDateTime.now()).toLocalDateTime());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,9 +122,5 @@ public class AppointmentsEntity {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (isCancelled ? 1 : 0);
         return result;
-    }
-
-    public boolean isPast() {
-        return startTime.toLocalDateTime().isBefore(Timestamp.valueOf(java.time.LocalDateTime.now()).toLocalDateTime());
     }
 }

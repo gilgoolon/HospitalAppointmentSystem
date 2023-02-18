@@ -78,18 +78,26 @@ public class ProfileAppointmentsBean {
         for (AppointmentsEntity appointment : appointments) {
             sb.append("<div class=\"card").append(appointment.isCancelled() ? " cancelled" : appointment.isPast() ? " past" : "").append("\">")
                     .append("<div class=\"card-content\">")
+                    .append("<div style=\"display: flex; flex-direction: row;\">")
                     .append("<a class=\"title-small\">")
                     .append(appointment.getTitleForPatient())
-                    .append("</a>")
+                    .append("</a>");
+            if (appointment.isNow() && !appointment.isCancelled()) // add blinking circle to indicate live appointment
+                sb.append("<div style=\"position: relative; margin-left: auto; margin-right: 5px; display: flex; align-items: center; justify-content: center;\"><div class=\"live-circle\"></div></div>");
+            sb
+                    .append("</div>")
                     .append("<div style=\"display: flex; flex-direction: row;\">")
                     .append("<a class=\"text-small\">")
                     .append(appointment.getDescription())
-                    .append("</a>")
+                    .append("</a>");
+            if (!appointment.isCancelled() && appointment.isPast())
+                sb
                     .append("<button class=\"download-button\" onClick=\"downloadAppointment('")
                     .append(Utils.appointmentToId(appointment))
                     .append("')\">")
                     .append("<img src=\"assets/download-icon.png\" alt=\"\"/>")
-                    .append("</button>")
+                    .append("</button>");
+            sb
                     .append("</div>")
                     .append("</div>")
                     .append("</div>");

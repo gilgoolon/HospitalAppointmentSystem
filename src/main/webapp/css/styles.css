@@ -114,6 +114,33 @@
     height: 24px;
 }
 
+.live-circle, .live-circle::before {
+    content: " ";
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    transition: all 0.3s;
+    background-color: #d92727;
+}
+
+.live-circle::before {
+    margin: 0;
+    animation: blink-scale 2s infinite;
+    position: absolute;
+    background-color: #FF0055;
+}
+
+@-webkit-keyframes blink-scale {
+    50%   {
+        transform: scale(2);
+        opacity: 0
+    }
+    100%   {
+        transform: scale(2);
+        opacity: 0
+    }
+}
+
 .switch-button {
     appearance: none;
     width: 40px;
