@@ -5,113 +5,164 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-<head>
+      xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://java.sun.com/jsf/core">
+<h:head>
    <link type="text/css" rel="stylesheet" href="css/profilepage.css"/>
    <title>My Profile | Hospital Appointment System</title>
    <f:metadata>
       <f:event listener="#{userRedirectionBean.checkLoggedIn}" type="preRenderView"/>
    </f:metadata>
-</head>
-<body>
-<div class="navbar">
-   <a class="link" href="index.xhtml">Home</a>
-   <a class="link" href="#">Appointment</a> <!-- will ref to appointment page -->
-   <a class="profile active" href="myprofile.xhtml"><img src="assets/profile-icon.png"
-                                                                                       alt="My Profile"/></a> <!-- will ref to profile page -->
-</div>
-<div class="container">
-   <div class="main-body">
-      <h:outputText styleClass="welcome-label" value="Hello, #{profileDataBean.firstName}!"/>
-      <h:form>
-         <h:panelGrid columns="3">
-            <h:outputText value="ID: "/>
-            <h:inputText value="#{profileDataBean.id}" readonly="true"
-                         styleClass="readonly" autocomplete="false"/>
-            <label/> <!-- place holder for the 3rd column -->
+    <script type="text/javascript" src="scripts/profilepage.js"></script>
+</h:head>
+<h:body styleClass="body">
+   <div class="navbar">
+      <a class="link" href="index.xhtml">Home</a>
+      <a class="link" href="#">Appointment</a>
+      <a class="push"/>
+      <a class="profile active" href="myprofile.xhtml">
+         <img src="assets/profile-icon.png" alt="My Profile"/>
+      </a>
+   </div>
+   <div class="container">
+      <div class="main-body">
+         <h:outputText styleClass="welcome-label" value="Hello, #{profileDataBean.firstName}!"/>
+         <h:form>
+            <h:panelGrid columns="3">
+               <h:outputText value="ID: "/>
+               <h:inputText value="#{profileDataBean.id}" readonly="true"
+                            styleClass="readonly" autocomplete="false"/>
+               <label/> <!-- place holder for the 3rd column -->
 
-            <h:outputText value="First Name: "/>
-            <h:inputText id="firstNameInput" value="#{profileDataBean.firstName}" readonly="#{profileDataBean.isUser() || profileDataBean.isPreviewMode()}"
-                         autocomplete="off" required="true" requiredMessage="You have to provide a first name"
-                         validatorMessage="A first name can only include english letters"
-                         styleClass="#{profileDataBean.getStyleClass(!(profileDataBean.isUser() || profileDataBean.isPreviewMode()))}">
-               <f:validateRegex pattern="^[a-zA-Z]+$"/>
-            </h:inputText>
-            <h:message for="firstNameInput" styleClass="error" value=""/>
+               <h:outputText value="First Name: "/>
+               <h:inputText id="firstNameInput" value="#{profileDataBean.firstName}"
+                            readonly="#{profileDataBean.isUser() || profileDataBean.isPreviewMode()}"
+                            autocomplete="off" required="true" requiredMessage="You have to provide a first name"
+                            validatorMessage="A first name can only include english letters"
+                            styleClass="#{profileDataBean.getStyleClass(!(profileDataBean.isUser() || profileDataBean.isPreviewMode()))}">
+                  <f:validateRegex pattern="^[a-zA-Z]+$"/>
+               </h:inputText>
+               <h:message for="firstNameInput" styleClass="error" value=""/>
 
-            <h:outputText value="Last Name: "/>
-            <h:inputText id="lastNameInput" value="#{profileDataBean.lastName}" readonly="#{profileDataBean.isUser() || profileDataBean.isPreviewMode()}"
-                         required="true" requiredMessage="You have to provude a last name"
-                         autocomplete="off" validatorMessage="A last name can only include english letters"
-                         styleClass="#{profileDataBean.getStyleClass(!(profileDataBean.isUser() || profileDataBean.isPreviewMode()))}">
-               <f:validateRegex pattern="^[a-zA-Z]+$"/>
-            </h:inputText>
-            <h:message for="lastNameInput" styleClass="error" value="A name can only include english letters"/>
+               <h:outputText value="Last Name: "/>
+               <h:inputText id="lastNameInput" value="#{profileDataBean.lastName}"
+                            readonly="#{profileDataBean.isUser() || profileDataBean.isPreviewMode()}"
+                            required="true" requiredMessage="You have to provude a last name"
+                            autocomplete="off" validatorMessage="A last name can only include english letters"
+                            styleClass="#{profileDataBean.getStyleClass(!(profileDataBean.isUser() || profileDataBean.isPreviewMode()))}">
+                  <f:validateRegex pattern="^[a-zA-Z]+$"/>
+               </h:inputText>
+               <h:message for="lastNameInput" styleClass="error" value="A name can only include english letters"/>
 
-            <h:outputText value="Birth Date: "/>
-            <h:inputText id="birthDateInput" converter="dateConverter" value="#{profileDataBean.birthDate}" readonly="#{profileDataBean.isUser() || profileDataBean.isPreviewMode()}"
-                         autocomplete="off"
-                         required="true" requiredMessage="You have to provide a birth date"
-                         validatorMessage="The provided birth date is of incorrect format, in the future, or too old"
-                         styleClass="#{profileDataBean.getStyleClass(!(profileDataBean.isUser() || profileDataBean.isPreviewMode()))}">
-               <f:validator validatorId="birthDateValidator"/>
-            </h:inputText>
-            <h:message for="birthDateInput" styleClass="error"/>
+               <h:outputText value="Birth Date: "/>
+               <h:inputText id="birthDateInput" converter="dateConverter" value="#{profileDataBean.birthDate}"
+                            readonly="#{profileDataBean.isUser() || profileDataBean.isPreviewMode()}"
+                            autocomplete="off"
+                            required="true" requiredMessage="You have to provide a birth date"
+                            validatorMessage="The provided birth date is of incorrect format, in the future, or too old"
+                            styleClass="#{profileDataBean.getStyleClass(!(profileDataBean.isUser() || profileDataBean.isPreviewMode()))}">
+                  <f:validator validatorId="birthDateValidator"/>
+               </h:inputText>
+               <h:message for="birthDateInput" styleClass="error"/>
 
-            <h:outputText value="Phone Number: "/>
-            <h:inputText id="phoneNumberInput" value="#{profileDataBean.phoneNumber}" readonly="#{profileDataBean.isPreviewMode()}"
-                         autocomplete="off" required="true" requiredMessage="You have to provide a phone number"
-                         validatorMessage="The provided phone number is of incorrect format"
-                         styleClass="#{profileDataBean.getStyleClass(!profileDataBean.isPreviewMode())}">
-               <f:validateRegex pattern="^(\d{3}-\d{3}-\d{4})$"/>
-            </h:inputText>
-            <h:message for="phoneNumberInput" styleClass="error"/>
+               <h:outputText value="Phone Number: "/>
+               <h:inputText id="phoneNumberInput" value="#{profileDataBean.phoneNumber}"
+                            readonly="#{profileDataBean.isPreviewMode()}"
+                            autocomplete="off" required="true" requiredMessage="You have to provide a phone number"
+                            validatorMessage="The provided phone number is of incorrect format"
+                            styleClass="#{profileDataBean.getStyleClass(!profileDataBean.isPreviewMode())}">
+                  <f:validateRegex pattern="^(\d{3}-\d{3}-\d{4})$"/>
+               </h:inputText>
+               <h:message for="phoneNumberInput" styleClass="error"/>
 
-            <h:outputText value="Email: "/>
-            <h:inputText id="emailInput" value="#{profileDataBean.email}" readonly="#{profileDataBean.isPreviewMode()}"
-                         autocomplete="off" required="true" requiredMessage="You have to provide an email address"
-                         validatorMessage="The provided email address is of incorrect format"
-                         styleClass="#{profileDataBean.getStyleClass(!profileDataBean.isPreviewMode())}">
-               <f:validateRegex pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
-            </h:inputText>
-            <h:message for="emailInput" styleClass="error"/>
+               <h:outputText value="Email: "/>
+               <h:inputText id="emailInput" value="#{profileDataBean.email}"
+                            readonly="#{profileDataBean.isPreviewMode()}"
+                            autocomplete="off" required="true" requiredMessage="You have to provide an email address"
+                            validatorMessage="The provided email address is of incorrect format"
+                            styleClass="#{profileDataBean.getStyleClass(!profileDataBean.isPreviewMode())}">
+                  <f:validateRegex pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+               </h:inputText>
+               <h:message for="emailInput" styleClass="error"/>
 
-            <h:outputText value="User type: "/>
-            <h:inputText value="#{profileDataBean.isAdminStr()}" readonly="true"
-                         styleClass="readonly" autocomplete="false"/>
-            <label/> <!-- place holder for the 3rd column -->
+               <h:outputText value="User type: "/>
+               <h:inputText value="#{profileDataBean.isAdminStr()}" readonly="true"
+                            styleClass="readonly" autocomplete="false"/>
+               <label/> <!-- place holder for the 3rd column -->
 
-            <h:commandButton id="editButton" value="Edit" action="#{profileDataBean.edit()}"
-                             rendered="#{profileDataBean.isPreviewMode()}"/>
-            <h:commandButton id="submitButton" value="Submit" action="#{profileDataBean.submit()}"
-                             rendered="#{!profileDataBean.isPreviewMode()}"/>
-         </h:panelGrid>
-      </h:form>
-      <br/>
-      <div class="appointments-container">
-         <h:form styleClass="properties-container">
-            <div class="dates-container">
-               <a>From: </a>
-               <h:inputText converter="dateConverter"
-                            value="#{profileAppointmentsBean.fromDate}"
-                            autocomplete="off"/>
-               <a>To: </a>
-               <h:inputText converter="dateConverter"
-                            value="#{profileAppointmentsBean.toDate}"
-                            autocomplete="off"/>
-            </div>
-            <button class="button" onclick="#{profileAppointmentsBean.search()}">Search</button>
+               <h:commandButton styleClass="button" id="editButton" value="Edit" action="#{profileDataBean.edit()}"
+                                rendered="#{profileDataBean.isPreviewMode()}"/>
+               <h:commandButton styleClass="button" id="submitButton" value="Submit" action="#{profileDataBean.submit()}"
+                                rendered="#{!profileDataBean.isPreviewMode()}"/>
+            </h:panelGrid>
          </h:form>
-         <div class="card-list">
-            <h:outputText escape="false" value="#{profileAppointmentsBean.appointments}"/>
+         <br/>
+         <div class="line-separator">
          </div>
+         <div class="appointments-container">
+            <h:form styleClass="properties-container">
+               <div class="property-container">
+                  <a class="title-small" style="text-decoration: underline">Dates</a>
+                  <a>From:</a>
+                  <h:inputText converter="dateConverter"
+                               value="#{profileAppointmentsBean.fromDate}"
+                               autocomplete="off"/>
+                  <a>To:</a>
+                  <h:inputText converter="dateConverter"
+                               value="#{profileAppointmentsBean.toDate}"
+                               autocomplete="off"/>
+               </div>
+               <div class="property-container">
+                  <a class="title-small" style="text-decoration: underline">Doctor</a>
+                  <h:selectOneMenu value="#{profileAppointmentsBean.doctorId}">
+                     <f:selectItem itemLabel="All" itemValue="All"/>
+                     <f:selectItems value="#{profileAppointmentsBean.treatingDoctors}"
+                                    var="doctor" itemValue="#{doctor.getId()}"
+                                    itemLabel="#{doctor.getFirstName()} #{doctor.getLastName()}"/>
+                  </h:selectOneMenu>
+               </div>
+               <div class="property-container" style="margin-bottom: 0;">
+                  <a class="title-small" style="text-decoration: underline">Sort By</a>
+                  <h:selectOneMenu value="#{profileAppointmentsBean.sortBy}">
+                     <f:selectItem itemLabel="Date" itemValue="Date"/>
+                     <f:selectItem itemLabel="Doctor" itemValue="Doctor"/>
+                     <f:selectItem itemLabel="Length" itemValue="Length"/>
+                  </h:selectOneMenu>
+                  <div class="switch-button-container" style="margin-left: -5px;">
+                     <div>
+                        <h:selectBooleanCheckbox value="#{profileAppointmentsBean.ascending}"
+                                                 styleClass="switch-button">
+                           <f:ajax event="click" render="ascSwitch"/>
+                        </h:selectBooleanCheckbox>
+                     </div>
+                     <h:outputText styleClass="switch-button-output" style="margin-top: 2px" id="ascSwitch"
+                                   value="#{profileAppointmentsBean.ascending ? 'Asc⬆' : 'Des⬇'}"/>
+                  </div>
+               </div>
+               <div class="line-separator">
+               </div>
+               <button class="button" onclick="#{profileAppointmentsBean.search()}">Search</button>
+            </h:form>
+            <div class="card-list">
+                <h:outputText escape="false" value="#{profileAppointmentsBean.getAppointments()}"/>
+            </div>
+         </div>
+         <h:panelGroup styleClass="doctor-segment" rendered="#{loginBean.isDoctor()}">
+            <div class="line-separator" style="width: 100%">
+            </div>
+            <p class="title-medium">Dr. #{profileDoctorBean.lastName}, your upcoming appointments:</p>
+            <div class="card-list">
+               <h:outputText escape="false" value="#{profileDoctorBean.getUpcomingAppointments()}"/>
+            </div>
+            <i class="text-small">Note: upcoming appointments are limited to #{profileDoctorBean.maxDoctorAppointments} entries.</i>
+         </h:panelGroup>
+      </div>
+        <div class="line-separator" style="margin: 0">
+        </div>
+      <div class="footer">
+         <a>© 2023 Hospital Appointment System</a><br/>
+         <a>Contact Us @ 02-345-6789 or</a><br/>
+         <a>Email Us @ clinic@example.com</a><br/>
       </div>
    </div>
-   <div class="footer">
-      <a>© 2023 Hospital Appointment System</a><br/>
-      <a>Contact Us @ 02-345-6789 or</a><br/>
-      <a>Email Us @ clinic@example.com</a><br/>
-   </div>
-</div>
-</body>
+</h:body>
 </html>

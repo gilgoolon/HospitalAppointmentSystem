@@ -77,8 +77,13 @@ public class AppointmentsEntity {
         isCancelled = cancelled;
     }
 
-    public String getTitle() {
+    public String getTitleForPatient() {
         return startTime.toLocalDateTime().toLocalDate().toString() + " w/ Dr. " + new DBHandler().getDoctorById(doctorId).getLastName();
+    }
+
+    public String getTitleForDoctor() {
+        UsersEntity u = new DBHandler().getUserById(patientId);
+        return startTime.toLocalDateTime().toLocalDate().toString() + " w/ " + u.getFirstName() + " " + u.getLastName();
     }
 
     @Override
@@ -107,5 +112,9 @@ public class AppointmentsEntity {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (isCancelled ? 1 : 0);
         return result;
+    }
+
+    public boolean isPast() {
+        return startTime.toLocalDateTime().isBefore(Timestamp.valueOf(java.time.LocalDateTime.now()).toLocalDateTime());
     }
 }

@@ -14,6 +14,7 @@ public class LoginBean {
     private String password = "";
     private String output = "";
     private boolean loggedIn = false;
+    private boolean isDoctor = false;
 
     public void setId(String s) {
         id = s;
@@ -35,11 +36,13 @@ public class LoginBean {
         DBHandler dbHandler = new DBHandler();
         if (dbHandler.validateLogin(id, password)) {
             loggedIn = true;
+            isDoctor = dbHandler.getDoctorById(id) != null;
             System.out.println("Logged in successfully");
             return "index.xhtml?faces-redirect=true";
         }
         else {
             loggedIn = false;
+            isDoctor = false;
             if (dbHandler.getUserById(id) != null) {
                 output = "Incorrect password, please try again";
             }
@@ -56,6 +59,14 @@ public class LoginBean {
 
     public boolean isLoggedIn() {
         return loggedIn;
+    }
+
+    public String getSignupDisplay() {
+        return loggedIn ? "none" : "block";
+    }
+
+    public boolean isDoctor() {
+        return isDoctor;
     }
 
     public static LoginBean getInstance() {

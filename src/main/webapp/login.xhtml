@@ -5,16 +5,18 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-<head>
+<h:head>
    <link type="text/css" rel="stylesheet" href="css/styles.css"/>
    <title>Login | Hospital Appointment System</title>
-</head>
-<body>
+</h:head>
+<h:body styleClass="body">
    <div class="navbar">
       <a class="link" href="index.xhtml">Home</a>
-      <a class="link" href="#">Appointment</a> <!-- will ref to appointment page -->
-      <a class="profile" href="myprofile.xhtml"><img src="assets/profile-icon.png"
-                                       alt="My Profile"/></a> <!-- will ref to profile page -->
+      <a class="link" href="#">Appointment</a>
+      <a class="push"/>
+      <a class="profile active" href="myprofile.xhtml">
+         <img src="assets/profile-icon.png" alt="My Profile"/>
+      </a>
    </div>
    <div class="container">
       <div class="main-body">
@@ -40,5 +42,5 @@
          <a>Email Us @ clinic@example.com</a><br/>
       </div>
    </div>
-</body>
+</h:body>
 </html>
