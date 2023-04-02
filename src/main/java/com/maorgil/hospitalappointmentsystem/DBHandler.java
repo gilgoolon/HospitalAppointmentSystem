@@ -271,14 +271,6 @@ public class DBHandler {
         return _entityManager.find(WorkingHoursEntity.class, pk);
     }
 
-    public List<WorkingHoursEntity> getWorkingHoursById(String doctor_id) {
-        List<Object> params = new ArrayList<>();
-        params.add(doctor_id);
-
-        String query = "SELECT wh FROM WorkingHoursEntity wh WHERE wh.doctor_id = ?1";
-        return executeSelectQuery(query, WorkingHoursEntity.class, params, MAX_RESULTS_NO_LIMIT);
-    }
-
     /**
      * Get all the appointments for the given patient (past and future).
      * @param id represents the id of the given user.
