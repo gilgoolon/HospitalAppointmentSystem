@@ -10,6 +10,8 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class DBHandler {
@@ -352,5 +354,13 @@ public class DBHandler {
         pk.setDoctorId(doctorId);
         pk.setStartTime(startTime);
         return _entityManager.find(AppointmentsEntity.class, pk);
+    }
+
+    public List<AppointmentsEntity> getDoctorAppointmentAtDate(LocalDate date, String doctorId) {
+        String query = "SELECT a FROM AppointmentsEntity a WHERE DATE(a.startTime) = ?1 AND a.doctorId = ?2 AND a.isCancelled = false";
+        List<Object> params = new ArrayList<>();
+        params.add(date);
+        params.add(doctorId);
+        return executeSelectQuery(query, AppointmentsEntity.class, params, MAX_RESULTS_NO_LIMIT);
     }
 }

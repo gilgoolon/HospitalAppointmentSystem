@@ -6,11 +6,9 @@ import com.maorgil.hospitalappointmentsystem.Pair;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -67,7 +65,15 @@ public class Utils {
             if (currDayWH != null) {
                 LocalDateTime whStartDayTime = curr.with(currDayWH.getStartTime().toLocalTime());
                 LocalDateTime whEndDayTime = curr.with(currDayWH.getEndTime().toLocalTime());
-                result.add(new Pair<>(new Pair<>(whStartDayTime, whEndDayTime), currDayWH.getAptLength()));
+                List<Pair<LocalDateTime,LocalDateTime>> occupiedRanges = getOccupiedRanges(curr.toLocalDate(), doctorId);
+                if (occupiedRanges == null)
+                    result.add(new Pair<>(new Pair<>(whStartDayTime, whEndDayTime), currDayWH.getAptLength()));
+                else {
+                    List<Pair<LocalDateTime,LocalDateTime>> freeRanges = getFreeRanges(whStartDayTime, whEndDayTime, occupiedRanges);
+                    for (Pair<LocalDateTime,LocalDateTime> range : freeRanges) {
+                        result.add(new Pair<>(range, currDayWH.getAptLength()));
+                    }
+                }
             }
 
             // increment start date by one day
@@ -101,5 +107,49 @@ public class Utils {
         }
 
         return freeAppointments;
+    }
+
+    public static List<Pair<LocalDateTime, LocalDateTime>> getOccupiedRanges(LocalDate date, String doctorId) {
+        List<AppointmentsEntity> appointments = new DBHandler().getDoctorAppointmentAtDate(date, doctorId);
+        List<Pair<LocalDateTime, LocalDateTime>>  occupiedRanges = new ArrayList<>();
+
+        if (appointments.size() == 0)
+            return null; // There are no occupied ranges for this date and doctor.
+
+        for (AppointmentsEntity appointment: appointments) {
+            occupiedRanges.add(new Pair<>(appointment.getStartTime().toLocalDateTime(), appointment.getEndTime().toLocalDateTime()));
+        }
+
+        return occupiedRanges;
+    }
+
+    public static List<Pair<LocalDateTime,LocalDateTime>> getFreeRanges(LocalDateTime start, LocalDateTime end, List<Pair<LocalDateTime,LocalDateTime>> occupiedRanges) {
+        // Sort occupied slots by start time
+        occupiedRanges.sort(Comparator.comparing(Pair::getFirst));
+
+        // Initialize free slots to the entire time range
+        List<Pair<LocalDateTime,LocalDateTime>> freeSlots = new ArrayList<>();
+        freeSlots.add(new Pair<>(start, end));
+
+        // Iterate over occupied slots and remove the corresponding time slot from the free slots list
+        for (Pair<LocalDateTime,LocalDateTime> occupiedRange : occupiedRanges) {
+            List<Pair<LocalDateTime,LocalDateTime>> newFreeSlots = new ArrayList<>();
+            for (Pair<LocalDateTime,LocalDateTime> freeSlot : freeSlots) {
+                // If occupied slot overlaps with free slot, split the free slot into two parts and keep the non-overlapping part
+                if (occupiedRange.getFirst().isBefore(freeSlot.getSecond()) && occupiedRange.getSecond().isAfter(freeSlot.getFirst())) {
+                    if (freeSlot.getFirst().isBefore(occupiedRange.getFirst())) {
+                        newFreeSlots.add(new Pair<>(freeSlot.getFirst(), occupiedRange.getFirst()));
+                    }
+                    if (freeSlot.getSecond().isAfter(occupiedRange.getSecond())) {
+                        newFreeSlots.add(new Pair<>(occupiedRange.getSecond(), freeSlot.getSecond()));
+                    }
+                } else {
+                    // If occupied slot doesn't overlap with free slot, keep the free slot
+                    newFreeSlots.add(freeSlot);
+                }
+            }
+            freeSlots = newFreeSlots;
+        }
+        return freeSlots;
     }
 }
