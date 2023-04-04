@@ -357,10 +357,17 @@ public class DBHandler {
     }
 
     public List<AppointmentsEntity> getDoctorAppointmentAtDate(LocalDate date, String doctorId) {
-        String query = "SELECT a FROM AppointmentsEntity a WHERE DATE(a.startTime) = ?1 AND a.doctorId = ?2 AND a.isCancelled = false";
+        String query = "SELECT a FROM AppointmentsEntity a WHERE a.doctorId = ?1 AND a.isCancelled = false";
         List<Object> params = new ArrayList<>();
-        params.add(date);
         params.add(doctorId);
-        return executeSelectQuery(query, AppointmentsEntity.class, params, MAX_RESULTS_NO_LIMIT);
+        List<AppointmentsEntity> appointments = executeSelectQuery(query, AppointmentsEntity.class, params, MAX_RESULTS_NO_LIMIT);
+        List<AppointmentsEntity> result = new ArrayList<>();
+
+        for (AppointmentsEntity appointment : appointments) {
+            if (appointment.getStartTime().toLocalDateTime().toLocalDate().equals(date)) {
+                result.add(appointment);
+            }
+        }
+        return result;
     }
 }
