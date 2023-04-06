@@ -39,3 +39,4 @@ build/
 
 ### Resource files ###
 src/main/resources/appointments
+*.pdf

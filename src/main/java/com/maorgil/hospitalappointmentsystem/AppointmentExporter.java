@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class AppointmentExporter {
 
-    public static final String USER_APPOINTMENTS_PATH = "C:\\Users\\alper\\IdeaProjects\\HospitalAppointmentSystem\\src\\main\\resources\\appointments\\";
+    public static final String USER_APPOINTMENTS_PATH = "user.dir\\IdeaProjects\\Hospital-Appointment-System\\src\\main\\resources\\appointments\\";
 
     private final static String FOOTER = "© 2023 Hospital Appointment System\n" +
             "Contact Us @ 02-345-6789 | Email Us @ clinic@example.com";

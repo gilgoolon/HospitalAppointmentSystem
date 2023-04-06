@@ -10,6 +10,8 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class DBHandler {
@@ -271,14 +273,6 @@ public class DBHandler {
         return _entityManager.find(WorkingHoursEntity.class, pk);
     }
 
-    public List<WorkingHoursEntity> getWorkingHoursById(String doctor_id) {
-        List<Object> params = new ArrayList<>();
-        params.add(doctor_id);
-
-        String query = "SELECT wh FROM WorkingHoursEntity wh WHERE wh.doctor_id = ?1";
-        return executeSelectQuery(query, WorkingHoursEntity.class, params, MAX_RESULTS_NO_LIMIT);
-    }
-
     /**
      * Get all the appointments for the given patient (past and future).
      * @param id represents the id of the given user.
@@ -360,5 +354,20 @@ public class DBHandler {
         pk.setDoctorId(doctorId);
         pk.setStartTime(startTime);
         return _entityManager.find(AppointmentsEntity.class, pk);
+    }
+
+    public List<AppointmentsEntity> getDoctorAppointmentAtDate(LocalDate date, String doctorId) {
+        String query = "SELECT a FROM AppointmentsEntity a WHERE a.doctorId = ?1 AND a.isCancelled = false";
+        List<Object> params = new ArrayList<>();
+        params.add(doctorId);
+        List<AppointmentsEntity> appointments = executeSelectQuery(query, AppointmentsEntity.class, params, MAX_RESULTS_NO_LIMIT);
+        List<AppointmentsEntity> result = new ArrayList<>();
+
+        for (AppointmentsEntity appointment : appointments) {
+            if (appointment.getStartTime().toLocalDateTime().toLocalDate().equals(date)) {
+                result.add(appointment);
+            }
+        }
+        return result;
     }
 }

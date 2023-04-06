@@ -1,8 +1,9 @@
 package com.maorgil.hospitalappointmentsystem.entity;
 
-
 import javax.persistence.*;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "working_hours", schema = "hospital")
