@@ -9,6 +9,7 @@
 <h:head>
    <link type="text/css" rel="stylesheet" href="css/profilepage.css"/>
    <title>My Profile | Hospital Appointment System</title>
+   <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico" />
    <f:metadata>
       <f:event listener="#{userRedirectionBean.checkLoggedIn}" type="preRenderView"/>
    </f:metadata>
@@ -16,8 +17,8 @@
 </h:head>
 <h:body styleClass="body">
    <div class="navbar">
-      <a class="link" href="index.xhtml">Home</a>
-      <a class="link" href="#">Appointment</a>
+      <a class="link" href="./">Home</a>
+      <a class="link" href="make-appointment.xhtml">Appointment</a>
       <a class="push"/>
       <a class="profile active" href="myprofile.xhtml">
          <img src="assets/profile-icon.png" alt="My Profile"/>
@@ -136,6 +137,13 @@
                      </div>
                      <h:outputText styleClass="switch-button-output" style="margin-top: 2px" id="ascSwitch"
                                    value="#{profileAppointmentsBean.ascending ? 'Asc⬆' : 'Des⬇'}"/>
+                  </div>
+               </div>
+               <div class="property-container" style="margin-bottom: 0;">
+                  <a class="title-small" style="text-decoration: underline">Status</a>
+                  <div>
+                     <h:selectBooleanCheckbox value="#{profileAppointmentsBean.includeCancelled}"/>
+                     <a style="font-size: 12px; margin: 0 1px 1px 0"> Cancelled</a>
                   </div>
                </div>
                <div class="line-separator">

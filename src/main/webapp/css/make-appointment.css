@@ -1,0 +1,38 @@
+@import "styles.css";
+
+/* CSS for name box */
+.name-box {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+/* CSS for name text */
+.name-text {
+    flex: 1;
+    margin-right: 10px;
+}
+
+/* CSS for name remove icon */
+.name-remove {
+    cursor: pointer;
+}
+
+.name-remove-icon {
+    font-size: 18px;
+    color: #ff0000;
+}
+
+/* Remove bullet point */
+.ui-datalist-item {
+    list-style-type: none;
+    margin-left: -40px;
+}
+
+.fc-event:hover {
+    cursor: pointer;
+}

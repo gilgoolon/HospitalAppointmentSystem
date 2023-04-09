@@ -7,6 +7,10 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Download Appointment | Hospital Appointment System</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico" />
+    <f:metadata>
+        <f:event listener="#{userRedirectionBean.checkLoggedIn}" type="preRenderView"/>
+    </f:metadata>
     <f:metadata>
         <f:event listener="#{appointmentExportBean.downloadAppointment}" type="preRenderView"/>
     </f:metadata>

@@ -163,7 +163,6 @@
 /* body */
 .main-body {
     flex-grow: 1;
-    /* prevents dropdown cards colliding with footer */
     margin: 0 50px 100px;
 }
 
@@ -181,6 +180,10 @@
 
 .text-medium {
     font-size: 18px;
+}
+
+.text-big {
+    font-size: 30px;
 }
 
 /* error */
