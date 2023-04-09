@@ -5,6 +5,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core">
+
 <h:head>
     <link type="text/css" rel="stylesheet" href="css/make-appointment.css"/>
     <title>Home | Hospital Appointment System</title>
@@ -25,6 +26,9 @@
     </div>
     <div class="container">
         <div class="main-body" style="margin-top: 20px">
+            <a class="text-big" style="width: 100%; display: inline-block; text-align: center; text-decoration: underline">
+                Select appointment preferences
+            </a>
             <h:form rendered="#{!appointmentFormBean.submitted}">
                 <div class="switch-button-container" style="margin-left: -5px">
                     <div>
@@ -75,6 +79,22 @@
                         </div>
                     </div>
                 </p:dataList>
+                <p/>
+
+
+                From: <p:calendar value="#{appointmentFormBean.fromTime}"
+                            mode="popup"
+                            mindate="#{appointmentFormBean.now}"
+                            pattern="MM/dd/yyyy HH:mm"
+                            required="false"
+                            showSecond="false"></p:calendar>
+
+                To: <p:calendar styleClass="small-calendar" value="#{appointmentFormBean.fromTime}"
+                                  mode="popup"
+                                  maxdate="#{appointmentFormBean.monthLater}"
+                                  pattern="MM/dd/yyyy HH:mm"
+                                  required="false"
+                                  showSecond="false"></p:calendar>
                 <p/>
 
                 <p:commandButton value="Submit" action="#{appointmentFormBean.submit}"/>

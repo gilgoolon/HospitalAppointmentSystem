@@ -15,12 +15,10 @@ import org.primefaces.model.ScheduleModel;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +26,6 @@ import java.util.List;
 @ManagedBean(name = "appointmentsCalendarBean")
 public class AppointmentsCalendarBean implements Serializable {
     private ScheduleModel eventModel;
-    private AppointmentFormBean.FormResults preferences;
 
     private AppointmentsEntity lastClickedAppointment;
 
@@ -45,7 +42,7 @@ public class AppointmentsCalendarBean implements Serializable {
     // NEED TO RESET THE APPOINTMENT FORM BEAN AFTER CHOOSING AN APPOINTMENT
     public void init() {
         eventModel = new DefaultScheduleModel();
-        preferences = AppointmentFormBean.latestResults;
+        AppointmentFormBean.FormResults preferences = AppointmentFormBean.latestResults;
 
         // Get available block times from the database
         List<AppointmentsEntity> availableBlockTimes = genAppointments(preferences);
@@ -95,10 +92,8 @@ public class AppointmentsCalendarBean implements Serializable {
 
     private static List<AppointmentsEntity> genAppointments(AppointmentFormBean.FormResults preferences) {
         List<DoctorsEntity> doctors = preferences.getDoctors();
-//        LocalDateTime start = preferences.getStartDate();
-//        LocalDateTime end = preferences.getEndDate();
-        LocalDateTime start = LocalDateTime.now();
-        LocalDateTime end = LocalDateTime.now().plus(1, ChronoUnit.WEEKS);
+        LocalDateTime start = preferences.getFromTime();
+        LocalDateTime end = preferences.getToTime();
 
         List<AppointmentsEntity> freeAppointments = new ArrayList<>();
         for (DoctorsEntity doctor : doctors) {
@@ -133,17 +128,9 @@ public class AppointmentsCalendarBean implements Serializable {
     }
 
     public void reserve() {
-        // 1. check if the appointment is still available
-        // 2. reserve event and add to the DB
-        // 3. reset the appointment form bean
-        // 4. redirect to success/fail page with option to add to google calendar
-
         // reserve event
         AppointmentsEntity toReserve = lastClickedAppointment;
 
-        System.out.println("Reserving appointment: ");
-        System.out.println(toReserve.getPatientId() + " and " + toReserve.getDoctorId());
-        System.out.println(toReserve.getStartTime() + "-" + toReserve.getEndTime());
         // check if the appointment is still available
         boolean isFree = Utils.isFreeAppointment(toReserve);
 

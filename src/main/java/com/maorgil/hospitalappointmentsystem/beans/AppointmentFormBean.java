@@ -7,6 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class AppointmentFormBean implements Serializable {
     private String selectedDoctor; // selected doctor - doctor id
     private final List<DoctorsEntity> doctors = new ArrayList<>();
     private final List<DoctorsEntity> selectedDoctors = new ArrayList<>();
+
+    private LocalDateTime fromTime;
+    private LocalDateTime toTime;
 
     private boolean submitted;
 
@@ -101,9 +105,35 @@ public class AppointmentFormBean implements Serializable {
         byCategory = category;
     }
 
+    public LocalDateTime getFromTime() {
+        return fromTime;
+    }
+
+    public void setFromTime(LocalDateTime fromTime) {
+        this.fromTime = fromTime;
+    }
+
+    public LocalDateTime getToTime() {
+        return toTime;
+    }
+
+    public void setToTime(LocalDateTime toTime) {
+        this.toTime = toTime;
+    }
+
+    public LocalDateTime getNow() {
+        return LocalDateTime.now();
+    }
+
+    public LocalDateTime getMonthLater() {
+        return LocalDateTime.now().plusMonths(1);
+    }
+
     public String submit() {
         // save the form results to usable form for calendar loading
-        latestResults = new FormResults(selectedDoctors, selectedCategories, byCategory);
+        LocalDateTime from = fromTime == null ? LocalDateTime.now() : fromTime;
+        LocalDateTime to = toTime == null ? LocalDateTime.now().plusMonths(1) : toTime;
+        latestResults = new FormResults(selectedDoctors, selectedCategories, byCategory, fromTime, toTime);
 
         // refresh the page for loading calendar
         submitted = true;
@@ -141,11 +171,15 @@ public class AppointmentFormBean implements Serializable {
         private final List<DoctorsEntity> doctors;
         private final List<String> categories;
         private final boolean byCategory;
+        private final LocalDateTime fromTime;
+        private final LocalDateTime toTime;
 
-        public FormResults(List<DoctorsEntity> doctors, List<String> categories, boolean byCategory) {
+        public FormResults(List<DoctorsEntity> doctors, List<String> categories, boolean byCategory, LocalDateTime fromTime, LocalDateTime toTime) {
             this.doctors = new ArrayList<>(doctors);
             this.categories = new ArrayList<>(categories);
             this.byCategory = byCategory;
+            this.fromTime = fromTime;
+            this.toTime = toTime;
         }
 
         public List<DoctorsEntity> getDoctors() {
@@ -158,6 +192,14 @@ public class AppointmentFormBean implements Serializable {
 
         public boolean isByCategory() {
             return byCategory;
+        }
+
+        public LocalDateTime getFromTime() {
+            return fromTime;
+        }
+
+        public LocalDateTime getToTime() {
+            return toTime;
         }
     }
 }
