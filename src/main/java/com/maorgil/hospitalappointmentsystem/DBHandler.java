@@ -376,4 +376,8 @@ public class DBHandler {
     public List<String> getCategories() {
         return executeSelectQuery("SELECT DISTINCT c.type FROM DoctorsEntity c", String.class);
     }
+
+    public List<String> getLocations() {
+        return executeSelectQuery("SELECT DISTINCT c.city FROM DoctorsEntity c", String.class);
+    }
 }

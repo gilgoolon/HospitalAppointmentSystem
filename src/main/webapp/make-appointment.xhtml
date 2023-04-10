@@ -61,6 +61,7 @@
                 </p:dataList>
                 <p/>
 
+
                 <p:selectOneMenu id="doctors-dropdown" value="#{appointmentFormBean.selectedDoctor}">
                     <f:selectItem itemLabel="Select a doctor" itemValue="" />
                     <p:ajax event="change" listener="#{appointmentFormBean.onDoctorChanged}" update="selected-doctors doctors-dropdown" />
@@ -81,6 +82,25 @@
                 </p:dataList>
                 <p/>
 
+                <p:selectOneMenu id="locations-dropdown" value="#{appointmentFormBean.selectedLocation}">
+                    <f:selectItem itemLabel="Select a location" itemValue="" />
+                    <p:ajax event="change" listener="#{appointmentFormBean.onLocationChanged}" update="selected-locations locations-dropdown" />
+                    <f:selectItems value="#{appointmentFormBean.locations}" var="location" itemLabel="#{location}" itemValue="#{location}" />
+                </p:selectOneMenu>
+                <p:dataList id="selected-locations" value="#{appointmentFormBean.selectedLocations}" var="location">
+                    <div class="name-box">
+                        <div class="name-text">#{location}</div>
+                        <div class="name-remove">
+                            <p:commandLink action="#{appointmentFormBean.onRemoveLocation(location)}"
+                                           process="@this"
+                                           update="@form"
+                                           styleClass="name-remove-icon">
+                                <i class="pi pi-times"></i>
+                            </p:commandLink>
+                        </div>
+                    </div>
+                </p:dataList>
+                <p/>
 
                 From: <p:calendar value="#{appointmentFormBean.fromTime}"
                             mode="popup"

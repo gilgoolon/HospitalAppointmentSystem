@@ -120,7 +120,6 @@ public class AppointmentsCalendarBean implements Serializable {
         doctorDetails = doctor.getPresentableName() + "/" + doctor.getType();
         location = doctor.getCity();
 
-        // For example, update a dialog
         PrimeFaces.current().ajax().update("eventDetailsDialog");
 
         // Show the dialog

@@ -29,6 +29,10 @@ public class AppointmentFormBean implements Serializable {
     private final List<DoctorsEntity> doctors = new ArrayList<>();
     private final List<DoctorsEntity> selectedDoctors = new ArrayList<>();
 
+    private String selectedLocation;
+    private final List<String> locations = new ArrayList<>();
+    private final List<String> selectedLocations = new ArrayList<>();
+
     private LocalDateTime fromTime;
     private LocalDateTime toTime;
 
@@ -97,6 +101,33 @@ public class AppointmentFormBean implements Serializable {
         categories.add(cat);
     }
 
+    public String getSelectedLocation() {
+        return selectedLocation;
+    }
+
+    public void setSelectedLocation(String selectedValue) {
+        this.selectedLocation = selectedValue;
+    }
+
+    public List<String> getLocations() {
+        return locations;
+    }
+
+    public List<String> getSelectedLocations() {
+        return selectedLocations;
+    }
+
+    public void onLocationChanged(AjaxBehaviorEvent event) {
+        // Add selected item to selected items list
+        locations.remove(selectedLocation);
+        selectedLocations.add(selectedLocation);
+    }
+
+    public void onRemoveLocation(String loc) {
+        selectedLocations.remove(loc);
+        locations.add(loc);
+    }
+
     public boolean isByCategory() {
         return byCategory;
     }
@@ -133,7 +164,7 @@ public class AppointmentFormBean implements Serializable {
         // save the form results to usable form for calendar loading
         LocalDateTime from = fromTime == null ? LocalDateTime.now() : fromTime;
         LocalDateTime to = toTime == null ? LocalDateTime.now().plusMonths(1) : toTime;
-        latestResults = new FormResults(selectedDoctors, selectedCategories, byCategory, fromTime, toTime);
+        latestResults = new FormResults(selectedDoctors, selectedCategories, byCategory, from, to, selectedLocations);
 
         // refresh the page for loading calendar
         submitted = true;
@@ -156,9 +187,14 @@ public class AppointmentFormBean implements Serializable {
         doctors.addAll(dbHandler.getDoctors());
         // remove the logged in doctor from the list if they are a doctor
         doctors.removeIf(doctor -> doctor.getId().equals(LoginBean.getInstance().getId()));
+
         categories.clear();
         selectedCategories.clear();
         categories.addAll(dbHandler.getCategories());
+
+        locations.clear();
+        selectedLocations.clear();
+        locations.addAll(dbHandler.getLocations());
     }
 
     public static void reset() {
@@ -173,13 +209,16 @@ public class AppointmentFormBean implements Serializable {
         private final boolean byCategory;
         private final LocalDateTime fromTime;
         private final LocalDateTime toTime;
+        private final List<String> locations;
 
-        public FormResults(List<DoctorsEntity> doctors, List<String> categories, boolean byCategory, LocalDateTime fromTime, LocalDateTime toTime) {
+
+        public FormResults(List<DoctorsEntity> doctors, List<String> categories, boolean byCategory, LocalDateTime fromTime, LocalDateTime toTime, List<String> locations) {
             this.doctors = new ArrayList<>(doctors);
             this.categories = new ArrayList<>(categories);
             this.byCategory = byCategory;
             this.fromTime = fromTime;
             this.toTime = toTime;
+            this.locations = new ArrayList<>(locations);
         }
 
         public List<DoctorsEntity> getDoctors() {
@@ -200,6 +239,10 @@ public class AppointmentFormBean implements Serializable {
 
         public LocalDateTime getToTime() {
             return toTime;
+        }
+
+        public List<String> getLocations() {
+            return locations;
         }
     }
 }
