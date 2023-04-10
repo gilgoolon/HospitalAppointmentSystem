@@ -5,8 +5,11 @@ import com.maorgil.hospitalappointmentsystem.DBHandler;
 import com.maorgil.hospitalappointmentsystem.Utils;
 import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntity;
 import com.maorgil.hospitalappointmentsystem.entity.DoctorsEntity;
+import com.maorgil.hospitalappointmentsystem.entity.UsersEntity;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import java.util.Date;
 import java.util.List;
 
@@ -89,8 +92,18 @@ public class ProfileAppointmentsBean {
                     .append(Utils.appointmentToId(appointment))
                     .append("')\">")
                     .append("<img src=\"assets/download-icon.png\" alt=\"\"/>")
-                    .append("</button>")
-                    .append("</div>")
+                    .append("</button>");
+            if (!appointment.isPast()) {
+//                sb.append("<button action=\"#{profileAppointmentsBean.cancelAppointment('")
+//                        .append(Utils.appointmentToId(appointment))
+//                        .append("')}\">")
+//                        .append("Cancel</button>");
+                sb.append("<button onClick=\"cancelApp('")
+                        .append(Utils.appointmentToId(appointment))
+                        .append("')\">Cancel")
+                        .append("</button>");
+            }
+            sb.append("</div>")
                     .append("</div>")
                     .append("</div>");
         }
@@ -131,5 +144,13 @@ public class ProfileAppointmentsBean {
 
     public List<DoctorsEntity> getTreatingDoctors() {
         return dbHandler.getTreatingDoctors(loggedInUserID);
+    }
+
+    public void cancelAppointment() {
+        System.out.println("HELLO WORLD\n");
+        String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+        AppointmentsEntity appointment = Utils.idToAppointment(id);
+        appointment.setCancelled(true);
+        new DBHandler().persistEntity(appointment, AppointmentsEntity.class, Utils.appointmentToId((appointment)));
     }
 }

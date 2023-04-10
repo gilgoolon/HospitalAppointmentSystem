@@ -94,6 +94,17 @@
                <h:commandButton styleClass="button" id="submitButton" value="Submit" action="#{profileDataBean.submit()}"
                                 rendered="#{!profileDataBean.isPreviewMode()}"/>
             </h:panelGrid>
+            <p:dialog id="cancelAppointmentDialog" widgetVar="cancelAppointmentDialog"
+                      draggable="false" modal="true" header="Cancel Appointment" resizable="false">
+               <h:panelGroup id="cancelAppointment">
+                  <p:outputLabel value="#{appointmentBean.doctorDetails}"/><p/>
+                  <p:outputLabel value="#{appointmentBean.date} "/>
+                  <p:outputLabel value="#{appointmentBean.startTime}-#{appointmentBean.endTime}"/><p/>
+                  <p:outputLabel value="At #{appointmentBean.location}"/>
+               </h:panelGroup>
+               <p/>
+               <p:commandButton value="Cancel" action="#{profileAppointmentsBean.cancelAppointment}"/>
+            </p:dialog>
          </h:form>
          <br/>
          <div class="line-separator">
