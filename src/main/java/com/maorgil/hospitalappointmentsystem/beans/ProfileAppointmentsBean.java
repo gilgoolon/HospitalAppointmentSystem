@@ -7,6 +7,7 @@ import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntity;
 import com.maorgil.hospitalappointmentsystem.entity.DoctorsEntity;
 
 import javax.faces.bean.ManagedBean;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class ProfileAppointmentsBean {
     public ProfileAppointmentsBean() {
         // get the logged-in user id from the login bean
         loggedInUserID = LoginBean.getInstance().getId();
+        appointments = new DBHandler().getAppointments(loggedInUserID, null, null, "", true);
     }
 
     public String getDoctorId() {
@@ -78,32 +80,16 @@ public class ProfileAppointmentsBean {
     }
 
     public void search() {
-        appointments = dbHandler.getAppointments(loggedInUserID, fromDate, toDate, doctor == null ? "" : doctor.getId(), includeCancelled);
+        appointments = new ArrayList<>(dbHandler.getAppointments(loggedInUserID, fromDate, toDate, doctor == null ? "" : doctor.getId(), includeCancelled));
     }
 
-    public String getAppointments() {
-        StringBuilder sb = new StringBuilder();
+    public List<AppointmentsEntity> getAppointments() {
         sortAppointments();
-        for (AppointmentsEntity appointment : appointments) {
-            sb.append("<div class=\"card").append(appointment.isCancelled() ? " cancelled" : appointment.isPast() ? " past" : "").append("\">")
-                    .append("<div class=\"card-content\">")
-                    .append("<a class=\"title-small\">")
-                    .append(appointment.getTitleForPatient())
-                    .append("</a>")
-                    .append("<div style=\"display: flex; flex-direction: row;\">")
-                    .append("<a class=\"text-small\">")
-                    .append(appointment.getDescription() == null ? "No description" : appointment.getDescription())
-                    .append("</a>")
-                    .append("<button class=\"download-button\" onClick=\"downloadAppointment('")
-                    .append(Utils.appointmentToId(appointment))
-                    .append("')\">")
-                    .append("<img src=\"assets/download-icon.png\" alt=\"↙\"/>")
-                    .append("</button>")
-                    .append("</div>")
-                    .append("</div>")
-                    .append("</div>");
-        }
-        return sb.toString();
+        return appointments;
+    }
+
+    public String appToId(AppointmentsEntity app) {
+        return Utils.appointmentToId(app);
     }
 
     public void sortAppointments() {

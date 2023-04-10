@@ -108,7 +108,7 @@
     transition: opacity 0.3s ease-in-out;
 }
 
-.download-button img {
+.download-button {
     display: block;
     width: 24px;
     height: 24px;

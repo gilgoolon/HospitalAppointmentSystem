@@ -21,7 +21,6 @@ public class AppointmentExportBean {
         // get id from request parameter
         String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
         AppointmentsEntity appointment = Utils.idToAppointment(id);
-
         // prevent user from downloading the appointment if they are not eligible
         String isEligible = isUserEligible(appointment);
         if (isEligible != null) {
