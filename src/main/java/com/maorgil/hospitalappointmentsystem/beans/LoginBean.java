@@ -61,6 +61,12 @@ public class LoginBean {
         return loggedIn;
     }
 
+    public boolean isAdmin() {
+        if (!loggedIn)
+            return false;
+        return new DBHandler().getUserById(id).isAdmin();
+    }
+
     public String getSignupDisplay() {
         return loggedIn ? "none" : "block";
     }

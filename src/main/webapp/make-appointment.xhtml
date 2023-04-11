@@ -3,8 +3,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
 <head>
     <link type="text/css" rel="stylesheet" href="css/make-appointment.css"/>
     <title>Home | Hospital Appointment System</title>
@@ -25,6 +24,7 @@
             <a href="login.xhtml" style="display: #{loginBean.signupDisplay}">Sign In</a>
             <a href="signup.xhtml" style="display: #{loginBean.signupDisplay}">Sign Up</a>
             <h:commandLink value="Log Out" action="#{loginBean.logout}" rendered="#{loginBean.loggedIn}"/>
+            <h:commandLink value="Admin" action="admin.xhtml" rendered="#{loginBean.isAdmin()}"/>
         </div>
     </h:form>
     <div class="navbar">
