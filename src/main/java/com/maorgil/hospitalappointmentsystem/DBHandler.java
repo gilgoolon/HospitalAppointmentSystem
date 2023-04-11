@@ -380,4 +380,15 @@ public class DBHandler {
     public List<String> getLocations() {
         return executeSelectQuery("SELECT DISTINCT c.city FROM DoctorsEntity c", String.class);
     }
+
+    public void cancelAppointment(AppointmentsEntity appointment) {
+        if (!connect())
+            return;
+
+        appointment.setCancelled(true);
+        AppointmentsEntityPK pk = new AppointmentsEntityPK();
+        pk.setDoctorId(appointment.getDoctorId());
+        pk.setStartTime(appointment.getStartTime());
+        persistEntity(appointment, AppointmentsEntity.class, pk);
+    }
 }

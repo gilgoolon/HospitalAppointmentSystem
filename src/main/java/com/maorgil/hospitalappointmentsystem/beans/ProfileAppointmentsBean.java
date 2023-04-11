@@ -5,6 +5,7 @@ import com.maorgil.hospitalappointmentsystem.DBHandler;
 import com.maorgil.hospitalappointmentsystem.Utils;
 import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntity;
 import com.maorgil.hospitalappointmentsystem.entity.DoctorsEntity;
+import org.primefaces.PrimeFaces;
 
 import javax.faces.bean.ManagedBean;
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class ProfileAppointmentsBean {
     private boolean includeCancelled = true;
     private final String loggedInUserID;
     private final DBHandler dbHandler = new DBHandler();
+
+    private static AppointmentsEntity cancelledAppointment;
 
     public ProfileAppointmentsBean() {
         // get the logged-in user id from the login bean
@@ -90,6 +93,31 @@ public class ProfileAppointmentsBean {
 
     public String appToId(AppointmentsEntity app) {
         return Utils.appointmentToId(app);
+    }
+
+    public void onCancelAppointment(AppointmentsEntity app) {
+        cancelledAppointment = app;
+
+        // ajax call to cancel appointment
+        PrimeFaces.current().ajax().update("appCancelDialog");
+
+        // show the dialog
+        PrimeFaces.current().executeScript("PF('appCancelDialog').show()");
+    }
+
+    public String getCancelDoctor() {
+        return cancelledAppointment == null ? "" : dbHandler.getDoctorById(cancelledAppointment.getDoctorId()).toString();
+    }
+
+    public String getCancelTime() {
+        return cancelledAppointment == null ? "" : Utils.toString(cancelledAppointment.getStartTime().toLocalDateTime()) + "-" + Utils.toString(cancelledAppointment.getEndTime().toLocalDateTime());
+    }
+
+    public void cancelAppointment() {
+        new DBHandler().cancelAppointment(cancelledAppointment);
+
+        // refresh the page
+        Utils.redirect("myprofile.xhtml?faces-redirect=true");
     }
 
     public void sortAppointments() {

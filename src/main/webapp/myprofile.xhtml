@@ -179,10 +179,27 @@
                               #{app.description == null ? 'No description' : app.description}
                            </a>
                            <input src="assets/download-icon.png" class="download-button" type="image" onclick="downloadAppointment('#{profileAppointmentsBean.appToId(app)}')" alt=""/>
+                           <h:form style="margin-left: 2px">
+                              <h:commandButton styleClass="download-button"
+                                               action="#{profileAppointmentsBean.onCancelAppointment(app)}"
+                                               rendered="#{app.cancellable}" immediate="true"
+                                               image="assets/cancel-icon.png">
+                                 <f:ajax render="@none"/>
+                              </h:commandButton>
+                           </h:form>
                         </div>
                      </div>
                   </div>
                </ui:repeat>
+               <!--Dialog for cancelling appointments-->
+               <p:dialog modal="true" id="appCancelDialog" widgetVar="appCancelDialog" header="Cancel Appointment"
+                         resizable="false" draggable="false">
+                  <h:outputText escape="false" value="Are you sure you want to cancel&lt;br /&gt;the appointment with #{profileAppointmentsBean.cancelDoctor}&lt;br /&gt;at #{profileAppointmentsBean.cancelTime}?"/>
+
+                  <p/>
+                  <p:commandButton value="Yes" styleClass="button" icon="pi pi-check"
+                                   action="#{profileAppointmentsBean.cancelAppointment()}"/>
+               </p:dialog>
             </div>
          </div>
          <h:panelGroup styleClass="doctor-segment" rendered="#{loginBean.isDoctor()}">

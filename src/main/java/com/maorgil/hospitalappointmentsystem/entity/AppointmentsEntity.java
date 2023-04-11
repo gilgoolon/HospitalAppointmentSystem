@@ -77,6 +77,10 @@ public class AppointmentsEntity {
         isCancelled = cancelled;
     }
 
+    public boolean isCancellable() {
+        return !isCancelled && !isPast();
+    }
+
     public String getTitleForPatient() {
         return startTime.toLocalDateTime().toLocalDate().toString() + " w/ Dr. " + new DBHandler().getDoctorById(doctorId).getLastName();
     }
