@@ -28,7 +28,7 @@
       </div>
    </h:form>
    <div class="navbar">
-      <a class="link active" href="">Home</a>
+      <a class="link" href="index.xhtml">Home</a>
       <a class="link" href="make-appointment.xhtml">Appointment</a>
       <a class="push"/>
       <a class="link" href="signup.xhtml" style="display: #{loginBean.getSignupDisplay()}">Signup</a>
@@ -44,16 +44,13 @@
          <h:form>
             <p/>
             <p:panel header="Enter SQL query for the database (MySQL dialect - JPA style). For example: SELECT u.first_name, u.last_name FROM hospital.users AS u.">
-               <p:inputTextarea rows="10" cols="60"
-                                value="#{adminBean.query}">
-               </p:inputTextarea>
+               <p:inputTextarea rows="10" cols="60" value="#{adminBean.query}"/>
             </p:panel>
 
             <br/>
             <p:panel header="Query results">
                <p:outputLabel id="results" value="#{adminBean.result}"
-                              style="display:block; white-space:pre-wrap;">
-               </p:outputLabel>
+                              style="display:block; white-space: pre-wrap;"/>
             </p:panel>
 
             <p:commandButton value="Execute"
