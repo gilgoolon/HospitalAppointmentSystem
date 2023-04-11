@@ -373,6 +373,22 @@ public class DBHandler {
         return result;
     }
 
+    public List<DoctorsEntity> getDoctorsByType(String type) {
+        String query = "SELECT d FROM DoctorsEntity d WHERE d.type = ?1";
+        List<Object> params = new ArrayList<>();
+        params.add(type);
+        return executeSelectQuery(query, DoctorsEntity.class, params, MAX_RESULTS_NO_LIMIT);
+    }
+
+    public List<DoctorsEntity> getDoctorsByTypeAndLocation(String type, String location) {
+        String query = "SELECT d FROM DoctorsEntity d WHERE d.type = ?1 AND d.city = ?2";
+        List<Object> params = new ArrayList<>();
+        params.add(type);
+        params.add(location);
+        return executeSelectQuery(query, DoctorsEntity.class, params, MAX_RESULTS_NO_LIMIT);
+    }
+
+
     public List<String> getCategories() {
         return executeSelectQuery("SELECT DISTINCT c.type FROM DoctorsEntity c", String.class);
     }

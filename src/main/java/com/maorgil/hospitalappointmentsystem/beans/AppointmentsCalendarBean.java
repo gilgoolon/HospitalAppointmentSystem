@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @ViewScoped
@@ -91,7 +92,27 @@ public class AppointmentsCalendarBean implements Serializable {
     }
 
     private static List<AppointmentsEntity> genAppointments(AppointmentFormBean.FormResults preferences) {
-        List<DoctorsEntity> doctors = preferences.getDoctors();
+        List<DoctorsEntity> doctors;
+        HashSet<DoctorsEntity> doctorsSet;
+        DBHandler dbHandler = new DBHandler();
+        if (preferences.isByCategory()) {
+            doctorsSet = new HashSet<>();
+            for (String category : preferences.getCategories()) {
+                if (preferences.getLocations().isEmpty()) {
+                       doctorsSet.addAll(dbHandler.getDoctorsByType(category));
+                }
+                else {
+                    for (String location : preferences.getLocations()) {
+                        doctorsSet.addAll(dbHandler.getDoctorsByTypeAndLocation(category, location));
+                    }
+                }
+            }
+            doctors = new ArrayList<>(doctorsSet);
+        }
+        else {
+            doctors = preferences.getDoctors();
+        }
+
         LocalDateTime start = preferences.getFromTime();
         LocalDateTime end = preferences.getToTime();
 
