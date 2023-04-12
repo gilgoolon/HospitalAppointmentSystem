@@ -52,15 +52,17 @@
                 <c:forEach items="#{doctorsListBean.doctors}" var="doctor">
                     <li>
                         <div class="dropdown title-small">
-                            #{doctor.title}
+                            <h:outputText value="#{doctor.title}"/>
                             <div class="dropdown-content">
                                 <div class="content">
                                     <a class="title-small">
-                                        #{doctor.city}
+                                        <h:outputText value="#{doctor.city}"/>
                                     </a>
                                     <ul>
                                         <c:forEach items="#{doctorsListBean.getWorkingHours(doctor.id)}" var="wh">
-                                            <li>#{wh}</li>
+                                            <li>
+                                                <h:outputText value="#{wh}"/>
+                                            </li>
                                         </c:forEach>
                                     </ul>
                                 </div>
@@ -68,7 +70,7 @@
                         </div>
                         <br/>
                         <a class="text-small">
-                            #{doctor.about}
+                            <h:outputText value="#{doctor.about}"/>
                         </a>
                     </li>
                 </c:forEach>

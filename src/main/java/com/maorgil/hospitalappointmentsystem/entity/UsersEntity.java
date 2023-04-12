@@ -5,6 +5,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users", schema = "hospital")
@@ -114,15 +115,13 @@ public class UsersEntity {
         UsersEntity that = (UsersEntity) o;
 
         if (isAdmin != that.isAdmin) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
-        if (birthDate != null ? !birthDate.equals(that.birthDate) : that.birthDate != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-
-        return true;
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(firstName, that.firstName)) return false;
+        if (!Objects.equals(lastName, that.lastName)) return false;
+        if (!Objects.equals(birthDate, that.birthDate)) return false;
+        if (!Objects.equals(password, that.password)) return false;
+        if (!Objects.equals(phoneNumber, that.phoneNumber)) return false;
+        return Objects.equals(email, that.email);
     }
 
     @Override

@@ -63,7 +63,9 @@
                 </p:selectOneMenu>
                 <p:dataList id="selected-categories" value="#{appointmentFormBean.selectedCategories}" var="cat">
                     <div class="name-box">
-                        <div class="name-text">#{cat}</div>
+                        <div class="name-text">
+                            <h:outputText value="#{cat}"/>
+                        </div>
                         <div class="name-remove">
                             <p:commandLink action="#{appointmentFormBean.onRemoveCategory(cat)}"
                                            process="@this"
@@ -84,7 +86,9 @@
                 </p:selectOneMenu>
                 <p:dataList id="selected-doctors" value="#{appointmentFormBean.selectedDoctors}" var="doctor">
                     <div class="name-box">
-                        <div class="name-text">#{doctor}</div>
+                        <div class="name-text">
+                            <h:outputText value="#{doctor}"/>
+                        </div>
                         <div class="name-remove">
                             <p:commandLink action="#{appointmentFormBean.onRemoveDoctor(doctor.id)}"
                                            process="@this"
@@ -104,7 +108,9 @@
                 </p:selectOneMenu>
                 <p:dataList id="selected-locations" value="#{appointmentFormBean.selectedLocations}" var="location">
                     <div class="name-box">
-                        <div class="name-text">#{location}</div>
+                        <div class="name-text">
+                            <h:outputText value="#{location}"/>
+                        </div>
                         <div class="name-remove">
                             <p:commandLink action="#{appointmentFormBean.onRemoveLocation(location)}"
                                            process="@this"

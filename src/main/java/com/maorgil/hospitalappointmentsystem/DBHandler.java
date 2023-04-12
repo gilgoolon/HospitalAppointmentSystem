@@ -37,11 +37,11 @@ public class DBHandler {
 
     /**
      * Connect to the hospital database.
-     * @return true if the connection attempt was successful, I.E if connected to the DB afterwards, false otherwise.
+     * @return true if the connection attempt failed (since always inverted)
      */
     public boolean connect() {
         if (isConnected)
-            return true;
+            return false;
 
         try {
             HashMap<String, Object> props = new HashMap<>();
@@ -54,7 +54,7 @@ public class DBHandler {
             isConnected = false;
             e.printStackTrace();
         }
-        return isConnected;
+        return !isConnected;
     }
 
     /**
@@ -63,7 +63,7 @@ public class DBHandler {
      * @return true if the entry has been persisted successfully to the DB, false otherwise.
      */
     public <T> boolean persistEntity(T entity, Class<T> c, Object pk) {
-        if (!connect())
+        if (connect())
             return false;
 
         UserTransaction ut = null;
@@ -90,7 +90,7 @@ public class DBHandler {
      * @return true if the entry has been removed successfully from the DB, false otherwise.
      */
     public boolean removeEntity(Object entity) {
-        if (!connect())
+        if (connect())
             return false;
 
         UserTransaction ut = null;
@@ -147,7 +147,7 @@ public class DBHandler {
      * @return the result of the query, a list of entities of the given type.
      */
     public <T> List<T> executeSelectQuery(String query, Class<T> c, List<Object> parameters, int maxResults) {
-        if (!connect()) // first, connect to the database
+        if (connect()) // first, connect to the database
             return Collections.emptyList(); // if failed to connect return an empty list
 
         try {
@@ -202,7 +202,7 @@ public class DBHandler {
      * @return true if the query has been executed successfully, false otherwise.
      */
     public int executeAlterQuery(String query, List<Object> parameters) {
-        if (!connect()) // first, connect to the database
+        if (connect()) // first, connect to the database
             return -1; // if failed to connect return  false
 
         UserTransaction ut = null;
@@ -229,7 +229,7 @@ public class DBHandler {
     }
 
     public List<Object[]> executeUserSelectQuery(String query) {
-        if (!connect()) // first, connect to the database
+        if (connect()) // first, connect to the database
             return Collections.emptyList(); // if failed to connect return an empty list
 
         Query q = _entityManager.createQuery(query);
@@ -247,7 +247,7 @@ public class DBHandler {
     }
 
     public int genAppointmentUUID() {
-        if (!connect())
+        if (connect())
             return -1;
 
         Random random = new Random();
@@ -259,20 +259,20 @@ public class DBHandler {
     }
 
     public UsersEntity getUserById(String id) {
-        if (!connect())
+        if (connect())
             return null;
         return _entityManager.find(UsersEntity.class, id);
     }
 
     public boolean validateLogin(String id, String password) {
-        if (!connect())
+        if (connect())
             return false;
         UsersEntity user = getUserById(id);
         return user != null && user.getPassword().equals(password);
     }
 
     public DoctorsEntity getDoctorById(String id) {
-        if (!connect())
+        if (connect())
             return null;
         return _entityManager.find(DoctorsEntity.class, id);
     }
@@ -296,28 +296,6 @@ public class DBHandler {
                 "ORDER BY u.firstName, u.lastName";
 
         return executeSelectQuery(query, DoctorsEntity.class, params, MAX_RESULTS_NO_LIMIT);
-    }
-
-    public WorkingHoursEntity getWorkingHoursByPK(String doctor_id, int week_day) {
-        if (!connect())
-            return null;
-        WorkingHoursEntityPK pk = new WorkingHoursEntityPK();
-        pk.setDoctorId(doctor_id);
-        pk.setWeekDay(week_day);
-        return _entityManager.find(WorkingHoursEntity.class, pk);
-    }
-
-    /**
-     * Get all the appointments for the given patient (past and future).
-     * @param id represents the id of the given user.
-     * @return a list of appointment entities of the given user.
-     */
-    public List<AppointmentsEntity> getAppointmentsByPatientId(String id) {
-        List<Object> params = new ArrayList<>();
-        params.add(id);
-
-        String query = "SELECT a FROM AppointmentsEntity a WHERE a.patient_id = ?1";
-        return executeSelectQuery(query, AppointmentsEntity.class, params, MAX_RESULTS_NO_LIMIT);
     }
 
     public List<DoctorsEntity> getDoctors() {
@@ -384,7 +362,7 @@ public class DBHandler {
     }
 
     public AppointmentsEntity getAppointment(int id) {
-        if (!connect())
+        if (connect())
             return null;
         return _entityManager.find(AppointmentsEntity.class, id);
     }

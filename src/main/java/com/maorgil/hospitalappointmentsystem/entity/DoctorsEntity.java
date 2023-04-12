@@ -4,6 +4,7 @@ package com.maorgil.hospitalappointmentsystem.entity;
 import com.maorgil.hospitalappointmentsystem.DBHandler;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "doctors", schema = "hospital")
@@ -73,30 +74,6 @@ public class DoctorsEntity {
         return "Dr. " + getFirstName() + " " + getLastName();
     }
 
-    /**
-     * Get the working hours of the doctor in html ul format.
-     * @return a string of html source code of a list of working hours.
-     */
-    public String getHoursHTML() {
-        DBHandler dbHandler = DBHandler.getInstance();
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("<div class=\"dropdown-content\">");
-        sb.append("<div class=\"content\">");
-
-        // title of dropdown
-        sb.append("<a class=\"title-small\">").append(getCity()).append("</a>");
-
-        // working hours
-        sb.append("<ul>");
-        for (WorkingHoursEntity wh : dbHandler.getDoctorHours(getId()))
-            sb.append("<li>").append(wh).append("</li>");
-        sb.append("</ul>");
-        sb.append("</div>");
-        sb.append("</div>");
-        return sb.toString();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -104,12 +81,10 @@ public class DoctorsEntity {
 
         DoctorsEntity that = (DoctorsEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (about != null ? !about.equals(that.about) : that.about != null) return false;
-        if (city != null ? !city.equals(that.city) : that.city != null) return false;
-
-        return true;
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(type, that.type)) return false;
+        if (!Objects.equals(about, that.about)) return false;
+        return Objects.equals(city, that.city);
     }
 
     @Override

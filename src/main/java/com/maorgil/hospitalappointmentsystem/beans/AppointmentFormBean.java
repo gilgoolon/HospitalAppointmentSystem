@@ -19,7 +19,7 @@ public class AppointmentFormBean implements Serializable {
 
     protected static FormResults latestResults;
 
-    private boolean byCategory = true;
+    private boolean byCategory = false;
 
     private String selectedCategory; // selected doctor - doctor id
     private final List<String> categories = new ArrayList<>();
@@ -59,7 +59,7 @@ public class AppointmentFormBean implements Serializable {
         return doctors;
     }
 
-    public void onDoctorChanged(AjaxBehaviorEvent event) {
+    public void onDoctorChanged(AjaxBehaviorEvent ignoredEvent) {
         // Add selected item to selected items list
         DoctorsEntity selected = doctors.stream().filter(doctor -> doctor.getId().equals(selectedDoctor)).findFirst().orElse(null);
         doctors.remove(selected);
@@ -90,7 +90,7 @@ public class AppointmentFormBean implements Serializable {
         return categories;
     }
 
-    public void onCategoryChanged(AjaxBehaviorEvent event) {
+    public void onCategoryChanged(AjaxBehaviorEvent ignoredEvent) {
         // Add selected item to selected items list
         categories.remove(selectedCategory);
         selectedCategories.add(selectedCategory);
@@ -99,6 +99,7 @@ public class AppointmentFormBean implements Serializable {
     public void onRemoveCategory(String cat) {
         selectedCategories.remove(cat);
         categories.add(cat);
+        selectedCategory = "Select a category";
     }
 
     public String getSelectedLocation() {
@@ -117,7 +118,7 @@ public class AppointmentFormBean implements Serializable {
         return selectedLocations;
     }
 
-    public void onLocationChanged(AjaxBehaviorEvent event) {
+    public void onLocationChanged(AjaxBehaviorEvent ignoredEvent) {
         // Add selected item to selected items list
         locations.remove(selectedLocation);
         selectedLocations.add(selectedLocation);
@@ -126,6 +127,7 @@ public class AppointmentFormBean implements Serializable {
     public void onRemoveLocation(String loc) {
         selectedLocations.remove(loc);
         locations.add(loc);
+        selectedLocation = "Select a location";
     }
 
     public boolean isByCategory() {

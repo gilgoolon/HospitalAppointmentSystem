@@ -2,8 +2,7 @@ package com.maorgil.hospitalappointmentsystem.entity;
 
 import javax.persistence.*;
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "working_hours", schema = "hospital")
@@ -101,11 +100,9 @@ public class WorkingHoursEntity {
 
         if (weekDay != that.weekDay) return false;
         if (aptLength != that.aptLength) return false;
-        if (doctorId != null ? !doctorId.equals(that.doctorId) : that.doctorId != null) return false;
-        if (startTime != null ? !startTime.equals(that.startTime) : that.startTime != null) return false;
-        if (endTime != null ? !endTime.equals(that.endTime) : that.endTime != null) return false;
-
-        return true;
+        if (!Objects.equals(doctorId, that.doctorId)) return false;
+        if (!Objects.equals(startTime, that.startTime)) return false;
+        return Objects.equals(endTime, that.endTime);
     }
 
     @Override

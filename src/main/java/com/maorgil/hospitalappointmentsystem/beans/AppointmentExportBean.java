@@ -16,7 +16,7 @@ import java.io.OutputStream;
 
 @ManagedBean(name = "appointmentExportBean")
 public class AppointmentExportBean {
-    public StreamedContent downloadAppointment(ComponentSystemEvent event) {
+    public StreamedContent downloadAppointment(ComponentSystemEvent ignoredEvent) {
         String contentType = "application/pdf";
         // get id from request parameter
         String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
