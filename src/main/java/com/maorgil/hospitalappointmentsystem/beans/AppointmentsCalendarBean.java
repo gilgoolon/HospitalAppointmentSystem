@@ -4,7 +4,6 @@ import com.maorgil.hospitalappointmentsystem.DBHandler;
 import com.maorgil.hospitalappointmentsystem.Pair;
 import com.maorgil.hospitalappointmentsystem.Utils;
 import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntity;
-import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntityPK;
 import com.maorgil.hospitalappointmentsystem.entity.DoctorsEntity;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
@@ -156,10 +155,8 @@ public class AppointmentsCalendarBean implements Serializable {
 
         // reserve event and add to the DB
         if (isFree) {
-            AppointmentsEntityPK pk = new AppointmentsEntityPK();
-            pk.setDoctorId(toReserve.getDoctorId());
-            pk.setStartTime(toReserve.getStartTime());
-            new DBHandler().persistEntity(toReserve, AppointmentsEntity.class, pk);
+            toReserve.setId(new DBHandler().genAppointmentUUID());
+            new DBHandler().persistEntity(toReserve, AppointmentsEntity.class, toReserve.getId());
         }
 
         // reset the appointment form bean
@@ -167,7 +164,7 @@ public class AppointmentsCalendarBean implements Serializable {
 
         if (isFree) {
             // redirect to success page
-            Utils.redirect("appointmentSuccess.xhtml?faces-redirect=true&appId=" + Utils.appointmentToId(toReserve));
+            Utils.redirect("appointmentSuccess.xhtml?faces-redirect=true&appId=" + toReserve.getId());
         } else {
             // redirect to fail page
             Utils.redirect("appointmentFailure.xhtml?faces-redirect=true");

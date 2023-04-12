@@ -93,7 +93,7 @@ public class ProfileAppointmentsBean {
     }
 
     public String appToId(AppointmentsEntity app) {
-        return Utils.appointmentToId(app);
+        return app.getId() + "";
     }
 
     public void onCancelAppointment(AppointmentsEntity app) {

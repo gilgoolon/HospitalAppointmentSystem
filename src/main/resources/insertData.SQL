@@ -9,16 +9,10 @@ VALUES ('123456789', 'John', 'Doe', '1980-01-01', 'password123', '5555555555', '
        ('678901234', 'Chris', 'Charles', '1976-04-15', 'passwordghi', '5555555550', 'chrischarles@example.com', 0),
        ('789012345', 'Alice', 'Smith', '1981-08-26', 'passwordjkl', '5555555551', 'alicesmith@example.com', 0);
 
-INSERT INTO Appointments (start_time, end_time, doctor_id, patient_id, description, is_cancelled)
-VALUES ('2022-01-01 10:00:00', '2022-01-01 11:00:00', '123456789', '456789012', 'Routine checkup', 0),
-       ('2022-01-02 09:00:00', '2022-01-02 10:00:00', '234567890', '567890123', 'Follow-up visit', 0),
-       ('2022-01-03 14:00:00', '2022-01-03 15:00:00', '345678901', '678901234', 'Sore throat', 0);
-
-INSERT INTO Doctors (id, type, about, city)
-VALUES ('123456789', 'General practitioner', 'Dr. John Doe is a GP with over 20 years of experience.', 'New York'),
-       ('234567890', 'Cardiologist', 'Dr. Jane Smith specializes in heart health.', 'Chicago'),
-       ('345678901', 'Pediatrician', 'Dr. Bob Johnson is a pediatric doctor with a passion for children''s health.', 'Los Angeles'),
-       ('789012345', 'Neurosurgeon', 'Dr. Alice Smith is a talented neurologist with years of experience and passion for the human body.', 'San Francisco');
+INSERT INTO Appointments (id, start_time, end_time, doctor_id, patient_id, description, is_cancelled)
+VALUES (1 , '2022-01-01 10:00:00', '2022-01-01 11:00:00', '123456789', '456789012', 'Routine checkup', 0),
+       (2, '2022-01-02 09:00:00', '2022-01-02 10:00:00', '234567890', '567890123', 'Follow-up visit', 0),
+       (3, '2022-01-03 14:00:00', '2022-01-03 15:00:00', '345678901', '678901234', 'Sore throat', 0);
 
 INSERT INTO Working_Hours (doctor_id, week_day, start_time, end_time, apt_length)
 VALUES ('123456789', 1, '09:00:00', '17:00:00', 10),
@@ -43,20 +37,9 @@ VALUES ('123456789', 1, '09:00:00', '17:00:00', 10),
        ('789012345', 4, '04:00:00', '14:00:00', 30),
        ('789012345', 5, '09:00:00', '17:00:00', 20);
 
--- More appointments data generated partially by ChatGPT
-INSERT INTO Appointments (start_time, end_time, doctor_id, patient_id, description, is_cancelled)
-VALUES ('2022-12-24 09:00:00', '2022-12-24 10:00:00', '234567890', '567890123', 'Christmas checkup', 0),
-       ('2022-12-31 14:00:00', '2022-12-31 15:00:00', '345678901', '678901234', 'New Year checkup', 0),
-       ('2023-01-01 10:00:00', '2023-01-01 11:00:00', '123456789', '456789012', 'New Year checkup', 0),
-       ('2023-01-02 09:00:00', '2023-01-04 10:00:00', '234567890', '567890123', 'Follow-up visit', 0),
-       ('2023-01-03 14:00:00', '2023-01-10 15:00:00', '345678901', '678901234', 'Sore throat', 0),
-       ('2023-01-05 10:00:00', '2023-01-19 11:00:00', '345678901', '678901234', 'Flu checkup', 0),
-       ('2023-01-07 09:00:00', '2023-01-27 10:00:00', '234567890', '567890123', 'Follow-up visit', 0),
-       ('2023-01-08 14:00:00', '2023-02-08 15:00:00', '345678901', '678901234', 'Headache', 0),
-       ('2023-01-10 10:00:00', '2023-03-01 11:00:00', '234567890', '456789012', 'Routine checkup', 0),
-       ('2023-01-12 09:00:00', '2023-03-17 10:00:00', '234567890', '567890123', 'Follow-up visit', 0),
-       ('2023-02-10 09:00:00', '2023-02-10 09:30:00', '123456789', '678901234', 'Follow-up visit', 0),
-       ('2023-02-15 14:00:00', '2023-02-15 14:30:00', '234567890', '456789012', 'Chest pain consultation', 0),
-       ('2023-02-16 14:00:00', '2023-02-16 14:30:00', '345678901', '456789012', '2nd Chest pain consultation', 0),
-       ('2023-02-20 10:00:00', '2023-02-20 11:00:00', '345678901', '567890123', 'Routine checkup for child', 0),
-       ('2023-02-25 09:00:00', '2023-02-25 09:30:00', '789012345', '678901234', 'Brain surgery consultation', 0);
+INSERT INTO Doctors (id, type, about, city)
+VALUES ('123456789', 'General practitioner', 'Dr. John Doe is a GP with over 20 years of experience.', 'New York'),
+       ('234567890', 'Cardiologist', 'Dr. Jane Smith specializes in heart health.', 'Chicago'),
+       ('345678901', 'Pediatrician', 'Dr. Bob Johnson is a pediatric doctor with a passion for children''s health.', 'Los Angeles'),
+       ('789012345', 'Neurosurgeon', 'Dr. Alice Smith is a talented neurologist with years of experience and passion for the human body.', 'San Francisco');
+

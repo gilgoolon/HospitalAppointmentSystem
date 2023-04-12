@@ -16,13 +16,14 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE Appointments (
+                              id int NOT NULL UNIQUE,
                               start_time timestamp NOT NULL,
                               end_time timestamp NOT NULL,
                               doctor_id varchar(9) NOT NULL,
                               patient_id varchar(9) NOT NULL,
                               description varchar(1000),
                               is_cancelled bit NOT NULL DEFAULT 0,-- by default an appointment is not cancelled
-                              PRIMARY KEY (start_time, doctor_id)
+                              PRIMARY KEY (id)
 );
 
 CREATE TABLE Doctors (

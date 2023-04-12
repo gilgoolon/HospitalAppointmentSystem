@@ -8,15 +8,15 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "appointments", schema = "hospital")
-@IdClass(AppointmentsEntityPK.class)
 public class AppointmentsEntity {
     @Id
+    @Column(name = "id")
+    private int id;
     @Column(name = "start_time")
     private Timestamp startTime;
     @Basic
     @Column(name = "end_time")
     private Timestamp endTime;
-    @Id
     @Column(name = "doctor_id")
     private String doctorId;
     @Basic
@@ -28,6 +28,14 @@ public class AppointmentsEntity {
     @Basic
     @Column(name = "is_cancelled")
     private boolean isCancelled;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Timestamp getStartTime() {
         return startTime;

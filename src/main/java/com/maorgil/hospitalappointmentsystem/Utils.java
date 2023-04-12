@@ -2,9 +2,7 @@ package com.maorgil.hospitalappointmentsystem;
 
 import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntity;
 import com.maorgil.hospitalappointmentsystem.entity.WorkingHoursEntity;
-import com.maorgil.hospitalappointmentsystem.Pair;
 
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -41,16 +39,10 @@ public class Utils {
 
     public static AppointmentsEntity idToAppointment(String id) {
         try {
-            id = id.split("A")[1]; // using "A" as a delimiter for JSF id editing
-            String[] parts = id.split("_");
-            return new DBHandler().getAppointmentByPK(parts[0], Timestamp.valueOf(parts[1].replace("T", " ").replace("S", ":").replace("M", ".")));
+            return new DBHandler().getAppointment(Integer.parseInt(id));
         } catch (Exception e) {
             return null;
         }
-    }
-
-    public static String appointmentToId(AppointmentsEntity appointment) {
-        return "A" + appointment.getDoctorId() + "_" + appointment.getStartTime().toString().replace(" ", "T").replace(":", "S").replace(".", "M");
     }
 
     public static String getAppointmentFileName(String doctorId, Timestamp startTime) {

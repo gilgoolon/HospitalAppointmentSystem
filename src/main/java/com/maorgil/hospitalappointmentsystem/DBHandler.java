@@ -9,9 +9,7 @@ import javax.persistence.*;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class DBHandler {
@@ -241,6 +239,18 @@ public class DBHandler {
         return ut;
     }
 
+    public int genAppointmentUUID() {
+        if (!connect())
+            return -1;
+
+        Random random = new Random();
+        do {
+            int uuid = random.nextInt(Integer.MAX_VALUE);
+            if (getAppointment(uuid) == null)
+                return uuid;
+        } while (true);
+    }
+
     public UsersEntity getUserById(String id) {
         if (!connect())
             return null;
@@ -366,13 +376,10 @@ public class DBHandler {
         return executeSelectQuery(query, AppointmentsEntity.class, params, MAX_RESULTS_DOCTOR_UPCOMING_APPOINTMENTS);
     }
 
-    public AppointmentsEntity getAppointmentByPK(String doctorId, Timestamp startTime) {
+    public AppointmentsEntity getAppointment(int id) {
         if (!connect())
             return null;
-        AppointmentsEntityPK pk = new AppointmentsEntityPK();
-        pk.setDoctorId(doctorId);
-        pk.setStartTime(startTime);
-        return _entityManager.find(AppointmentsEntity.class, pk);
+        return _entityManager.find(AppointmentsEntity.class, id);
     }
 
     public List<AppointmentsEntity> getDoctorAppointmentAtDate(LocalDate date, String doctorId) {
@@ -416,9 +423,6 @@ public class DBHandler {
 
     public void cancelAppointment(AppointmentsEntity appointment) {
         appointment.setCancelled(true);
-        AppointmentsEntityPK pk = new AppointmentsEntityPK();
-        pk.setDoctorId(appointment.getDoctorId());
-        pk.setStartTime(appointment.getStartTime());
-        persistEntity(appointment, AppointmentsEntity.class, pk);
+        persistEntity(appointment, AppointmentsEntity.class, appointment.getId());
     }
 }
