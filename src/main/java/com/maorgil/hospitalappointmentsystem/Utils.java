@@ -58,8 +58,20 @@ public class Utils {
 
             WorkingHoursEntity currDayWH = getWHFromWeekday(whs, curr.getDayOfWeek());
             if (currDayWH != null) {
-                LocalDateTime whStartDayTime = curr.with(currDayWH.getStartTime().toLocalTime());
-                LocalDateTime whEndDayTime = curr.with(currDayWH.getEndTime().toLocalTime());
+                LocalDateTime whStartDayTime, whEndDayTime;
+                if (curr.with(currDayWH.getStartTime().toLocalTime()).isBefore(start)) {
+                     whStartDayTime = start;
+                }
+                else {
+                    whStartDayTime = curr.with(currDayWH.getStartTime().toLocalTime());
+                }
+
+                if (curr.with(currDayWH.getEndTime().toLocalTime()).isAfter(end)) {
+                    whEndDayTime = end;
+                }
+                else {
+                    whEndDayTime = curr.with(currDayWH.getEndTime().toLocalTime());
+                }
                 List<Pair<LocalDateTime,LocalDateTime>> occupiedRanges = getOccupiedRanges(curr.toLocalDate(), doctorId);
                 if (occupiedRanges == null)
                     result.add(new Pair<>(new Pair<>(whStartDayTime, whEndDayTime), currDayWH.getAptLength()));
@@ -91,6 +103,10 @@ public class Utils {
         LocalDateTime curr = freeRange.getFirst().getFirst();
         while (curr.isBefore((freeRange.getFirst().getSecond()))) {
             LocalDateTime currEnd = curr.plusMinutes(freeRange.getSecond());
+            if (currEnd.isAfter(freeRange.getFirst().getSecond())) {
+                break;
+            }
+
             AppointmentsEntity appointmentsEntity = new AppointmentsEntity();
             appointmentsEntity.setStartTime(Timestamp.valueOf(curr));
             appointmentsEntity.setEndTime(Timestamp.valueOf(currEnd));
@@ -98,7 +114,6 @@ public class Utils {
             appointmentsEntity.setPatientId(patientId);
 
             freeAppointments.add(appointmentsEntity);
-
             curr = currEnd;
         }
 
