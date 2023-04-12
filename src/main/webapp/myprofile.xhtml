@@ -170,24 +170,27 @@
             </h:form>
             <div class="card-list">
                <ui:repeat value="#{profileAppointmentsBean.appointments}" var="app">
-                  <div class="card #{app.isCancelled() ? ' cancelled' : app.past ? ' past' : ''}">
-                     <div class="card-content">
-                        <a class="title-small">
-                           #{app.titleForPatient}
-                        </a>
-                        <div style="display: flex; flex-direction: row;">
-                           <a class="text-small">
-                              #{app.description == null ? 'No description' : app.description}
+                  <div style="margin: 10px; overflow-x: hidden">
+                     <div class="card #{app.isCancelled() ? ' cancelled' : app.past ? ' past' : ''}">
+                        <div class="card-content">
+                           <a class="title-small">
+                              #{app.titleForPatient}
                            </a>
-                           <input src="assets/download-icon.png" class="download-button" type="image" onclick="downloadAppointment('#{profileAppointmentsBean.appToId(app)}')" alt=""/>
-                           <h:form style="margin-left: 2px">
-                              <h:commandButton styleClass="download-button"
-                                               action="#{profileAppointmentsBean.onCancelAppointment(app)}"
-                                               rendered="#{app.cancellable}" immediate="true"
-                                               image="assets/cancel-icon.png">
-                                 <f:ajax render="@none"/>
-                              </h:commandButton>
-                           </h:form>
+                           <div style="display: flex; flex-direction: row;">
+                              <a class="text-small">
+                                 #{app.description == null ? 'No description' : app.description}
+                              </a>
+                              <div style="margin-left: auto; display: flex; flex-direction: row">
+                                 <p:commandLink action="#{profileAppointmentsBean.onCancelAppointment(app)}"
+                                                rendered="#{app.cancellable}">
+                                    <p:graphicImage value="assets/cancel-icon.png" styleClass="download-button"
+                                                    style="margin-right: 2px"/>
+                                 </p:commandLink>
+                                 <input src="assets/download-icon.png" class="download-button" type="image"
+                                        onclick="downloadAppointment('#{profileAppointmentsBean.appToId(app)}')"
+                                        alt=""/>
+                              </div>
+                           </div>
                         </div>
                      </div>
                   </div>

@@ -30,6 +30,7 @@ public class ProfileAppointmentsBean {
         // get the logged-in user id from the login bean
         loggedInUserID = LoginBean.getInstance().getId();
         appointments = new DBHandler().getAppointments(loggedInUserID, null, null, "", true);
+        appointments.forEach(app -> System.out.println(app.getStartTime() + " " + app.getEndTime() + " " + app.isCancelled()));
     }
 
     public String getDoctorId() {

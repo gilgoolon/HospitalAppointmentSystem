@@ -204,7 +204,7 @@ public class DBHandler {
         try {
             ut = getTransaction();
             // create update query
-            Query q = _entityManager.createNativeQuery(query);
+            Query q = _entityManager.createQuery(query);
 
             // set the parameters of the prepared statement
             for (int i = 0; i < parameters.size(); i++)
@@ -227,7 +227,7 @@ public class DBHandler {
         if (!connect()) // first, connect to the database
             return Collections.emptyList(); // if failed to connect return an empty list
 
-        Query q = _entityManager.createNativeQuery(query);
+        Query q = _entityManager.createQuery(query);
 
         q.setMaxResults(MAX_RESULTS_ADMIN);
 
@@ -332,7 +332,7 @@ public class DBHandler {
         String query = "SELECT a FROM AppointmentsEntity a WHERE a.patientId = ?1";
 
         if (!doctorId.isEmpty()) {
-            query += "AND a.doctorId = ?2";
+            query += " AND a.doctorId = ?2";
             params.add(doctorId);
         }
 
@@ -399,9 +399,6 @@ public class DBHandler {
     }
 
     public void cancelAppointment(AppointmentsEntity appointment) {
-        if (!connect())
-            return;
-
         appointment.setCancelled(true);
         AppointmentsEntityPK pk = new AppointmentsEntityPK();
         pk.setDoctorId(appointment.getDoctorId());
