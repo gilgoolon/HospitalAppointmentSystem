@@ -58,7 +58,13 @@ public class Utils {
 
             WorkingHoursEntity currDayWH = getWHFromWeekday(whs, curr.getDayOfWeek());
             if (currDayWH != null) {
-                LocalDateTime whStartDayTime = curr.with(currDayWH.getStartTime().toLocalTime());
+                LocalDateTime whStartDayTime;
+                if (curr.isBefore(LocalDateTime.now())) {
+                     whStartDayTime = LocalDateTime.now();
+                }
+                else {
+                    whStartDayTime = curr.with(currDayWH.getStartTime().toLocalTime());
+                }
                 LocalDateTime whEndDayTime = curr.with(currDayWH.getEndTime().toLocalTime());
                 List<Pair<LocalDateTime,LocalDateTime>> occupiedRanges = getOccupiedRanges(curr.toLocalDate(), doctorId);
                 if (occupiedRanges == null)
