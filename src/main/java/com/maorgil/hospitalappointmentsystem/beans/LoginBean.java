@@ -33,7 +33,7 @@ public class LoginBean {
     }
 
     public String submit() {
-        DBHandler dbHandler = new DBHandler();
+        DBHandler dbHandler = DBHandler.getInstance();
         if (dbHandler.validateLogin(id, password)) {
             loggedIn = true;
             isDoctor = dbHandler.getDoctorById(id) != null;
@@ -64,7 +64,7 @@ public class LoginBean {
     public boolean isAdmin() {
         if (!loggedIn)
             return false;
-        return new DBHandler().getUserById(id).isAdmin();
+        return DBHandler.getInstance().getUserById(id).isAdmin();
     }
 
     public String getSignupDisplay() {

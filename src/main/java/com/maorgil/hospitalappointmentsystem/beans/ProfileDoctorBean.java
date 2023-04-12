@@ -9,7 +9,7 @@ import java.util.List;
 @ManagedBean(name = "profileDoctorBean")
 public class ProfileDoctorBean {
     private final String id; // user id but the user is a doctor
-    private final DBHandler dbHandler = new DBHandler();
+    private final DBHandler dbHandler = DBHandler.getInstance();
 
     public ProfileDoctorBean() {
         // get the logged-in user id from the login bean

@@ -2,9 +2,7 @@ package com.maorgil.hospitalappointmentsystem;
 
 import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntity;
 import com.maorgil.hospitalappointmentsystem.entity.WorkingHoursEntity;
-import com.maorgil.hospitalappointmentsystem.Pair;
 
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -41,16 +39,10 @@ public class Utils {
 
     public static AppointmentsEntity idToAppointment(String id) {
         try {
-            id = id.split("A")[1]; // using "A" as a delimiter for JSF id editing
-            String[] parts = id.split("_");
-            return new DBHandler().getAppointmentByPK(parts[0], Timestamp.valueOf(parts[1].replace("T", " ").replace("S", ":").replace("M", ".")));
+            return DBHandler.getInstance().getAppointment(Integer.parseInt(id));
         } catch (Exception e) {
             return null;
         }
-    }
-
-    public static String appointmentToId(AppointmentsEntity appointment) {
-        return "A" + appointment.getDoctorId() + "_" + appointment.getStartTime().toString().replace(" ", "T").replace(":", "S").replace(".", "M");
     }
 
     public static String getAppointmentFileName(String doctorId, Timestamp startTime) {
@@ -58,7 +50,7 @@ public class Utils {
     }
 
     public static List<Pair<Pair<LocalDateTime,LocalDateTime>, Integer>> getWorkingHoursRange(LocalDateTime start, LocalDateTime end, String doctorId) {
-        List<WorkingHoursEntity> whs = new DBHandler().getDoctorHours(doctorId);
+        List<WorkingHoursEntity> whs = DBHandler.getInstance().getDoctorHours(doctorId);
 
         List<Pair<Pair<LocalDateTime, LocalDateTime>, Integer>> result = new ArrayList<>();
         LocalDateTime curr = start;
@@ -114,7 +106,7 @@ public class Utils {
     }
 
     public static List<Pair<LocalDateTime, LocalDateTime>> getOccupiedRanges(LocalDate date, String doctorId) {
-        List<AppointmentsEntity> appointments = new DBHandler().getDoctorAppointmentAtDate(date, doctorId);
+        List<AppointmentsEntity> appointments = DBHandler.getInstance().getDoctorAppointmentAtDate(date, doctorId);
         List<Pair<LocalDateTime, LocalDateTime>>  occupiedRanges = new ArrayList<>();
 
         if (appointments.size() == 0)
@@ -158,7 +150,7 @@ public class Utils {
     }
 
     public static boolean isFreeAppointment(AppointmentsEntity appointment) {
-        List<AppointmentsEntity> appointments = new DBHandler().getDoctorAppointmentAtDate(appointment.getStartTime().toLocalDateTime().toLocalDate(), appointment.getDoctorId());
+        List<AppointmentsEntity> appointments = DBHandler.getInstance().getDoctorAppointmentAtDate(appointment.getStartTime().toLocalDateTime().toLocalDate(), appointment.getDoctorId());
         for (AppointmentsEntity a : appointments)
             if (a.getStartTime().toLocalDateTime().isBefore(appointment.getEndTime().toLocalDateTime()) && a.getEndTime().toLocalDateTime().isAfter(appointment.getStartTime().toLocalDateTime()))
                 return false;

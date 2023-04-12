@@ -54,18 +54,15 @@ public class DoctorsEntity {
     }
 
     public String getFirstName() {
-        DBHandler dbh = new DBHandler();
-        return dbh.getUserById(getId()).getFirstName();
+        return DBHandler.getInstance().getUserById(getId()).getFirstName();
     }
 
     public String getLastName() {
-        DBHandler dbh = new DBHandler();
-        return dbh.getUserById(getId()).getLastName();
+        return DBHandler.getInstance().getUserById(getId()).getLastName();
     }
 
     public int getAge() {
-        DBHandler dbh = new DBHandler();
-        return dbh.getUserById(getId()).getAge();
+        return DBHandler.getInstance().getUserById(getId()).getAge();
     }
 
     public String getTitle() {
@@ -81,7 +78,7 @@ public class DoctorsEntity {
      * @return a string of html source code of a list of working hours.
      */
     public String getHoursHTML() {
-        DBHandler dbHandler = new DBHandler();
+        DBHandler dbHandler = DBHandler.getInstance();
         StringBuilder sb = new StringBuilder();
 
         sb.append("<div class=\"dropdown-content\">");

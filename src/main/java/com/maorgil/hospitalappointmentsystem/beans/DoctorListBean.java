@@ -31,10 +31,10 @@ public class DoctorListBean {
 
     public List<DoctorsEntity> getDoctors() {
         searchTerm = getInput(); // update search term from request parameters
-        return new DBHandler().getDoctorsBySearch(searchTerm); // query the db
+        return DBHandler.getInstance().getDoctorsBySearch(searchTerm); // query the db
     }
 
     public List<WorkingHoursEntity> getWorkingHours(String doctorId) {
-        return new DBHandler().getDoctorHours(doctorId);
+        return DBHandler.getInstance().getDoctorHours(doctorId);
     }
 }

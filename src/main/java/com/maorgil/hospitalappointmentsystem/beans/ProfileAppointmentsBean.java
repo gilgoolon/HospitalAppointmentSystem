@@ -22,14 +22,13 @@ public class ProfileAppointmentsBean {
     private boolean isAscending = false;
     private boolean includeCancelled = true;
     private final String loggedInUserID;
-    private final DBHandler dbHandler = new DBHandler();
 
     private static AppointmentsEntity cancelledAppointment;
 
     public ProfileAppointmentsBean() {
         // get the logged-in user id from the login bean
         loggedInUserID = LoginBean.getInstance().getId();
-        appointments = new DBHandler().getAppointments(loggedInUserID, null, null, "", true);
+        appointments = DBHandler.getInstance().getAppointments(loggedInUserID, null, null, "", true);
         appointments.forEach(app -> System.out.println(app.getStartTime() + " " + app.getEndTime() + " " + app.isCancelled()));
     }
 
@@ -40,7 +39,7 @@ public class ProfileAppointmentsBean {
     }
 
     public void setDoctorId(String doctorId) {
-        this.doctor = dbHandler.getDoctorById(doctorId); // null if "All Doctors" is selected
+        this.doctor = DBHandler.getInstance().getDoctorById(doctorId); // null if "All Doctors" is selected
     }
 
     public String getSortBy() {
@@ -84,7 +83,7 @@ public class ProfileAppointmentsBean {
     }
 
     public void search() {
-        appointments = new ArrayList<>(dbHandler.getAppointments(loggedInUserID, fromDate, toDate, doctor == null ? "" : doctor.getId(), includeCancelled));
+        appointments = new ArrayList<>(DBHandler.getInstance().getAppointments(loggedInUserID, fromDate, toDate, doctor == null ? "" : doctor.getId(), includeCancelled));
     }
 
     public List<AppointmentsEntity> getAppointments() {
@@ -93,7 +92,7 @@ public class ProfileAppointmentsBean {
     }
 
     public String appToId(AppointmentsEntity app) {
-        return Utils.appointmentToId(app);
+        return app.getId() + "";
     }
 
     public void onCancelAppointment(AppointmentsEntity app) {
@@ -107,7 +106,7 @@ public class ProfileAppointmentsBean {
     }
 
     public String getCancelDoctor() {
-        return cancelledAppointment == null ? "" : dbHandler.getDoctorById(cancelledAppointment.getDoctorId()).toString();
+        return cancelledAppointment == null ? "" : DBHandler.getInstance().getDoctorById(cancelledAppointment.getDoctorId()).toString();
     }
 
     public String getCancelTime() {
@@ -115,7 +114,7 @@ public class ProfileAppointmentsBean {
     }
 
     public void cancelAppointment() {
-        new DBHandler().cancelAppointment(cancelledAppointment);
+        DBHandler.getInstance().cancelAppointment(cancelledAppointment);
 
         // refresh the page
         Utils.redirect("myprofile.xhtml?faces-redirect=true");
@@ -132,8 +131,8 @@ public class ProfileAppointmentsBean {
                 break;
             case "Doctor":
                 appointments.sort((a1, a2) -> {
-                    DoctorsEntity d1 = dbHandler.getDoctorById(a1.getDoctorId());
-                    DoctorsEntity d2 = dbHandler.getDoctorById(a2.getDoctorId());
+                    DoctorsEntity d1 = DBHandler.getInstance().getDoctorById(a1.getDoctorId());
+                    DoctorsEntity d2 = DBHandler.getInstance().getDoctorById(a2.getDoctorId());
                     String s1 = d1.getLastName() + d1.getFirstName();
                     String s2 = d2.getLastName() + d2.getFirstName();
                     if (isAscending)
@@ -154,6 +153,6 @@ public class ProfileAppointmentsBean {
     }
 
     public List<DoctorsEntity> getTreatingDoctors() {
-        return dbHandler.getTreatingDoctors(loggedInUserID);
+        return DBHandler.getInstance().getTreatingDoctors(loggedInUserID);
     }
 }

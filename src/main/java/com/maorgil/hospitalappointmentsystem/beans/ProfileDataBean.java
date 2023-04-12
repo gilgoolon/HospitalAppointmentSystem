@@ -116,7 +116,7 @@ public class ProfileDataBean {
         user.setEmail(email);
         user.setBirthDate(new java.sql.Date(birthDate.getTime()));
 
-        if (!new DBHandler().persistEntity(user, UsersEntity.class, user.getId())) {
+        if (!DBHandler.getInstance().persistEntity(user, UsersEntity.class, user.getId())) {
             // init before sending in case of a DB error
             initUserData();
         }
@@ -126,7 +126,7 @@ public class ProfileDataBean {
 
     public void initUserData() {
         getLoggedInId();
-        user = new DBHandler().getUserById(loggedInId);
+        user = DBHandler.getInstance().getUserById(loggedInId);
         id = user.getId();
         firstName = user.getFirstName();
         lastName = user.getLastName();

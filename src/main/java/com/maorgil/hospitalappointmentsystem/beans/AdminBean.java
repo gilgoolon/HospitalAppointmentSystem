@@ -27,7 +27,7 @@ public class AdminBean {
     }
 
     private static String execute(String query) {
-        DBHandler dbHandler = new DBHandler();
+        DBHandler dbHandler = DBHandler.getInstance();
 
         try {
             if (isSelectQuery(query)) {

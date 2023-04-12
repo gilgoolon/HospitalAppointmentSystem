@@ -23,7 +23,7 @@ public class AppointmentExporter {
     public static String createAppointmentFile(AppointmentsEntity appointment) {
         String filename = Utils.getAppointmentFileName(appointment.getDoctorId(), appointment.getStartTime());
 
-        DBHandler dbHandler = new DBHandler();
+        DBHandler dbHandler = DBHandler.getInstance();
         UsersEntity patient = dbHandler.getUserById(appointment.getPatientId());
         UsersEntity doctor = dbHandler.getUserById(appointment.getDoctorId());
 
