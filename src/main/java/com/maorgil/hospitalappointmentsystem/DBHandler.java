@@ -16,6 +16,7 @@ import java.util.*;
 
 public class DBHandler {
     private static final String PERSISTENCE_UNIT = "hospitalPU";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/hospital";
 
     private EntityManager _entityManager;
     private boolean isConnected;
@@ -23,6 +24,7 @@ public class DBHandler {
     private static final int MAX_RESULTS_NO_LIMIT = -1;
     public static final int MAX_RESULTS_DOCTOR_UPCOMING_APPOINTMENTS = 5;
     public static final int MAX_RESULTS_PATIENT_APPOINTMENTS = 10;
+    public static final int MAX_RESULTS_ADMIN = 20;
 
     public DBHandler() {
         isConnected = false;
@@ -37,7 +39,9 @@ public class DBHandler {
             return true;
 
         try {
-            EntityManagerFactory _entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+            HashMap<String, Object> props = new HashMap<>();
+            props.put("javax.persistence.jdbc.catalog", "hospital");
+            EntityManagerFactory _entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT, props);
             _entityManager = _entityManagerFactory.createEntityManager();
             isConnected = true;
         } catch (PersistenceException e) {
@@ -172,7 +176,7 @@ public class DBHandler {
      * @param query represents the SQL query to execute.
      * @return true if the query has been executed successfully, false otherwise.
      */
-    public boolean executeAlterQuery(String query) {
+    public int executeAlterQuery(String query) {
         return executeAlterQuery(query, new ArrayList<>()); // prepared statement with no args
     }
 
@@ -192,29 +196,42 @@ public class DBHandler {
      * @param parameters represents a list of parameters for the prepared query.
      * @return true if the query has been executed successfully, false otherwise.
      */
-    public boolean executeAlterQuery(String query, List<Object> parameters) {
+    public int executeAlterQuery(String query, List<Object> parameters) {
         if (!connect()) // first, connect to the database
-            return false; // if failed to connect return  false
+            return -1; // if failed to connect return  false
 
         UserTransaction ut = null;
         try {
             ut = getTransaction();
-            Query q = _entityManager.createQuery(query);
+            // create update query
+            Query q = _entityManager.createNativeQuery(query);
 
             // set the parameters of the prepared statement
             for (int i = 0; i < parameters.size(); i++)
                 q.setParameter(i + 1, parameters.get(i));
 
-            q.executeUpdate(); // returns the number of rows affected, prob. not needed
+            int rowsAffected = q.executeUpdate(); // returns the number of rows affected, prob. not needed
             ut.commit();
-            return true;
+            return rowsAffected;
         } catch (Exception e) {
             try {
                 assert ut != null;
                 ut.rollback();
             } catch (Exception ignore) {}
-            return false;
+            System.out.println(e.getMessage());
+            return -1;
         }
+    }
+
+    public List<Object[]> executeUserSelectQuery(String query) {
+        if (!connect()) // first, connect to the database
+            return Collections.emptyList(); // if failed to connect return an empty list
+
+        Query q = _entityManager.createNativeQuery(query);
+
+        q.setMaxResults(MAX_RESULTS_ADMIN);
+
+        return q.getResultList();
     }
 
     private UserTransaction getTransaction() throws NamingException, SystemException, NotSupportedException {
@@ -395,5 +412,16 @@ public class DBHandler {
 
     public List<String> getLocations() {
         return executeSelectQuery("SELECT DISTINCT c.city FROM DoctorsEntity c", String.class);
+    }
+
+    public void cancelAppointment(AppointmentsEntity appointment) {
+        if (!connect())
+            return;
+
+        appointment.setCancelled(true);
+        AppointmentsEntityPK pk = new AppointmentsEntityPK();
+        pk.setDoctorId(appointment.getDoctorId());
+        pk.setStartTime(appointment.getStartTime());
+        persistEntity(appointment, AppointmentsEntity.class, pk);
     }
 }

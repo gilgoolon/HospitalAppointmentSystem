@@ -1,5 +1,8 @@
 package com.maorgil.hospitalappointmentsystem.beans;
 
+import com.maorgil.hospitalappointmentsystem.DBHandler;
+import com.maorgil.hospitalappointmentsystem.Utils;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -17,11 +20,15 @@ public class UserRedirectionBean {
         LoginBean loginBean = LoginBean.getInstance();
         if (loginBean == null || !loginBean.isLoggedIn()) {
             // redirect to the login page
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Utils.redirect("login.xhtml?faces-redirect=true");
+        }
+    }
+
+    public void checkAdmin(ComponentSystemEvent event) {
+        LoginBean loginBean = LoginBean.getInstance();
+        if (loginBean == null || !loginBean.isAdmin()) {
+            // redirect to the login page
+            Utils.redirect("login.xhtml?faces-redirect=true");
         }
     }
 }

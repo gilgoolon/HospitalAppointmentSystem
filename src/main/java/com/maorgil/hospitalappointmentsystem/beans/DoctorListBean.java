@@ -2,6 +2,7 @@ package com.maorgil.hospitalappointmentsystem.beans;
 
 import com.maorgil.hospitalappointmentsystem.DBHandler;
 import com.maorgil.hospitalappointmentsystem.entity.DoctorsEntity;
+import com.maorgil.hospitalappointmentsystem.entity.WorkingHoursEntity;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -28,26 +29,12 @@ public class DoctorListBean {
         return "index.xhtml?faces-redirect=true&search=" + searchTerm;
     }
 
-    public String getOutput() {
+    public List<DoctorsEntity> getDoctors() {
         searchTerm = getInput(); // update search term from request parameters
-        List<DoctorsEntity> doctors = new DBHandler().getDoctorsBySearch(searchTerm); // query the db
+        return new DBHandler().getDoctorsBySearch(searchTerm); // query the db
+    }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("<ul>");
-        for (DoctorsEntity doctor : doctors) {
-            sb
-                    .append("<li>")
-                        .append("<div class=\"dropdown title-small\">")
-                            .append(doctor.getTitle())
-                            .append(doctor.getHoursHTML())
-                        .append("</div>")
-                        .append("<br/>")
-                        .append("<a class=\"text-small\">")
-                            .append(doctor.getAbout())
-                        .append("</a>")
-                    .append("</li>");
-        }
-        sb.append("</ul>");
-        return sb.toString();
+    public List<WorkingHoursEntity> getWorkingHours(String doctorId) {
+        return new DBHandler().getDoctorHours(doctorId);
     }
 }

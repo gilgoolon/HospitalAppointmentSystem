@@ -61,6 +61,12 @@ public class LoginBean {
         return loggedIn;
     }
 
+    public boolean isAdmin() {
+        if (!loggedIn)
+            return false;
+        return new DBHandler().getUserById(id).isAdmin();
+    }
+
     public String getSignupDisplay() {
         return loggedIn ? "none" : "block";
     }
@@ -72,5 +78,18 @@ public class LoginBean {
     public static LoginBean getInstance() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return (LoginBean) facesContext.getExternalContext().getSessionMap().get("loginBean");
+    }
+
+    public String logout() {
+        loggedIn = false;
+        isDoctor = false;
+
+        // init fields
+        id = "";
+        password = "";
+        output = "";
+
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "index.xhtml?faces-redirect=true";
     }
 }

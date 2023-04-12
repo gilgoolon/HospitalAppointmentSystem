@@ -3,26 +3,41 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core">
-
-<h:head>
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+<head>
     <link type="text/css" rel="stylesheet" href="css/make-appointment.css"/>
-    <title>Home | Hospital Appointment System</title>
+    <title>Appointment | Hospital Appointment System</title>
     <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico" />
+    <script src="scripts/sidebar.js" type="text/javascript"></script>
+</head>
+<h:head>
     <f:metadata>
         <f:event listener="#{userRedirectionBean.checkLoggedIn}" type="preRenderView"/>
     </f:metadata>
 </h:head>
 <h:body styleClass="body">
+    <h:form>
+        <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="index.xhtml">Home</a>
+            <a href="myprofile.xhtml">My Profile</a>
+            <a href="login.xhtml" style="display: #{loginBean.signupDisplay}">Sign In</a>
+            <a href="signup.xhtml" style="display: #{loginBean.signupDisplay}">Sign Up</a>
+            <h:commandLink value="Log Out" action="#{loginBean.logout}" rendered="#{loginBean.loggedIn}"/>
+            <h:commandLink value="Admin" action="admin.xhtml" rendered="#{loginBean.isAdmin()}"/>
+        </div>
+    </h:form>
     <div class="navbar">
-        <a class="link" href="./">Home</a>
+        <a class="link" href="index.xhtml">Home</a>
         <a class="link active" href="make-appointment.xhtml">Appointment</a>
         <a class="push"/>
         <a class="link" href="signup.xhtml" style="display: #{loginBean.getSignupDisplay()}">Signup</a>
         <a class="profile" href="myprofile.xhtml">
             <img src="assets/profile-icon.png" alt="My Profile"/>
         </a>
+        <div id="main">
+            <button class="openbtn" onclick="openNav()">&#9776;</button>
+        </div>
     </div>
     <div class="container">
         <div class="main-body" style="margin-top: 20px">

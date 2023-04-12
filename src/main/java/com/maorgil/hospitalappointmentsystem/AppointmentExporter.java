@@ -30,7 +30,7 @@ public class AppointmentExporter {
         String infoPatientId = patient.getId();
         String infoPatientFirstName = patient.getFirstName();
         String infoPatientLastName = patient.getLastName();
-        String infoDoctor = doctor.toString();
+        String infoDoctor = doctor.getFirstName() + " " + doctor.getLastName();
         String infoAppointmentDate = Utils.toString(appointment.getStartTime().toLocalDateTime().toLocalDate());
         String infoStartTime = Utils.toString(appointment.getStartTime().toLocalDateTime().toLocalTime());
         String infoEndTime = Utils.toString(appointment.getEndTime().toLocalDateTime().toLocalTime());
