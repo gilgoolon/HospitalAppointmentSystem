@@ -82,7 +82,7 @@ public class SignupBean {
      */
     public String submit() {
         UsersEntity user = new UsersEntity(); //id, firstName, lastName, new java.sql.Date(birthDate.getTime()), password, phoneNumber, email, false);
-        DBHandler dbHandler = new DBHandler();
+        DBHandler dbHandler = DBHandler.getInstance();
 
         if (dbHandler.getUserById(id) != null) {
             output = "Id already exist";

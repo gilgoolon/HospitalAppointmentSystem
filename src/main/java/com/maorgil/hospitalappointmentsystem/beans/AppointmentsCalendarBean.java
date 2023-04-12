@@ -46,7 +46,7 @@ public class AppointmentsCalendarBean implements Serializable {
 
         // Get available block times from the database
         List<AppointmentsEntity> availableBlockTimes = genAppointments(preferences);
-        DBHandler dbHandler = new DBHandler();
+        DBHandler dbHandler = DBHandler.getInstance();
 
         // Create a ScheduleEvent for each available block time and add it to the event model
         for (AppointmentsEntity blockTime : availableBlockTimes) {
@@ -93,7 +93,7 @@ public class AppointmentsCalendarBean implements Serializable {
     private static List<AppointmentsEntity> genAppointments(AppointmentFormBean.FormResults preferences) {
         List<DoctorsEntity> doctors;
         HashSet<DoctorsEntity> doctorsSet;
-        DBHandler dbHandler = new DBHandler();
+        DBHandler dbHandler = DBHandler.getInstance();
         if (preferences.isByCategory()) {
             doctorsSet = new HashSet<>();
             for (String category : preferences.getCategories()) {
@@ -136,7 +136,7 @@ public class AppointmentsCalendarBean implements Serializable {
         startTime = lastClickedAppointment.getStartTime().toLocalDateTime().toLocalTime();
         endTime = lastClickedAppointment.getEndTime().toLocalDateTime().toLocalTime();
         date = lastClickedAppointment.getStartTime().toLocalDateTime().toLocalDate();
-        DoctorsEntity doctor = new DBHandler().getDoctorById(lastClickedAppointment.getDoctorId());
+        DoctorsEntity doctor = DBHandler.getInstance().getDoctorById(lastClickedAppointment.getDoctorId());
         doctorDetails = doctor.getPresentableName() + "/" + doctor.getType();
         location = doctor.getCity();
 
@@ -155,8 +155,8 @@ public class AppointmentsCalendarBean implements Serializable {
 
         // reserve event and add to the DB
         if (isFree) {
-            toReserve.setId(new DBHandler().genAppointmentUUID());
-            new DBHandler().persistEntity(toReserve, AppointmentsEntity.class, toReserve.getId());
+            toReserve.setId(DBHandler.getInstance().genAppointmentUUID());
+            DBHandler.getInstance().persistEntity(toReserve, AppointmentsEntity.class, toReserve.getId());
         }
 
         // reset the appointment form bean

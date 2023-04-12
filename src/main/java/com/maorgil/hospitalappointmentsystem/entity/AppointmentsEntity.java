@@ -90,11 +90,11 @@ public class AppointmentsEntity {
     }
 
     public String getTitleForPatient() {
-        return startTime.toLocalDateTime().toLocalDate().toString() + " w/ Dr. " + new DBHandler().getDoctorById(doctorId).getLastName();
+        return startTime.toLocalDateTime().toLocalDate().toString() + " w/ Dr. " + DBHandler.getInstance().getDoctorById(doctorId).getLastName();
     }
 
     public String getTitleForDoctor() {
-        UsersEntity u = new DBHandler().getUserById(patientId);
+        UsersEntity u = DBHandler.getInstance().getUserById(patientId);
         return startTime.toLocalDateTime().toLocalDate().toString() + " w/ " + u.getFirstName() + " " + u.getLastName();
     }
 

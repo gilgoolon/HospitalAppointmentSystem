@@ -181,7 +181,7 @@ public class AppointmentFormBean implements Serializable {
     }
 
     public void initSelections() {
-        DBHandler dbHandler = new DBHandler();
+        DBHandler dbHandler = DBHandler.getInstance();
         doctors.clear();
         selectedDoctors.clear();
         doctors.addAll(dbHandler.getDoctors());

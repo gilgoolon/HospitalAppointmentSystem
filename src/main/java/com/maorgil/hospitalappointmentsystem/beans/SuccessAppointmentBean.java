@@ -32,7 +32,7 @@ public class SuccessAppointmentBean {
         date = appointment.getStartTime().toLocalDateTime().toLocalDate().toString();
         time = appointment.getStartTime().toLocalDateTime().toLocalTime().toString()
                 + "-" + appointment.getEndTime().toLocalDateTime().toLocalTime().toString();
-        DoctorsEntity doctor = new DBHandler().getDoctorById(appointment.getDoctorId());
+        DoctorsEntity doctor = DBHandler.getInstance().getDoctorById(appointment.getDoctorId());
         doctorDetails = doctor.getPresentableName();
         location = doctor.getCity();
     }
@@ -57,7 +57,7 @@ public class SuccessAppointmentBean {
      * Open a new window with Google Calendar with the appointment details entered
      */
     public void addToGoogleCalendar() {
-        DoctorsEntity doctor = new DBHandler().getDoctorById(appointment.getDoctorId());
+        DoctorsEntity doctor = DBHandler.getInstance().getDoctorById(appointment.getDoctorId());
 
         String dates = Utils.datesToGoogleCalendarFormat(
                 appointment.getStartTime().toLocalDateTime(),

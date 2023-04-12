@@ -13,8 +13,9 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class DBHandler {
+    private static DBHandler instance;
+
     private static final String PERSISTENCE_UNIT = "hospitalPU";
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/hospital";
 
     private EntityManager _entityManager;
     private boolean isConnected;
@@ -24,8 +25,14 @@ public class DBHandler {
     public static final int MAX_RESULTS_PATIENT_APPOINTMENTS = 10;
     public static final int MAX_RESULTS_ADMIN = 20;
 
-    public DBHandler() {
+    private DBHandler() {
         isConnected = false;
+    }
+
+    public static DBHandler getInstance() {
+        if (instance == null)
+            instance = new DBHandler();
+        return instance;
     }
 
     /**

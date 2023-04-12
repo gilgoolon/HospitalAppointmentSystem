@@ -39,7 +39,7 @@ public class Utils {
 
     public static AppointmentsEntity idToAppointment(String id) {
         try {
-            return new DBHandler().getAppointment(Integer.parseInt(id));
+            return DBHandler.getInstance().getAppointment(Integer.parseInt(id));
         } catch (Exception e) {
             return null;
         }
@@ -50,7 +50,7 @@ public class Utils {
     }
 
     public static List<Pair<Pair<LocalDateTime,LocalDateTime>, Integer>> getWorkingHoursRange(LocalDateTime start, LocalDateTime end, String doctorId) {
-        List<WorkingHoursEntity> whs = new DBHandler().getDoctorHours(doctorId);
+        List<WorkingHoursEntity> whs = DBHandler.getInstance().getDoctorHours(doctorId);
 
         List<Pair<Pair<LocalDateTime, LocalDateTime>, Integer>> result = new ArrayList<>();
         LocalDateTime curr = start;
@@ -106,7 +106,7 @@ public class Utils {
     }
 
     public static List<Pair<LocalDateTime, LocalDateTime>> getOccupiedRanges(LocalDate date, String doctorId) {
-        List<AppointmentsEntity> appointments = new DBHandler().getDoctorAppointmentAtDate(date, doctorId);
+        List<AppointmentsEntity> appointments = DBHandler.getInstance().getDoctorAppointmentAtDate(date, doctorId);
         List<Pair<LocalDateTime, LocalDateTime>>  occupiedRanges = new ArrayList<>();
 
         if (appointments.size() == 0)
@@ -150,7 +150,7 @@ public class Utils {
     }
 
     public static boolean isFreeAppointment(AppointmentsEntity appointment) {
-        List<AppointmentsEntity> appointments = new DBHandler().getDoctorAppointmentAtDate(appointment.getStartTime().toLocalDateTime().toLocalDate(), appointment.getDoctorId());
+        List<AppointmentsEntity> appointments = DBHandler.getInstance().getDoctorAppointmentAtDate(appointment.getStartTime().toLocalDateTime().toLocalDate(), appointment.getDoctorId());
         for (AppointmentsEntity a : appointments)
             if (a.getStartTime().toLocalDateTime().isBefore(appointment.getEndTime().toLocalDateTime()) && a.getEndTime().toLocalDateTime().isAfter(appointment.getStartTime().toLocalDateTime()))
                 return false;
