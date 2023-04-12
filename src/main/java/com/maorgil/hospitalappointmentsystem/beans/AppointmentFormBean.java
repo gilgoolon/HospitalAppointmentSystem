@@ -19,7 +19,7 @@ public class AppointmentFormBean implements Serializable {
 
     protected static FormResults latestResults;
 
-    private boolean byCategory = true;
+    private boolean byCategory = false;
 
     private String selectedCategory; // selected doctor - doctor id
     private final List<String> categories = new ArrayList<>();
