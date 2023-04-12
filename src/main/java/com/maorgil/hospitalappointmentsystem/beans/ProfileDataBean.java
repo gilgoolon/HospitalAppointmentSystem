@@ -78,7 +78,7 @@ public class ProfileDataBean {
     }
 
     public String isAdminStr() {
-        return isAdmin ? "Admin" : "User";
+        return isAdmin ? "Admin" : "Regular";
     }
 
     public String isUser() {

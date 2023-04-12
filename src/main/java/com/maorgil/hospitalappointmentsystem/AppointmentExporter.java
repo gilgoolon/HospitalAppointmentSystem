@@ -30,12 +30,12 @@ public class AppointmentExporter {
         String infoPatientId = patient.getId();
         String infoPatientFirstName = patient.getFirstName();
         String infoPatientLastName = patient.getLastName();
-        String infoDoctor = "Dr." + doctor.getFirstName() + " " + doctor.getLastName();
+        String infoDoctor = doctor.toString();
         String infoAppointmentDate = Utils.toString(appointment.getStartTime().toLocalDateTime().toLocalDate());
         String infoStartTime = Utils.toString(appointment.getStartTime().toLocalDateTime().toLocalTime());
         String infoEndTime = Utils.toString(appointment.getEndTime().toLocalDateTime().toLocalTime());
-        String infoAppointmentPurpose = appointment.getDescription();
-        String infoAppointmentDescription = "Skull fracture, left side, with subdural hematoma.";
+        String infoAppointmentDescription = appointment.getDescription();
+        if (infoAppointmentDescription == null) infoAppointmentDescription = "No description";
 
         PDFHandler pdfHandler = new PDFHandler(filename, USER_APPOINTMENTS_PATH);
         pdfHandler.createDocument();
@@ -50,8 +50,8 @@ public class AppointmentExporter {
         pdfHandler.addInfoTable(4,
                 "Patient ID", "Patient First Name", "Patient Last Name", "Doctor",
                 infoPatientId, infoPatientFirstName, infoPatientLastName, infoDoctor,
-                "Appointment Date", "Start Time", "End Time", "Appointment Purpose",
-                infoAppointmentDate, infoStartTime, infoEndTime, infoAppointmentPurpose);
+                "Appointment Date", "Start Time", "End Time", "Cancelled",
+                infoAppointmentDate, infoStartTime, infoEndTime, appointment.isCancelled() ? "Yes" : "No");
 
         // description text box
         pdfHandler.addSubTitle("Appointment Description by Doctor");

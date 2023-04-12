@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+    <link type="text/css" rel="stylesheet" href="css/make-appointment.css"/>
+    <title>Home | Hospital Appointment System</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico" />
+    <f:metadata>
+        <f:event listener="#{userRedirectionBean.checkLoggedIn}" type="preRenderView"/>
+    </f:metadata>
+</h:head>
+<h:body styleClass="body">
+    <div class="navbar">
+        <a class="link" href="./">Home</a>
+        <a class="link active" href="make-appointment.xhtml">Appointment</a>
+        <a class="push"/>
+        <a class="link" href="signup.xhtml" style="display: #{loginBean.getSignupDisplay()}">Signup</a>
+        <a class="profile" href="myprofile.xhtml">
+            <img src="assets/profile-icon.png" alt="My Profile"/>
+        </a>
+    </div>
+    <div class="container">
+        <div class="main-body" style="margin-top: 20px">
+            <a class="text-big" style="width: 100%; display: inline-block; text-align: center; text-decoration: underline">
+                Select appointment preferences
+            </a>
+            <h:form rendered="#{!appointmentFormBean.submitted}">
+                <div class="switch-button-container" style="margin-left: -5px">
+                    <div>
+                        <h:selectBooleanCheckbox value="#{appointmentFormBean.byCategory}"
+                                                 styleClass="switch-button">
+                            <f:ajax event="click" render="catSwitch"/>
+                        </h:selectBooleanCheckbox>
+                    </div>
+                    <h:outputText styleClass="switch-button-output" style="margin: 2px auto 0 10px" id="catSwitch"
+                                  value="By-#{appointmentFormBean.byCategory ? 'Category' : 'Doctors'}"/>
+                </div>
+
+                <p:selectOneMenu id="categories-dropdown" value="#{appointmentFormBean.selectedCategory}">
+                    <f:selectItem itemLabel="Select a category" itemValue="" />
+                    <p:ajax event="change" listener="#{appointmentFormBean.onCategoryChanged}" update="selected-categories categories-dropdown" />
+                    <f:selectItems value="#{appointmentFormBean.categories}" var="cat" />
+                </p:selectOneMenu>
+                <p:dataList id="selected-categories" value="#{appointmentFormBean.selectedCategories}" var="cat">
+                    <div class="name-box">
+                        <div class="name-text">#{cat}</div>
+                        <div class="name-remove">
+                            <p:commandLink action="#{appointmentFormBean.onRemoveCategory(cat)}"
+                                           process="@this"
+                                           update="@form"
+                                           styleClass="name-remove-icon">
+                                <i class="pi pi-times"></i>
+                            </p:commandLink>
+                        </div>
+                    </div>
+                </p:dataList>
+                <p/>
+
+
+                <p:selectOneMenu id="doctors-dropdown" value="#{appointmentFormBean.selectedDoctor}">
+                    <f:selectItem itemLabel="Select a doctor" itemValue="" />
+                    <p:ajax event="change" listener="#{appointmentFormBean.onDoctorChanged}" update="selected-doctors doctors-dropdown" />
+                    <f:selectItems value="#{appointmentFormBean.doctors}" var="doctor" itemLabel="#{doctor}" itemValue="#{doctor.id}" />
+                </p:selectOneMenu>
+                <p:dataList id="selected-doctors" value="#{appointmentFormBean.selectedDoctors}" var="doctor">
+                    <div class="name-box">
+                        <div class="name-text">#{doctor}</div>
+                        <div class="name-remove">
+                            <p:commandLink action="#{appointmentFormBean.onRemoveDoctor(doctor.id)}"
+                                           process="@this"
+                                           update="@form"
+                                           styleClass="name-remove-icon">
+                                <i class="pi pi-times"></i>
+                            </p:commandLink>
+                        </div>
+                    </div>
+                </p:dataList>
+                <p/>
+
+                <p:selectOneMenu id="locations-dropdown" value="#{appointmentFormBean.selectedLocation}">
+                    <f:selectItem itemLabel="Select a location" itemValue="" />
+                    <p:ajax event="change" listener="#{appointmentFormBean.onLocationChanged}" update="selected-locations locations-dropdown" />
+                    <f:selectItems value="#{appointmentFormBean.locations}" var="location" itemLabel="#{location}" itemValue="#{location}" />
+                </p:selectOneMenu>
+                <p:dataList id="selected-locations" value="#{appointmentFormBean.selectedLocations}" var="location">
+                    <div class="name-box">
+                        <div class="name-text">#{location}</div>
+                        <div class="name-remove">
+                            <p:commandLink action="#{appointmentFormBean.onRemoveLocation(location)}"
+                                           process="@this"
+                                           update="@form"
+                                           styleClass="name-remove-icon">
+                                <i class="pi pi-times"></i>
+                            </p:commandLink>
+                        </div>
+                    </div>
+                </p:dataList>
+                <p/>
+
+                From: <p:calendar value="#{appointmentFormBean.fromTime}"
+                            mode="popup"
+                            mindate="#{appointmentFormBean.now}"
+                            pattern="MM/dd/yyyy HH:mm"
+                            required="false"
+                            showSecond="false"></p:calendar>
+
+                To: <p:calendar styleClass="small-calendar" value="#{appointmentFormBean.fromTime}"
+                                  mode="popup"
+                                  maxdate="#{appointmentFormBean.monthLater}"
+                                  pattern="MM/dd/yyyy HH:mm"
+                                  required="false"
+                                  showSecond="false"></p:calendar>
+                <p/>
+
+                <p:commandButton value="Submit" action="#{appointmentFormBean.submit}"/>
+            </h:form>
+            <h:form rendered="#{appointmentFormBean.submitted}">
+                <p:commandButton value="Back" action="#{appointmentFormBean.back}"/>
+                <div style="display: flex; justify-content: center; align-items: center">
+                    <p:schedule id="schedule" value="#{appointmentsCalendarBean.eventModel}" widgetVar="mySchedule"
+                                resizable="false" draggable="false" view="agendaWeek">
+                        <p:ajax event="eventSelect" listener="#{appointmentsCalendarBean.onEventSelect}" update="eventDetailsDialog" />
+                    </p:schedule>
+
+                    <p:dialog id="eventDetailsDialog" widgetVar="eventDetailsDialog"
+                              draggable="false" modal="true" header="Appointment Details" resizable="false">
+                        <h:panelGroup id="eventDetails">
+                            <p:outputLabel value="#{appointmentsCalendarBean.doctorDetails}"/><p/>
+                            <p:outputLabel value="#{appointmentsCalendarBean.date} "/>
+                            <p:outputLabel value="#{appointmentsCalendarBean.startTime}-#{appointmentsCalendarBean.endTime}"/><p/>
+                            <p:outputLabel value="At #{appointmentsCalendarBean.location}"/>
+                        </h:panelGroup>
+                        <p/>
+                        <p:commandButton value="Reserve" action="#{appointmentsCalendarBean.reserve}"/>
+                    </p:dialog>
+                </div>
+            </h:form>
+        </div>
+        <div class="footer">
+            <a>© 2023 Hospital Appointment System</a><br/>
+            <a>Contact Us @ 02-345-6789 or</a><br/>
+            <a>Email Us @ clinic@example.com</a><br/>
+        </div>
+    </div>
+</h:body>
+</html>

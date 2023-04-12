@@ -18,6 +18,7 @@ public class ProfileAppointmentsBean {
     private DoctorsEntity doctor = null;
     private String sortBy = "Date"; // Date, Doctor, Length (apt length)
     private boolean isAscending = false;
+    private boolean includeCancelled = true;
     private final String loggedInUserID;
     private final DBHandler dbHandler = new DBHandler();
 
@@ -68,8 +69,16 @@ public class ProfileAppointmentsBean {
         this.toDate = toDate;
     }
 
+    public boolean isIncludeCancelled() {
+        return includeCancelled;
+    }
+
+    public void setIncludeCancelled(boolean includeCancelled) {
+        this.includeCancelled = includeCancelled;
+    }
+
     public void search() {
-        appointments = dbHandler.getAppointments(loggedInUserID, fromDate, toDate, doctor == null ? "" : doctor.getId());
+        appointments = dbHandler.getAppointments(loggedInUserID, fromDate, toDate, doctor == null ? "" : doctor.getId(), includeCancelled);
     }
 
     public String getAppointments() {
@@ -83,12 +92,12 @@ public class ProfileAppointmentsBean {
                     .append("</a>")
                     .append("<div style=\"display: flex; flex-direction: row;\">")
                     .append("<a class=\"text-small\">")
-                    .append(appointment.getDescription())
+                    .append(appointment.getDescription() == null ? "No description" : appointment.getDescription())
                     .append("</a>")
                     .append("<button class=\"download-button\" onClick=\"downloadAppointment('")
                     .append(Utils.appointmentToId(appointment))
                     .append("')\">")
-                    .append("<img src=\"assets/download-icon.png\" alt=\"\"/>")
+                    .append("<img src=\"assets/download-icon.png\" alt=\"↙\"/>")
                     .append("</button>")
                     .append("</div>")
                     .append("</div>")

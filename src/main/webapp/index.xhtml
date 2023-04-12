@@ -8,11 +8,12 @@
 <h:head>
     <link type="text/css" rel="stylesheet" href="css/home.css"/>
     <title>Home | Hospital Appointment System</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico" />
 </h:head>
 <h:body styleClass="body">
 <div class="navbar">
-    <a class="link active" href="#">Home</a>
-    <a class="link" href="#">Appointment</a> <!-- will ref to appointment page -->
+    <a class="link active" href="">Home</a>
+    <a class="link" href="make-appointment.xhtml">Appointment</a>
     <a class="push"/>
     <a class="link" href="signup.xhtml" style="display: #{loginBean.getSignupDisplay()}">Signup</a>
     <a class="profile" href="myprofile.xhtml">
@@ -29,9 +30,9 @@
         </div>
         <div class="doctors">
             <h1>Our doctors:</h1>
-            <h:form action="#{doctorsListBean.submit()}">
+            <h:form action="#{doctorsListBean.submit}">
                 <h:inputText autocomplete="off" value="#{doctorsListBean.input}"/>
-                <h:commandButton value="Search" action="#{doctorsListBean.submit()}"/>
+                <h:commandButton value="Search" action="#{doctorsListBean.submit}"/>
             </h:form>
             <h:outputText escape="false" value="#{doctorsListBean.output}"/>
         </div>

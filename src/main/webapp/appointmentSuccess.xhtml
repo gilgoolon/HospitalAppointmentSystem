@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <link type="text/css" rel="stylesheet" href="css/styles.css"/>
+    <title>Home | Hospital Appointment System</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico" />
+    <f:metadata>
+        <f:event listener="#{userRedirectionBean.checkLoggedIn}" type="preRenderView"/>
+    </f:metadata>
+</h:head>
+<h:body styleClass="body">
+    <div class="navbar">
+        <a class="link" href="./">Home</a>
+        <a class="link" href="make-appointment.xhtml">Appointment</a>
+        <a class="push"/>
+        <a class="link" href="signup.xhtml" style="display: #{loginBean.getSignupDisplay()}">Signup</a>
+        <a class="profile" href="myprofile.xhtml">
+            <img src="assets/profile-icon.png" alt="My Profile"/>
+        </a>
+    </div>
+    <div class="container">
+        <div class="main-body" style="display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between">
+                <p:outputLabel styleClass="text-big" value="Successfully resreved an appointment with #{successAppointmentBean.doctorDetails}"/>
+                <p:outputLabel styleClass="text-big" value="on the #{successAppointmentBean.date}, #{successAppointmentBean.time}"/>
+                <p:outputLabel styleClass="text-big" value="at #{successAppointmentBean.location}"/>
+                <p/>
+                <div style="display: flex; justify-content: space-between">
+                    <h:form>
+                        <p:commandButton value="Add to Google Calendar"
+                                         action="#{successAppointmentBean.addToGoogleCalendar()}"
+                                         icon="pi pi-calendar"/>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <a>© 2023 Hospital Appointment System</a><br/>
+            <a>Contact Us @ 02-345-6789 or</a><br/>
+            <a>Email Us @ clinic@example.com</a><br/>
+        </div>
+    </div>
+</h:body>
+</html>

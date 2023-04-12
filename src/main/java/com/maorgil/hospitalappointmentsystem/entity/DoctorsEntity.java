@@ -72,6 +72,10 @@ public class DoctorsEntity {
         return getFirstName() + " " + getLastName() + ", " + getAge() + ", " + getType();
     }
 
+    public String getPresentableName() {
+        return "Dr. " + getFirstName() + " " + getLastName();
+    }
+
     /**
      * Get the working hours of the doctor in html ul format.
      * @return a string of html source code of a list of working hours.
@@ -118,5 +122,10 @@ public class DoctorsEntity {
         result = 31 * result + (about != null ? about.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return getPresentableName();
     }
 }

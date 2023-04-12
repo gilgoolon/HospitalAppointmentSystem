@@ -253,13 +253,13 @@ public class DBHandler {
      */
     public List<DoctorsEntity> getDoctorsBySearch(String text) {
         List<Object> params = new ArrayList<>();
-        params.add(text + "%"); // regex to match starts with text
-        params.add(text + "%"); // Two params for the first and last name
-        params.add(text + "%"); // Match entire name
+        params.add("%" + text.toLowerCase() + "%"); // regex to match the text anywhere in the query string
 
         String query = "SELECT d FROM DoctorsEntity d JOIN UsersEntity u ON d.id = u.id " +
-                "WHERE u.firstName LIKE ?1 OR u.lastName LIKE ?2 OR u.firstName + u.lastName LIKE ?3 "
-                + "ORDER BY u.firstName, u.lastName";
+                "WHERE LOWER(u.firstName) LIKE ?1 OR LOWER(u.lastName) LIKE ?1 " +
+                "OR LOWER(CONCAT(u.firstName, u.lastName)) LIKE ?1 " +
+                "OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE ?1 " +
+                "ORDER BY u.firstName, u.lastName";
 
         return executeSelectQuery(query, DoctorsEntity.class, params, MAX_RESULTS_NO_LIMIT);
     }
@@ -303,7 +303,7 @@ public class DBHandler {
         return executeSelectQuery(query, WorkingHoursEntity.class, params, MAX_RESULTS_NO_LIMIT);
     }
 
-    public List<AppointmentsEntity> getAppointments(String userId, Date from, Date to, String doctorId) {
+    public List<AppointmentsEntity> getAppointments(String userId, Date from, Date to, String doctorId, boolean includeCancelled) {
         // null dates will be converted to min/max dates
         if (from == null)
             from = new Date(Long.MIN_VALUE);
@@ -312,13 +312,15 @@ public class DBHandler {
 
         List<Object> params = new ArrayList<>();
         params.add(userId);
-        String query;
-        if (doctorId.isEmpty())
-            query = "SELECT a FROM AppointmentsEntity a WHERE a.patientId = ?1";
-        else {
+        String query = "SELECT a FROM AppointmentsEntity a WHERE a.patientId = ?1";
+
+        if (!doctorId.isEmpty()) {
+            query += "AND a.doctorId = ?2";
             params.add(doctorId);
-            query = "SELECT a FROM AppointmentsEntity a WHERE a.patientId = ?1 AND a.doctorId = ?2";
         }
+
+        if (!includeCancelled)
+            query += " AND a.isCancelled = false";
 
         List<AppointmentsEntity> l = executeSelectQuery(query, AppointmentsEntity.class, params, MAX_RESULTS_PATIENT_APPOINTMENTS);
         for (int i = 0; i < l.size(); i++)
@@ -369,5 +371,29 @@ public class DBHandler {
             }
         }
         return result;
+    }
+
+    public List<DoctorsEntity> getDoctorsByType(String type) {
+        String query = "SELECT d FROM DoctorsEntity d WHERE d.type = ?1";
+        List<Object> params = new ArrayList<>();
+        params.add(type);
+        return executeSelectQuery(query, DoctorsEntity.class, params, MAX_RESULTS_NO_LIMIT);
+    }
+
+    public List<DoctorsEntity> getDoctorsByTypeAndLocation(String type, String location) {
+        String query = "SELECT d FROM DoctorsEntity d WHERE d.type = ?1 AND d.city = ?2";
+        List<Object> params = new ArrayList<>();
+        params.add(type);
+        params.add(location);
+        return executeSelectQuery(query, DoctorsEntity.class, params, MAX_RESULTS_NO_LIMIT);
+    }
+
+
+    public List<String> getCategories() {
+        return executeSelectQuery("SELECT DISTINCT c.type FROM DoctorsEntity c", String.class);
+    }
+
+    public List<String> getLocations() {
+        return executeSelectQuery("SELECT DISTINCT c.city FROM DoctorsEntity c", String.class);
     }
 }

@@ -4,9 +4,12 @@ import com.maorgil.hospitalappointmentsystem.entity.AppointmentsEntity;
 import com.maorgil.hospitalappointmentsystem.entity.WorkingHoursEntity;
 import com.maorgil.hospitalappointmentsystem.Pair;
 
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -90,7 +93,7 @@ public class Utils {
         return null; // not working at this dow
     }
 
-    public static List<AppointmentsEntity> splitFreeRange(Pair<Pair<LocalDateTime, LocalDateTime>, Integer> freeRange, String doctorId) {
+    public static List<AppointmentsEntity> splitFreeRange(Pair<Pair<LocalDateTime, LocalDateTime>, Integer> freeRange, String doctorId, String patientId) {
         List<AppointmentsEntity> freeAppointments = new ArrayList<>();
 
         LocalDateTime curr = freeRange.getFirst().getFirst();
@@ -100,6 +103,7 @@ public class Utils {
             appointmentsEntity.setStartTime(Timestamp.valueOf(curr));
             appointmentsEntity.setEndTime(Timestamp.valueOf(currEnd));
             appointmentsEntity.setDoctorId(doctorId);
+            appointmentsEntity.setPatientId(patientId);
 
             freeAppointments.add(appointmentsEntity);
 
@@ -151,5 +155,29 @@ public class Utils {
             freeSlots = newFreeSlots;
         }
         return freeSlots;
+    }
+
+    public static boolean isFreeAppointment(AppointmentsEntity appointment) {
+        List<AppointmentsEntity> appointments = new DBHandler().getDoctorAppointmentAtDate(appointment.getStartTime().toLocalDateTime().toLocalDate(), appointment.getDoctorId());
+        for (AppointmentsEntity a : appointments)
+            if (a.getStartTime().toLocalDateTime().isBefore(appointment.getEndTime().toLocalDateTime()) && a.getEndTime().toLocalDateTime().isAfter(appointment.getStartTime().toLocalDateTime()))
+                return false;
+        return true;
+    }
+
+    public static void redirect(String url) {
+        FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
+                .handleNavigation(FacesContext.getCurrentInstance(), null, url);
+    }
+
+    private static String convertToGoogleCalendarDateTime(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss");
+        return localDateTime.atZone(ZoneId.systemDefault()).format(formatter);
+    }
+
+    public static String datesToGoogleCalendarFormat(LocalDateTime start, LocalDateTime end) {
+        String startDateTime = convertToGoogleCalendarDateTime(start);
+        String endDateTime = convertToGoogleCalendarDateTime(end);
+        return startDateTime + "/" + endDateTime;
     }
 }
