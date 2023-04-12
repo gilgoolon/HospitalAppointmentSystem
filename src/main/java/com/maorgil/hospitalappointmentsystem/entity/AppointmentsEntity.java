@@ -5,6 +5,7 @@ import com.maorgil.hospitalappointmentsystem.DBHandler;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table(name = "appointments", schema = "hospital")
@@ -106,13 +107,11 @@ public class AppointmentsEntity {
         AppointmentsEntity that = (AppointmentsEntity) o;
 
         if (isCancelled != that.isCancelled) return false;
-        if (startTime != null ? !startTime.equals(that.startTime) : that.startTime != null) return false;
-        if (endTime != null ? !endTime.equals(that.endTime) : that.endTime != null) return false;
-        if (doctorId != null ? !doctorId.equals(that.doctorId) : that.doctorId != null) return false;
-        if (patientId != null ? !patientId.equals(that.patientId) : that.patientId != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-
-        return true;
+        if (!Objects.equals(startTime, that.startTime)) return false;
+        if (!Objects.equals(endTime, that.endTime)) return false;
+        if (!Objects.equals(doctorId, that.doctorId)) return false;
+        if (!Objects.equals(patientId, that.patientId)) return false;
+        return Objects.equals(description, that.description);
     }
 
     @Override

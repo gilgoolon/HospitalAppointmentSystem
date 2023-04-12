@@ -3,6 +3,7 @@ package com.maorgil.hospitalappointmentsystem.entity;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Objects;
 
 public class WorkingHoursEntityPK implements Serializable {
     @Column(name = "doctor_id")
@@ -36,9 +37,7 @@ public class WorkingHoursEntityPK implements Serializable {
         WorkingHoursEntityPK that = (WorkingHoursEntityPK) o;
 
         if (weekDay != that.weekDay) return false;
-        if (doctorId != null ? !doctorId.equals(that.doctorId) : that.doctorId != null) return false;
-
-        return true;
+        return Objects.equals(doctorId, that.doctorId);
     }
 
     @Override
