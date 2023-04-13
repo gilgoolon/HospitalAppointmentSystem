@@ -215,14 +215,27 @@
                   <div class="card">
                      <div class="card-content">
                         <a class="title-small">
-                           #{app.titleForDoctor}
+                           <h:outputText value="#{app.titleForDoctor}"/>
                         </a>
                         <a class="text-small">
-                           #{app.description}
+                           <h:outputText id="dd#{app.id}" value="#{app.description}" />
                         </a>
                      </div>
+                     <p:commandLink action="#{profileDoctorBean.onEditDesc(app)}">
+                        <p:graphicImage value="assets/pencil-icon.png" styleClass="download-button"
+                                        style="margin-left: auto; width: 35px; height: 35px"/>
+                     </p:commandLink>
                   </div>
                </c:forEach>
+               <p:dialog widgetVar="descEditPopup" modal="true" draggable="false"
+                         resizable="false" header="Edit Appointment Description">
+                  <h:form>
+                     <p:inputTextarea value="#{profileDoctorBean.description}"/>
+                     <p/>
+                     <p:commandButton value="Save" icon="pi pi-check"
+                                     action="#{profileDoctorBean.saveDescription()}"/>
+                  </h:form>
+               </p:dialog>
             </div>
             <i class="text-small">Note: upcoming appointments are limited to #{profileDoctorBean.maxDoctorAppointments} entries.</i>
          </h:panelGroup>
