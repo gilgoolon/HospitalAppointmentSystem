@@ -144,7 +144,7 @@
                   <h:selectOneMenu value="#{profileAppointmentsBean.sortBy}">
                      <f:selectItem itemLabel="Date" itemValue="Date"/>
                      <f:selectItem itemLabel="Doctor" itemValue="Doctor"/>
-                     <f:selectItem itemLabel="Length" itemValue="Length"/>
+                     <f:selectItem itemLabel="Duration" itemValue="Duration"/>
                   </h:selectOneMenu>
                   <div class="switch-button-container" style="margin-left: -5px;">
                      <div>
@@ -212,7 +212,7 @@
             <p class="title-medium">Dr. #{profileDoctorBean.lastName}, your upcoming appointments:</p>
             <div class="card-list">
                <c:forEach items="#{profileDoctorBean.upcomingAppointments}" var="app">
-                  <div class="card">
+                  <div class="card" style="margin-bottom: 10px">
                      <div class="card-content">
                         <a class="title-small">
                            <h:outputText value="#{app.titleForDoctor}"/>

@@ -18,7 +18,7 @@ public class ProfileAppointmentsBean {
     private Date toDate;
     private List<AppointmentsEntity> appointments;
     private DoctorsEntity doctor = null;
-    private String sortBy = "Date"; // Date, Doctor, Length (apt length)
+    private String sortBy = "Date"; // Date, Doctor, Duration (apt length)
     private boolean isAscending = false;
     private boolean includeCancelled = true;
     private final String loggedInUserID;
@@ -140,7 +140,7 @@ public class ProfileAppointmentsBean {
                     return s2.compareTo(s1);
                 });
                 break;
-            case "Length":
+            case "Duration":
                 appointments.sort((a1, a2) -> {
                     double l1 = a1.getEndTime().getTime() - a1.getStartTime().getTime();
                     double l2 = a2.getEndTime().getTime() - a2.getStartTime().getTime();

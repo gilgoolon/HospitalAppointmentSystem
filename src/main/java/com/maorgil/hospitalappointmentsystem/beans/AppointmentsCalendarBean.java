@@ -70,12 +70,12 @@ public class AppointmentsCalendarBean implements Serializable {
         return eventModel;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
+    public String getStartTime() {
+        return startTime == null ? "" : Utils.toString(startTime);
     }
 
-    public LocalTime getEndTime() {
-        return endTime;
+    public String getEndTime() {
+        return endTime == null ? "" : Utils.toString(endTime);
     }
 
     public LocalDate getDate() {

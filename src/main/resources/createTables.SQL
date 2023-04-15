@@ -1,8 +1,3 @@
-DROP TABLE Users;
-DROP TABLE Appointments;
-DROP TABLE Doctors;
-DROP TABLE Working_Hours;
-
 CREATE TABLE Users (
                        id varchar(9) NOT NULL UNIQUE,
                        first_name varchar(20) NOT NULL,
@@ -31,7 +26,8 @@ CREATE TABLE Doctors (
                          type varchar(20) NOT NULL,
                          about varchar(200),
                          city varchar(20) NOT NULL,
-                         PRIMARY KEY (id)
+                         PRIMARY KEY (id),
+                         FOREIGN KEY (id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Working_Hours (
@@ -40,5 +36,7 @@ CREATE TABLE Working_Hours (
                                start_time time NOT NULL,
                                end_time time NOT NULL,
                                apt_length int NOT NULL DEFAULT 10,
-                               PRIMARY KEY (doctor_id, week_day)
+                               PRIMARY KEY (doctor_id, week_day),
+                               FOREIGN KEY (doctor_id) REFERENCES Doctors(id) ON DELETE CASCADE,
+                               FOREIGN KEY (doctor_id) REFERENCES Users(id) ON DELETE CASCADE
 );
