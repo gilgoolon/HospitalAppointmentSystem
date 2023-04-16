@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>5cd0525e-649a-4967-9454-2fe3a3e523c4.SCHEMA:hospital</OriginalElement>
+  <nodes>
+    <node x="-182.5" y="36.0">5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.doctors</node>
+    <node x="-263.0" y="333.0">5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.appointments</node>
+    <node x="29.75" y="-43.0">5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.users</node>
+    <node x="54.0" y="333.0">5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.working_hours</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.doctors" target="5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.users" relationship="REFERENCES">
+      <point x="0.0" y="-60.5" />
+      <point x="-115.0" y="130.0" />
+      <point x="74.5" y="130.0" />
+      <point x="-44.75" y="104.5" />
+    </edge>
+    <edge source="5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.appointments" target="5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.doctors" relationship="REFERENCES">
+      <point x="0.0" y="-93.5" />
+      <point x="-177.0" y="303.0" />
+      <point x="-115.0" y="303.0" />
+      <point x="0.0" y="60.5" />
+    </edge>
+    <edge source="5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.working_hours" target="5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.users" relationship="REFERENCES">
+      <point x="0.0" y="-71.5" />
+      <point x="124.5" y="130.0" />
+      <point x="164.0" y="130.0" />
+      <point x="44.75" y="104.5" />
+    </edge>
+    <edge source="5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.working_hours" target="5cd0525e-649a-4967-9454-2fe3a3e523c4.TABLE:hospital.doctors" relationship="REFERENCES">
+      <point x="0.0" y="-71.5" />
+      <point x="124.5" y="303.0" />
+      <point x="-115.0" y="303.0" />
+      <point x="0.0" y="60.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="76.5" y="205.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
