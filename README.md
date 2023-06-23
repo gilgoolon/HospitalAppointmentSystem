@@ -1,4 +1,6 @@
 # Hospital Appointment System - Gil Alpert & Maor Shweky
+Maor Shweky and Gil Alpert's final project within the course "Workshop (seminar) in Advanced Java Programming". Using JavaEE, GlassFish server and a MySQL database. Info can be found in the documents in the repository main directory. Final grade: 96
+
 ## Setup / Installation
 In order to run the project one must install the technologies used in the project. We have used maven as the build system of the project, since it is easy to use and answers our needs.
 
